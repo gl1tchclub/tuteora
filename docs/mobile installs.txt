@@ -1,0 +1,55 @@
+
+
+npx create-expo-app 01-playground --template blank
+npm install @react-navigation/native react-native-screens react-native-safe-area-context
+npm install @react-navigation/native-stack
+npm install @react-navigation/bottom-tabs
+npm install react-native-vector-icons
+npm install @react-native-async-storage/async-storage
+npm install nativewind
+npm install -D tailwindcss@3.3.2
+npx tailwindcss init
+npm install expo-splash-screen
+npm install @expo/vector-icons
+npm install dom-to-image
+npm install dotenv expo-constants firebase
+
+
+
+
+OPTIONAL:
+// allow user to get image from device library
+npm install expo-image-picker
+
+// Take screenshot
+npm install react-native-view-shot expo-media-library
+
+// Use in web browser
+npm install dom-to-image
+
+// Bottom tabs
+npm install @react-navigation/bottom-tabs
+
+// Drawer nav
+npm install @react-navigation/drawer react-native-gesture-handler react-native-reanimated@2.14.4
+
+// Location services
+npm install expo-location
+
+// Maps
+npm install react-native-maps
+
+// Camera and all media functionality
+npm install expo-constants expo-camera expo-media-library @expo/vector-icons
+
+// Audio - provides a unified API for media playback
+npm install expo-av
+
+// Display web content in app
+npm install react-native-webview
+
+// TTS
+npm install expo-speech
+
+// Calendar
+npx expo install expo-calendar

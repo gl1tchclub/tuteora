@@ -1,0 +1,12 @@
+-- Calendar
+https://docs.expo.dev/versions/latest/sdk/calendar/
+https://github.com/expo/expo/tree/sdk-51/packages/expo-calendar
+https://medium.com/@FavreLeandro/how-to-use-usecalendar-hook-for-expo-and-react-native-a1d2bcc3aa1c
+https://blog.expo.dev/5-easy-to-use-react-native-calendar-libraries-e830a97d5bf7
+
+-- Task manager and notifications
+https://docs.expo.dev/versions/latest/sdk/task-manager/
+https://docs.expo.dev/versions/latest/sdk/notifications/
+
+-- Date/Time Picker
+https://docs.expo.dev/versions/latest/sdk/date-time-picker/
