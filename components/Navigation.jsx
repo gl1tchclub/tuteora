@@ -11,8 +11,8 @@ const Tab = createBottomTabNavigator();
 const Navigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
+      <Tab.Navigator initialRouteName="Home">
+        <Tab.Screen
           name="Home"
           component={HomeScreen}
           options={{
@@ -23,7 +23,7 @@ const Navigation = () => {
             ),
           }}
         />
-      </Stack.Navigator>
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
