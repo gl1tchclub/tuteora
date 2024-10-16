@@ -9,10 +9,15 @@ import {
 } from "react-native";
 import { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../services/firebase";
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { getAuth } from "@react-native-firebase/auth";
+
+// Components
+import RegisterForm from "../components/RegisterForm";
+import LoginForm from "../components/LoginForm";
 
 const AuthScreen = () => {
   const [initializing, setInitializing] = useState(true);
+  const [selectedContent, setSelectedContent] = useState("login");
   const [user, setUser] = useState(null);
 
   const onAuthStateChanged = (user) => {
@@ -21,7 +26,7 @@ const AuthScreen = () => {
     if (initializing) setInitializing(false);
   };
   useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    const subscriber = getAuth().onAuthStateChanged(onAuthStateChanged);
     return subscriber;
   }, []);
 
@@ -31,4 +36,19 @@ const AuthScreen = () => {
         <ActivityIndicator size="large" />
       </View>
     );
+  else
+    return (
+      <View className="items-center justify-center flex-1">
+        <Button title="Login" onPress={() => setSelectedContent("login")} />
+        <Button
+          title="Register"
+          onPress={() => setSelectedContent("register")}
+        />
+        <View style={{ marginTop: 20 }}>
+          {selectedContent === "login" ? <LoginForm /> : <RegisterForm />}
+        </View>
+      </View>
+    );
 };
+
+export default AuthScreen;

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { getAuth } from "@react-native-firebase/auth";
 
 import AppNavigator from "./components/Navigation";
 
@@ -15,8 +16,8 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       try {
-        // Artificially delay for 5 seconds to simulate a slow loading
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        // Artificially delay for 3 seconds to simulate a slow loading
+        await new Promise((resolve) => setTimeout(resolve, 3000));
 
         // Other things may include fetching data, loading fonts, etc
       } catch (err) {
@@ -27,6 +28,7 @@ export default function App() {
       }
     };
     prepare();
+    
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
