@@ -4,9 +4,11 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   updateProfile,
+  deleteUser,
 } from "firebase/auth";
 
 const auth = getAuth();
+const currentUser = auth.currentUser;
 
 const signUp = () => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -37,7 +39,7 @@ const login = () => {
 
 const getUserInfo = () => {
   onAuthStateChanged(auth, (user) => {
-    if (user) {
+    if (user !== null) {
       // User is signed in, see docs for a list of available properties
       // https://firebase.google.com/docs/reference/js/auth.user
       const displayName = user.displayName;
@@ -45,10 +47,22 @@ const getUserInfo = () => {
       const photoURL = user.photoURL;
       const emailVerified = user.emailVerified;
       const uid = user.uid;
+      currentUser = auth.currentUser;
       // ...
     } else {
       // User is signed out = no user
       // ...
     }
   });
+};
+
+const removeUser = () => {
+  deleteUser(user)
+    .then(() => {
+      // User deleted.
+    })
+    .catch((error) => {
+      // An error ocurred
+      // ...
+    });
 };
