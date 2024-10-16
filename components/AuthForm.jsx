@@ -51,36 +51,33 @@ const AuthForm = () => {
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
-  //     console.log("User registered: ", email);
-  //     onSubmit();
-  //   } catch (error) {
-  //     console.log("Registration error: ", error.message);
-  //   }
-  // };
+  const loginComponent = () => {
+    <View className="flex-1 bg-lime-700 items-center justify-center">
+      <KeyboardAvoidingView behavior="padding">
+        <Text> Test Login Form </Text>
+        <View>
+          <TextInput
+            placeholder="Username"
+            value={displayName}
+            onChangeText={setDisplayName}
+            autoCapitalize="none"
+            className={labelStyle}
+          />
 
-  // const onSubmit = async (e) => {
-  //   e.preventDefault();
+          <TextInput
+            secureTextEntry={true}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            className={labelStyle}
+          />
+          <Button title="Login" onPress={login} />
+        </View>
+      </KeyboardAvoidingView>
+    </View>;
+  };
 
-  //   await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
-  //     .then((userCredential) => {
-  //       // Signed in
-  //       const user = userCredential.user;
-  //       console.log(user);
-  //       navigation.navigate("/login"); // From props
-  //       // ...
-  //     })
-  //     .catch((error) => {
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       console.log(errorCode, errorMessage);
-  //       // ..
-  //     });
-  // };
-
-  return (
+  const registerComponent = () => {
     <View className="flex-1 bg-lime-700 items-center justify-center">
       <KeyboardAvoidingView behavior="padding">
         <Text> Test Register Form </Text>
@@ -123,9 +120,16 @@ const AuthForm = () => {
           </Picker>
           <Text>Selected: {option}</Text>
 
-          <Button title="Register" onPress={onSubmit} />
+          <Button title="Register" onPress={register} />
         </View>
       </KeyboardAvoidingView>
+    </View>;
+  };
+
+  return (
+    <View className="flex-1 bg-lime-700 items-center justify-center">
+      <Button onPress={registerComponent} title="Register" />
+      <Button onPress={loginComponent} title="Login" />
     </View>
   );
 };
