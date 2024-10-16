@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import HomeScreen from "../screens/Home.jsx";
+import SessionsScreen from "../screens/Sessions.jsx";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -20,6 +21,21 @@ const Navigation = () => {
             tabBarLabel: "Home",
             tabBarIcon: ({ color, size }) => (
               <MaterialCommunityIcons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Sessions"
+          component={SessionsScreen}
+          options={{
+            title: "Sessions",
+            tabBarLabel: "Sessions",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialCommunityIcons
+                name="book-account"
+                color={color}
+                size={size}
+              />
             ),
           }}
         />
