@@ -5,6 +5,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import HomeScreen from "../screens/Home.jsx";
 import SessionsScreen from "../screens/Sessions.jsx";
+import AuthScreen from "../screens/Auth.jsx";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

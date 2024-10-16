@@ -3,7 +3,7 @@ import { Button, View } from "react-native";
 import { Modal } from "react-native";
 import LoginForm from "./LoginForm";
 
-const ModalDemo = ({ children, onClose, visible }) => {
+const ModalComponent = ({ children, onClose, visible }) => {
   //   const [isModalVisible, setIsModalVisible] = useState(false);
   //   const toggleModal = () => {
   //     setIsModalVisible(!isModalVisible);
@@ -21,4 +21,4 @@ const ModalDemo = ({ children, onClose, visible }) => {
     </View>
   );
 };
-export default ModalDemo;
+export default ModalComponent;
