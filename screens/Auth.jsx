@@ -4,9 +4,23 @@ import ModalComponent from "../components/Modal";
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
 
-const AuthScreen = () => {
+const AuthScreen = ({ onLogin }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
+
+  const handleLogin = () => {
+    // perform login
+    // if successful:
+    setModalVisible(false);
+    onLogin(); // need this??
+  };
+
+  const handleRegister = () => {
+    // perform login
+    // if successful:
+    // add success toast here
+    setModalVisible(false);
+  };
 
   const openLogin = () => {
     setIsLogin(true);
@@ -20,6 +34,7 @@ const AuthScreen = () => {
 
   return (
     <View className="flex-1 justify-center items-center">
+      <Text>Auth Screen</Text>
       <Button title="Login" onPress={openLogin} />
       <Button title="Register" onPress={openRegister} />
 
@@ -28,12 +43,11 @@ const AuthScreen = () => {
         onClose={() => setModalVisible(false)}
       >
         {isLogin ? (
-          <LoginForm onSubmit={() => setModalVisible(false)} />
+          <LoginForm onSubmit={() => handleLogin} />
         ) : (
-          <RegisterForm onSubmit={() => setModalVisible(false)} />
+          <RegisterForm onSubmit={() => handleRegister} />
         )}
       </ModalComponent>
-      <Text>Home Screen</Text>
     </View>
   );
 };

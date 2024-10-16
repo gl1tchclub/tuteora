@@ -6,7 +6,7 @@ import { auth } from "../services/firebase";
 // Components
 import ScrollPick from "./Picker";
 
-const RegisterForm = ({ navigation }) => {
+const RegisterForm = ({ onSubmit }) => {
   const accountTypes = [
     {
       label: "Student",
@@ -21,9 +21,21 @@ const RegisterForm = ({ navigation }) => {
       value: "STAFF",
     },
   ];
+
   const labelStyle = "mt-20 w-80 h-10 px-2.5 rounded-lg bg-lime-400";
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log("User registered: ", email);
+      onSubmit();
+    } catch (error) {
+      console.log("Registration error: ", error.message);
+    }
+  }
 
   const onSubmit = async (e) => {
     e.preventDefault();
