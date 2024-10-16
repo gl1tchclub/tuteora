@@ -3,14 +3,24 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
-  updateProfile,
+  validatePassword,
   deleteUser,
 } from "firebase/auth";
 
 const auth = getAuth();
 const currentUser = auth.currentUser;
 
-const signUp = () => {
+const signUp = async () => {
+  const status = await validatePassword(getAuth(), passwordFromUser);
+  if (!status.isValid) {
+    // Password could not be validated. Use the status to show what
+    // requirements are met and which are missing.
+
+    // If a criterion is undefined, it is not required by policy. If the
+    // criterion is defined but false, it is required but not fulfilled by
+    // the given password. For example:
+    const needsLowerCase = status.containsLowercaseLetter !== true;
+  }
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       //Signed up
@@ -18,8 +28,8 @@ const signUp = () => {
       // ...
     })
     .catch((err) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      const errorCode = err.code;
+      const errorMessage = err.message;
       // ...
     });
 };
@@ -34,6 +44,16 @@ const login = () => {
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
+    });
+};
+
+const signOut = () => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
     });
 };
 
