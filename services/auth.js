@@ -2,11 +2,13 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
 
 const auth = getAuth();
 
-const SignUp = () => {
+const signUp = () => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       //Signed up
@@ -20,7 +22,7 @@ const SignUp = () => {
     });
 };
 
-const Login = () => {
+const login = () => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
@@ -33,4 +35,20 @@ const Login = () => {
     });
 };
 
-const 
+const getUserInfo = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      // User is signed in, see docs for a list of available properties
+      // https://firebase.google.com/docs/reference/js/auth.user
+      const displayName = user.displayName;
+      const email = user.email;
+      const photoURL = user.photoURL;
+      const emailVerified = user.emailVerified;
+      const uid = user.uid;
+      // ...
+    } else {
+      // User is signed out = no user
+      // ...
+    }
+  });
+};
