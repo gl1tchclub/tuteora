@@ -2,8 +2,8 @@ import "dotenv/config"; // Loads environment variables from a .env file into pro
 
 export default {
   expo: {
-    name: "05-playground",
-    slug: "05-playground",
+    name: "tuteora",
+    slug: "tuteora",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/icon.png",

@@ -12,10 +12,7 @@ const firebaseConfig = {
   appId: Constants.expoConfig.extra.appId,
 };
 
-initializeApp(firebaseConfig); // Initialize Firebase
-
-const database = getFirestore();
-
 // Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
-export default database; // Get a Firestore instance
+export const FIREBASE_APP = initializeApp(firebaseConfig);; // Init Firebase
+export const FIREBASE_DB = getFirestore(); // Get a Firestore instance (DB)
+export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
