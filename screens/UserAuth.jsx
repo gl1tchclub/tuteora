@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import {
   Text,
@@ -7,19 +8,25 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
 } from "react-native";
-import { signInWithEmailAndPassword } from "@react-native-firebase/auth";
 import { FIREBASE_AUTH } from "../services/firebase";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "@react-native-firebase/auth";
+import { Button } from "react-native-vector-icons/MaterialCommunityIcons";
 
-const LoginForm = () => {
+const UserAuthentication = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const labelStyle = "mt-20 w-80 h-10 px-2.5 rounded-lg bg-lime-400";
 
-  const login = async () => {
+  const auth = FIREBASE_AUTH;
+
+  const signIn = async () => {
     setLoading(true);
     try {
-      await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       alert("Success!");
     } catch (error) {
       alert("Login Failed: " + error.message);
@@ -28,16 +35,27 @@ const LoginForm = () => {
     }
   };
 
+  const register = async () => {
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      alert("Success!");
+    } catch (error) {
+      alert("Registration Failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View className="flex-1 bg-lime-700 items-center justify-center">
       <KeyboardAvoidingView behavior="padding">
-        <Text> Test Login Form </Text>
+        <Text>Login Screen</Text>
         <View>
           <TextInput
             placeholder="Email"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(text) => setEmail(text)}
             autoCapitalize="none"
             keyboardType="email-address"
             className={labelStyle}
@@ -46,14 +64,21 @@ const LoginForm = () => {
             secureTextEntry={true}
             placeholder="Password"
             value={password}
-            onChangeText={setPassword}
+            onChangeText={(text) => setPassword(text)}
             className={labelStyle}
           />
-          <Button title="Login" onPress={login} />
+          {loading ? (
+            <ActivityIndicator size="large" />
+          ) : (
+            <>
+              <Button title="Login" onPress={signIn} />
+              <Button title="Create Account" onPress={register} />
+            </>
+          )}
         </View>
       </KeyboardAvoidingView>
     </View>
   );
 };
 
-export default LoginForm;
+export default UserAuthentication;

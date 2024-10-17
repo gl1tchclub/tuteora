@@ -2,10 +2,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useEffect, useState } from "react";
 
 import HomeScreen from "../screens/Home.jsx";
 import SessionsScreen from "../screens/Sessions.jsx";
-import AuthScreen from "../screens/Auth.jsx";
+import UserAuth from "../screens/UserAuth.jsx";
+import { onAuthStateChanged } from "@firebase/auth";
+import { FIREBASE_AUTH } from "../services/firebase.js";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,24 +45,33 @@ const BottomNavigation = () => {
 };
 
 const AppNavigator = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+      onAuthStateChanged(FIREBASE_AUTH, (user) => {
+        console.log("User: ", user);
+        setUser(user);
+      });
+    }, []);
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
+      {user ? (
         <BottomNavigation />
       ) : (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Auth">
-            {(props) => (
-              <AuthScreen {...props} onLogin={() => setIsLoggedIn(true)} />
-            )}
-          </Stack.Screen>
+        <Stack.Navigator initialRouteName="Auth">
+          <Stack.Screen
+            name="Authorization"
+            component={UserAuth}
+            screenOptions={{ headerShown: false }}
+          />
+          {/* <Stack.Screen name="Auth">
+            <AuthScreen {...props} onLogin={() => setIsLoggedIn(true)} />
+          </Stack.Screen> */}
         </Stack.Navigator>
       )}
     </NavigationContainer>
   );
 };
-
 
 export default AppNavigator;
