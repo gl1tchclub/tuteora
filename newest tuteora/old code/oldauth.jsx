@@ -12,8 +12,8 @@ import { FIREBASE_AUTH } from "../services/firebase";
 import { getAuth } from "@react-native-firebase/auth";
 
 // Components
-import RegisterForm from "../components/RegisterForm";
-import LoginForm from "../components/LoginForm";
+import RegisterForm from "./RegisterForm";
+import LoginForm from "../components/AuthForm";
 
 const AuthScreen = () => {
   const [initializing, setInitializing] = useState(true);

@@ -1,9 +1,8 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useCallback, useEffect, useState } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { getAuth } from "@react-native-firebase/auth";
 
 import AppNavigator from "./components/Navigation";
 

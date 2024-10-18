@@ -7,10 +7,13 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
 } from "react-native";
-import { signInWithEmailAndPassword } from "@react-native-firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { FIREBASE_AUTH } from "../services/firebase";
 
-const LoginForm = () => {
+const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -28,6 +31,17 @@ const LoginForm = () => {
     }
   };
 
+  const register = async () => {
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+      alert("Success!");
+    } catch (error) {
+      alert("Registration Failed: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View className="flex-1 bg-lime-700 items-center justify-center">
@@ -49,11 +63,18 @@ const LoginForm = () => {
             onChangeText={setPassword}
             className={labelStyle}
           />
-          <Button title="Login" onPress={login} />
+          {loading ? (
+            <ActivityIndicator size="large" />
+          ) : (
+            <>
+              <Button title="Login" onPress={login} />
+              <Button title="Create Account" onPress={register} />
+            </>
+          )}
         </View>
       </KeyboardAvoidingView>
     </View>
   );
 };
 
-export default LoginForm;
+export default AuthForm;

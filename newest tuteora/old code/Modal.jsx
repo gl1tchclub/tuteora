@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, View } from "react-native";
 import { Modal } from "react-native";
-import LoginForm from "./LoginForm";
+import LoginForm from "../components/AuthForm";
 
 const ModalComponent = ({ children, onClose, visible }) => {
   //   const [isModalVisible, setIsModalVisible] = useState(false);
