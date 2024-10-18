@@ -46,12 +46,12 @@ export default function App() {
       className="flex-1 items-center justify-center bg-white"
       onLayout={onLayoutRootView}
     >
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      {/* <GestureHandlerRootView style={{ flex: 1 }}> */}
         <View style={styles.container}>
           <AppNavigator />
           <StatusBar style="auto" />
         </View>
-      </GestureHandlerRootView>
+      {/* </GestureHandlerRootView> */}
     </View>
   );
 }
