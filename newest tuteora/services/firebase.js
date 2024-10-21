@@ -1,12 +1,12 @@
 import Constants from "expo-constants";
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "@firebase/firestore";
 import {
   getAuth,
   setPersistence,
   getReactNativePersistence,
   initializeAuth,
-} from "firebase/auth";
+} from "@firebase/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const firebaseConfig = {
@@ -18,32 +18,26 @@ const firebaseConfig = {
   appId: Constants.expoConfig.extra.appId,
 };
 
-// Initialize Firebase app
-let firebaseApp;
-if (!getApps().length) {
-  firebaseApp = initializeApp(firebaseConfig);
-} else {
-  firebaseApp = getApp();
-}
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+
 
 // Initialize Firebase Authentication with persistence
-let firebaseAuth;
-try {
-  firebaseAuth = initializeAuth(firebaseApp, {
-    persistence: getReactNativePersistence(AsyncStorage),
-  });
-} catch (error) {
-  if (error.code === 'auth/duplicate-app') {
-    firebaseAuth = getAuth(firebaseApp);
-  } else {
-    throw error;
-  }
-}
+// let firebaseAuth;
+// try {
+//   firebaseAuth = initializeAuth(firebaseApp, {
+//     persistence: getReactNativePersistence(AsyncStorage),
+//   });
+// } catch (error) {
+//   if (error.code === 'auth/duplicate-app') {
+//     firebaseAuth = getAuth(firebaseApp);
+//   } else {
+//     throw error;
+//   }
+// }
 
-// Get a Firestore instance (DB)
-const firebaseDb = getFirestore(firebaseApp);
-
-export { firebaseApp as FIREBASE_APP, firebaseAuth as FIREBASE_AUTH, firebaseDb as FIREBASE_DB };
 
 // export const FIREBASE_APP = initializeApp(firebaseConfig); // Init Firebase
 
