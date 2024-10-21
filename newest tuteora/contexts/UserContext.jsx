@@ -16,6 +16,11 @@ export const UserProvider = (props) => {
     return () => unsubscribe();
   }, [auth]);
 
+  const register = async () => {
+    let newUser;
+    const
+  }
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
       {props.children}
