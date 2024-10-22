@@ -1,4 +1,4 @@
-import { Button, Text, TextInput, View, StyleSheet } from "react-native";
+import { Button, Text, TextInput, View, StyleSheet, ActivityIndicator } from "react-native";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
@@ -17,7 +17,8 @@ const AuthScreen = ({ navigation }) => {
 
   const handleAuthentication = () => {
     try {
-      if (user) navigation.navigate("Home");
+    //   if (user) navigation.navigate("Home");
+      if (user) error = "Welcome!";
       else {
         setLoading(true);
         if (isLogin) {
