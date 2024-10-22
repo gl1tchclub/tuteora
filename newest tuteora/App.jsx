@@ -1,18 +1,10 @@
-// import { StatusBar } from "expo-status-bar";
-import { StyleSheet, View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  View,
-  Text,
-  TextInput,
-  Button,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import AuthScreen from "./TestAuth";
+import { UserProvider } from "./contexts/UserContext";
 // import AppNavigator from './components/Navigation';
 
 // Keep the splash screen visible while we fetch resources
@@ -50,14 +42,16 @@ export default function App() {
   }
 
   return (
-    <View style={styles.root} onLayout={onLayoutRootView}>
-      <ScrollView contentContainerStyle={styles.container}>
-        {/* <AppNavigator /> */}
-        {/* <Text>hello</Text> */}
-        <AuthScreen />
-        <StatusBar style="auto" />
-      </ScrollView>
-    </View>
+    <UserProvider>
+      <View style={styles.root} onLayout={onLayoutRootView}>
+        <ScrollView contentContainerStyle={styles.container}>
+          {/* <AppNavigator /> */}
+          {/* <Text>hello</Text> */}
+          <AuthScreen />
+          <StatusBar style="auto" />
+        </ScrollView>
+      </View>
+    </UserProvider>
   );
 }
 

@@ -2,7 +2,8 @@ import { Button, Text, TextInput, View, StyleSheet, ActivityIndicator } from "re
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
+
+import { UserContext } from "./contexts/UserContext";
 
 const AuthScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const AuthScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const { register, login, user } = useContext(UserContext);
 
   const handleAuthentication = () => {

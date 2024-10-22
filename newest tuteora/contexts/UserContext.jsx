@@ -10,6 +10,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export const UserContext = createContext();
 
+
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
