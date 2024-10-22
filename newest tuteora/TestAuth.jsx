@@ -1,4 +1,11 @@
-import { Button, Text, TextInput, View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  Button,
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
@@ -19,8 +26,8 @@ const AuthScreen = ({ navigation }) => {
 
   const handleAuthentication = () => {
     try {
-    //   if (user) navigation.navigate("Home");
-      if (user) error = "Welcome!";
+      //   if (user) navigation.navigate("Home");
+      if (user) setError("Welcome!");
       else {
         setLoading(true);
         if (isLogin) {
@@ -56,6 +63,13 @@ const AuthScreen = ({ navigation }) => {
         placeholder="Email"
         autoCapitalize="none"
       />
+      <TextInput
+        style={styles.input}
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+        secureTextEntry
+      />
       {!isLogin && (
         <>
           <TextInput
@@ -81,16 +95,8 @@ const AuthScreen = ({ navigation }) => {
             <Picker.Item label="Staff" value="Staff" />
             <Picker.Item label="Admin" value="Admin" />
           </Picker>
-          <Text>Selected: {accountType}</Text>
         </>
       )}
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-      />
       {error && <Text style={{ color: "red" }}>{error}</Text>}
 
       {loading ? (

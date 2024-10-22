@@ -43,7 +43,7 @@ export default function App() {
 
   return (
     <UserProvider>
-      <View style={styles.root} onLayout={onLayoutRootView}>
+      <View className="flex-1 w-full" onLayout={onLayoutRootView}>
         <ScrollView contentContainerStyle={styles.container}>
           {/* <AppNavigator /> */}
           {/* <Text>hello</Text> */}

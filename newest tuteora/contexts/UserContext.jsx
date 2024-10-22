@@ -20,11 +20,24 @@ export const UserProvider = (props) => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         setUser(user);
         console.log("\nUser: ", user);
-        if (user) {
+        if (user != null) {
+          const id = user.uid;
           const userInfo = await getDoc(
-            doc(db, "users", auth.currentUser.uid)
-          ).data();
-          setProfile(userInfo != undefined ? userInfo : null);
+            doc(db, "users", id)
+          );
+          if (userInfo.exists()) {
+            const info = {
+              id: userInfo.data().id,
+              email: userInfo.data().email,
+              firstName: userInfo.data().firstName,
+              lastName: userInfo.data().lastName,
+              accountType: userInfo.data().accountType,
+            }
+            setProfile(info);
+          } else {
+            setProfile(null);
+          }
+          // setProfile(userInfo != undefined ? userInfo : null);
           console.log("\nProfile info: ", userInfo);
         }
       });
