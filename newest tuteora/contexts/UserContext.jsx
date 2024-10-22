@@ -15,7 +15,6 @@ export const UserContext = createContext();
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-  const usersRef = collection(db, "users");
 
   const loadUser = async () => {
     try {
@@ -24,9 +23,10 @@ export const UserProvider = (props) => {
         console.log(user);
         if (user) {
           const userInfo = await getDoc(
-            doc(usersRef, auth.currentUser.uid)
+            doc(db, "users", auth.currentUser.uid)
           ).data();
           setProfile(userInfo != undefined ? userInfo : null);
+          console.log("User info: ", userInfo);
         }
       });
 
@@ -57,18 +57,18 @@ export const UserProvider = (props) => {
       } else if (newUser.password.length < 6) {
         throw new Error("Password must be at least 6 characters long");
       } else {
-        await createUserWithEmailAndPassword(
+        const userCredential = await createUserWithEmailAndPassword(
           auth,
           newUser.email,
           newUser.password
         );
+        const user = userCredential.user;
 
-        const currentUser = auth.currentUser;
-        console.log(currentUser);
+        console.log(user);
 
-        await setDoc(doc(usersRef, currentUser.uid), {
-          id: currentUser.uid,
-          email: currentUser.email,
+        await setDoc(doc(db, "users", user.uid), {
+          id: user.uid,
+          email: user.email,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           accountType: newUser.accountType,
