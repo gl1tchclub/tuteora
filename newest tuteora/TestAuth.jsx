@@ -10,14 +10,16 @@ const AuthScreen = ({ navigation }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [accountType, setAccountType] = useState("");
-  const [uid, setUid] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { register, login, user } = useContext(UserContext);
 
   const handleAuthentication = () => {
     try {
       if (user) navigation.navigate("Home");
       else {
+        setLoading(true);
         if (isLogin) {
           login(email, password);
           console.log("User signed in successfully!");
@@ -32,15 +34,18 @@ const AuthScreen = ({ navigation }) => {
           console.log("User created successfully!");
         }
       }
+      setError(null);
     } catch (error) {
       console.error("Authentication error:", error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <View style={styles.authContainer}>
       <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
-
       <TextInput
         style={styles.input}
         value={email}
@@ -83,13 +88,19 @@ const AuthScreen = ({ navigation }) => {
         placeholder="Password"
         secureTextEntry
       />
-      <View style={styles.buttonContainer}>
-        <Button
-          title={isLogin ? "Sign In" : "Sign Up"}
-          onPress={handleAuthentication}
-          color="#3498db"
-        />
-      </View>
+      {error && <Text style={{ color: "red" }}>{error}</Text>}
+
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <View style={styles.buttonContainer}>
+          <Button
+            title={isLogin ? "Sign In" : "Sign Up"}
+            onPress={handleAuthentication}
+            color="#3498db"
+          />
+        </View>
+      )}
 
       <View style={styles.bottomContainer}>
         <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>

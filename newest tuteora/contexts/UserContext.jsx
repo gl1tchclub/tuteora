@@ -1,14 +1,12 @@
 import { createContext, useState, useEffect } from "react";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "@firebase/auth";
 import { db, auth } from "../services/firebase";
-import { collection, doc, setDoc, getDoc } from "firebase/firestore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export const UserContext = createContext();
 
@@ -16,17 +14,17 @@ export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
-  const loadUser = async () => {
+  const loadUser = () => {
     try {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         setUser(user);
-        console.log(user);
+        console.log("\nUser: ", user);
         if (user) {
           const userInfo = await getDoc(
             doc(db, "users", auth.currentUser.uid)
           ).data();
           setProfile(userInfo != undefined ? userInfo : null);
-          console.log("User info: ", userInfo);
+          console.log("\nProfile info: ", userInfo);
         }
       });
 
@@ -63,8 +61,6 @@ export const UserProvider = (props) => {
           newUser.password
         );
         const user = userCredential.user;
-
-        console.log(user);
 
         await setDoc(doc(db, "users", user.uid), {
           id: user.uid,
