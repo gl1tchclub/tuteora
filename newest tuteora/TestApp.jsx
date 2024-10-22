@@ -164,7 +164,7 @@ export default App = () => {
 
   return (
     <View onLayout={onLayoutRootView} style={styles.root}>
-      {/* <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         {user ? (
           // Show user's email if user is authenticated
           <AuthenticatedScreen
@@ -183,7 +183,7 @@ export default App = () => {
             handleAuthentication={handleAuthentication}
           />
         )}
-      </ScrollView> */}
+      </ScrollView>
       <StatusBar style="auto" />
     </View>
   );

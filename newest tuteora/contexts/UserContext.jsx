@@ -23,14 +23,13 @@ export const UserProvider = (props) => {
         if (user) {
           const userProfile = {
             id: auth.currentUser.uid,
-            username: newUser.username,
             email: newUser.email,
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             accountType: newUser.accountType,
           };
           setProfile(userProfile);
-        //   await AsyncStorage.setItem("user", JSON.stringify(profile)); // not sure if need this
+          //   await AsyncStorage.setItem("user", JSON.stringify(profile)); // not sure if need this
         }
       });
 
@@ -53,7 +52,6 @@ export const UserProvider = (props) => {
           newUser.accountType &&
           newUser.email &&
           newUser.password &&
-          newUser.username &&
           newUser.firstName &&
           newUser.lastName
         )
@@ -61,14 +59,23 @@ export const UserProvider = (props) => {
         throw new Error("Please fill in all fields");
       } else if (newUser.password.length < 6) {
         throw new Error("Password must be at least 6 characters long");
-      } else if (newUser.username.length < 3) {
-        throw new Error("Username must be at least 3 characters long");
       } else {
         await createUserWithEmailAndPassword(
           auth,
           newUser.email,
           newUser.password
         );
+
+        const currentUser = auth.currentUser;
+        console.log(currentUser);
+        
+        await setDoc(doc(db, "users", currentUser.uid), {
+          id: currentUser.uid,
+          email: currentUser.email,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          accountType: newUser.accountType,
+        });
       }
     } catch (error) {
       console.error("Registration error: ", error.message);
