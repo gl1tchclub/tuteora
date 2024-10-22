@@ -7,7 +7,7 @@ import {
   signOut,
 } from "@firebase/auth";
 import { db, auth } from "../services/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserContext = createContext();
@@ -15,21 +15,18 @@ export const UserContext = createContext();
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const usersRef = collection(db, "users");
 
   const loadUser = async () => {
     try {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         setUser(user);
+        console.log(user);
         if (user) {
-          const userProfile = {
-            id: auth.currentUser.uid,
-            email: newUser.email,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
-            accountType: newUser.accountType,
-          };
-          setProfile(userProfile);
-          //   await AsyncStorage.setItem("user", JSON.stringify(profile)); // not sure if need this
+          const userInfo = await getDoc(
+            doc(usersRef, auth.currentUser.uid)
+          ).data();
+          setProfile(userInfo != undefined ? userInfo : null);
         }
       });
 
@@ -68,8 +65,8 @@ export const UserProvider = (props) => {
 
         const currentUser = auth.currentUser;
         console.log(currentUser);
-        
-        await setDoc(doc(db, "users", currentUser.uid), {
+
+        await setDoc(doc(usersRef, currentUser.uid), {
           id: currentUser.uid,
           email: currentUser.email,
           firstName: newUser.firstName,
@@ -93,6 +90,7 @@ export const UserProvider = (props) => {
   const logout = async () => {
     try {
       await signOut(auth);
+      setProfile(null);
     } catch (error) {
       console.error("Sign out error: ", error.message);
     }
