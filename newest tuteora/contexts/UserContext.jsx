@@ -6,7 +6,8 @@ import {
   onAuthStateChanged,
   signOut,
 } from "@firebase/auth";
-import { db, app, auth } from "../services/firebase";
+import { db, auth } from "../services/firebase";
+import { collection, addDoc } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const UserContext = createContext();
@@ -16,10 +17,29 @@ export const UserProvider = (props) => {
   const [profile, setProfile] = useState(null);
 
   const loadUser = async () => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    });
-    return () => unsubscribe();
+    try {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        setUser(user);
+        if (user) {
+          const userProfile = {
+            id: auth.currentUser.uid,
+            username: newUser.username,
+            email: newUser.email,
+            firstName: newUser.firstName,
+            lastName: newUser.lastName,
+            accountType: newUser.accountType,
+          };
+          setProfile(userProfile);
+        //   await AsyncStorage.setItem("user", JSON.stringify(profile)); // not sure if need this
+        }
+      });
+
+      console.log(user);
+
+      return () => unsubscribe();
+    } catch (error) {
+      console.error("User loading error: ", error.message);
+    }
   };
 
   useEffect(() => {
@@ -49,18 +69,9 @@ export const UserProvider = (props) => {
           newUser.email,
           newUser.password
         );
-        const userProfile = {
-          id: auth.currentUser.uid,
-          username: newUser.username,
-          email: newUser.email,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          accountType: newUser.accountType,
-        };
-        setProfile(userProfile);
       }
     } catch (error) {
-      console.error("Registration error:", error.message);
+      console.error("Registration error: ", error.message);
     }
   };
 
@@ -68,7 +79,7 @@ export const UserProvider = (props) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.error("Login error:", error.message);
+      console.error("Login error: ", error.message);
     }
   };
 
@@ -76,12 +87,12 @@ export const UserProvider = (props) => {
     try {
       await signOut(auth);
     } catch (error) {
-      console.error("Logout error:", error.message);
+      console.error("Sign out error: ", error.message);
     }
   };
 
   return (
-    <UserContext.Provider value={{ user, register, profile, login }}>
+    <UserContext.Provider value={{ user, register, profile, login, logout }}>
       {props.children}
     </UserContext.Provider>
   );
