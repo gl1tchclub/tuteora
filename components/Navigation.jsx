@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { Text } from "react-native";
 
 import HomeScreen from "../screens/Home.jsx";
 import SessionsScreen from "../screens/Sessions.jsx";
@@ -49,8 +50,13 @@ const AppNavigator = () => {
   return (
     <NavigationContainer>
       {user ? (
-        <BottomNavigation />
+        <>
+          <BottomNavigation />
+          <Text>Goodbye</Text>
+        </>
       ) : (
+        <>
+          <Text>Hello</Text>
         <Stack.Navigator initialRouteName="Auth">
           <Stack.Screen
             name="Auth"
@@ -58,6 +64,7 @@ const AppNavigator = () => {
             screenOptions={{ headerShown: false }}
           />
         </Stack.Navigator>
+        </>
       )}
     </NavigationContainer>
   );

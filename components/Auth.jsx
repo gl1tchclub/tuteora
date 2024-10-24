@@ -27,7 +27,7 @@ const Auth = ({ navigation }) => {
   const handleAuthentication = () => {
     try {
       //   if (user) navigation.navigate("Home");
-      if (user) {
+      if (user != null) {
         console.log("Signed in. Welcome!");
         navigation.navigate("Home");
       }

@@ -1,7 +1,5 @@
-import { View, Text, Button } from "react-native";
-import { useContext } from "react";
+import { View } from "react-native";
 import SessionsComponent from "../components/Sessions";
-import { UserContext } from "../contexts/UserContext";
 
 const SessionsScreen = (props) => {
   return (
