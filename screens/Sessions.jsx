@@ -1,12 +1,12 @@
 import { View, Text, Button } from "react-native";
-import { FIREBASE_AUTH } from "../services/firebase";
+import { useContext } from "react";
+import SessionsComponent from "../components/Sessions";
+import { UserContext } from "../contexts/UserContext";
 
-const SessionsScreen = ({ navigation }) => {
+const SessionsScreen = (props) => {
   return (
     <View className="flex-1 justify-center items-center">
-      <Text>Sessions Screen</Text>
-      <Button onPress={() => navigation.navigate("Home")} title="Go Home" />
-      <Button onPress={() => FIREBASE_AUTH.signOut()} title="Log Out" />
+      <SessionsComponent navigation={props.navigation}/>
     </View>
   );
 };

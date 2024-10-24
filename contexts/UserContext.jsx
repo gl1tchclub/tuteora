@@ -10,21 +10,18 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export const UserContext = createContext();
 
-
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
 
-  const loadUser = () => {
+  const loadUser = async() => {
     try {
+      // await signOut(auth);
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         setUser(user);
-        console.log("\nUser: ", user);
-        if (user != null) {
+        if (user) {
           const id = user.uid;
-          const userInfo = await getDoc(
-            doc(db, "users", id)
-          );
+          const userInfo = await getDoc(doc(db, "users", id));
           if (userInfo.exists()) {
             const info = {
               id: userInfo.data().id,
@@ -32,17 +29,17 @@ export const UserProvider = (props) => {
               firstName: userInfo.data().firstName,
               lastName: userInfo.data().lastName,
               accountType: userInfo.data().accountType,
-            }
+            };
             setProfile(info);
           } else {
             setProfile(null);
           }
-          // setProfile(userInfo != undefined ? userInfo : null);
+
           console.log("\nProfile info: ", userInfo);
         }
       });
 
-      console.log(user);
+      console.log("\nUser: ", user);
 
       return () => unsubscribe();
     } catch (error) {
@@ -100,7 +97,7 @@ export const UserProvider = (props) => {
   const logout = async () => {
     try {
       await signOut(auth);
-      setProfile(null);
+      setProfile(null); // need this here? Already in unsubscribe
     } catch (error) {
       console.error("Sign out error: ", error.message);
     }

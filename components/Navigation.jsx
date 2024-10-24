@@ -2,13 +2,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH } from "../services/firebase.js";
+import { useState } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 import HomeScreen from "../screens/Home.jsx";
 import SessionsScreen from "../screens/Sessions.jsx";
-import AuthScreen from "../screens/UserAuth.jsx";
+import AuthScreen from "../screens/AuthScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,14 +44,7 @@ const BottomNavigation = () => {
 };
 
 const AppNavigator = () => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log("User: ", user);
-      setUser(user);
-    });
-  }, []);
+  const { user } = useState(UserContext);
 
   return (
     <NavigationContainer>

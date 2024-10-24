@@ -10,9 +10,9 @@ import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
 
-import { UserContext } from "./contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 
-const AuthScreen = ({ navigation }) => {
+const Auth = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -27,7 +27,10 @@ const AuthScreen = ({ navigation }) => {
   const handleAuthentication = () => {
     try {
       //   if (user) navigation.navigate("Home");
-      if (user) setError("Welcome!");
+      if (user) {
+        console.log("Signed in. Welcome!");
+        navigation.navigate("Home");
+      }
       else {
         setLoading(true);
         if (isLogin) {
@@ -174,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AuthScreen;
+export default Auth;
