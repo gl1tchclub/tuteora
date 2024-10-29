@@ -46,24 +46,22 @@ const BottomNavigation = () => {
 
 const AppNavigator = () => {
   const { user } = useState(UserContext);
-
+  console.log("Nav user: ", user);
   return (
     <NavigationContainer>
       {user ? (
         <>
           <BottomNavigation />
-          <Text>Goodbye</Text>
         </>
       ) : (
         <>
-          <Text>Hello</Text>
-        <Stack.Navigator initialRouteName="Auth">
-          <Stack.Screen
-            name="Auth"
-            component={AuthScreen}
-            screenOptions={{ headerShown: false }}
-          />
-        </Stack.Navigator>
+          <Stack.Navigator initialRouteName="Auth">
+            <Stack.Screen
+              name="Auth"
+              component={AuthScreen}
+              screenOptions={{ headerShown: false }}
+            />
+          </Stack.Navigator>
         </>
       )}
     </NavigationContainer>

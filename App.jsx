@@ -4,6 +4,7 @@ import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { UserProvider } from "./contexts/UserContext";
 import AppNavigator from './components/Navigation';
+import AuthScreen from "./screens/AuthScreen";
 
 // Keep the splash screen visible while we fetch resources
 preventAutoHideAsync();
@@ -41,13 +42,11 @@ export default function App() {
 
   return (
     <UserProvider>
-      <View className="flex-1 w-full" onLayout={onLayoutRootView}>
-        <ScrollView contentContainerStyle={styles.container}>
+      <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
           <AppNavigator />
           {/* <Text>hello</Text> */}
           {/* <AuthScreen /> */}
           <StatusBar style="auto" />
-        </ScrollView>
       </View>
     </UserProvider>
   );
@@ -61,11 +60,12 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   container: {
-    flexGrow: 1,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
     backgroundColor: "#f0f0f0",
+    width: "100%",
   },
   authContainer: {
     width: "80%",

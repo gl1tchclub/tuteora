@@ -18,8 +18,10 @@ export const UserProvider = (props) => {
     try {
       // await signOut(auth);
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        setUser(user);
+        const isUser = user ? user : null;
+        setUser(isUser);
         if (user) {
+          console.log("\nUser: ", user);
           const id = user.uid;
           const userInfo = await getDoc(doc(db, "users", id));
           if (userInfo.exists()) {
@@ -34,12 +36,13 @@ export const UserProvider = (props) => {
           } else {
             setProfile(null);
           }
-
+          
           console.log("\nProfile info: ", userInfo);
-        }
+        } else {
+          console.log("Context No user:", user);
+        };
       });
 
-      console.log("\nUser: ", user);
 
       return () => unsubscribe();
     } catch (error) {
