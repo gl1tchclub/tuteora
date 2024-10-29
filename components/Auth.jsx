@@ -12,7 +12,7 @@ import { useContext } from "react";
 
 import { UserContext } from "../contexts/UserContext";
 
-const Auth = ({ navigation }) => {
+const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,19 +22,20 @@ const Auth = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const { register, login, user } = useContext(UserContext);
+  const { register, login, user, profile } = useContext(UserContext);
   console.log("\nAuth User:", user);
+  console.log("\nAuth Profile:", profile);
 
   const handleAuthentication = async () => {
     try {
       if (user != null) {
-        console.log("Signed in. Welcome!");
-        navigation.navigate("Home");
+        console.log("\nSigned in. Welcome!");
+        // navigation.navigate("Home");
       } else {
         setLoading(true);
         if (isLogin) {
           await login(email, password);
-          console.log("User signed in successfully!");
+          // console.log("\nUser signed in successfully!");
         } else {
           await register({
             email,
@@ -43,7 +44,7 @@ const Auth = ({ navigation }) => {
             firstName,
             lastName,
           });
-          console.log("User created successfully!");
+          // console.log("\nUser created successfully!");
         }
       }
       setError(null);
@@ -52,6 +53,10 @@ const Auth = ({ navigation }) => {
       setError(error.message);
     } finally {
       setLoading(false);
+      if (user && profile) {
+        console.log("\nUser signed in successfully!");
+        // navigation.navigate("Home");
+      };
     }
   };
 

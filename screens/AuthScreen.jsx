@@ -1,10 +1,10 @@
 import { View } from "react-native";
 import Auth from "../components/Auth";
 
-const AuthScreen = (props) => {
+const AuthScreen = () => {
   return (
     <View className="flex-1 justify-center items-center">
-      <Auth navigation={props.navigation} />
+      <Auth />
     </View>
   );
 };

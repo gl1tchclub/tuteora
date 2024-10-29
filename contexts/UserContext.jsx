@@ -16,7 +16,7 @@ export const UserProvider = (props) => {
 
   const loadUser = async() => {
     try {
-      // await signOut(auth);
+      // await logout();
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
         const isUser = user ? user : null;
         setUser(isUser);
@@ -37,12 +37,12 @@ export const UserProvider = (props) => {
             setProfile(null);
           }
           
-          console.log("\nProfile info: ", userInfo);
         } else {
           console.log("Context No user:", user);
         };
       });
-
+      
+      console.log("\nProfile info: ", profile);
 
       return () => unsubscribe();
     } catch (error) {
@@ -83,6 +83,8 @@ export const UserProvider = (props) => {
           lastName: newUser.lastName,
           accountType: newUser.accountType,
         });
+
+        await login(newUser.email, newUser.password);
       }
     } catch (error) {
       console.error("Registration error: ", error.message);
