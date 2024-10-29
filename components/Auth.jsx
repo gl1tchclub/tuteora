@@ -30,12 +30,10 @@ const Auth = () => {
     try {
       if (user != null) {
         console.log("\nSigned in. Welcome!");
-        // navigation.navigate("Home");
       } else {
         setLoading(true);
         if (isLogin) {
           await login(email, password);
-          // console.log("\nUser signed in successfully!");
         } else {
           await register({
             email,
@@ -44,7 +42,6 @@ const Auth = () => {
             firstName,
             lastName,
           });
-          // console.log("\nUser created successfully!");
         }
       }
       setError(null);
@@ -55,8 +52,7 @@ const Auth = () => {
       setLoading(false);
       if (user && profile) {
         console.log("\nUser signed in successfully!");
-        // navigation.navigate("Home");
-      };
+      }
     }
   };
 
@@ -78,22 +74,22 @@ const Auth = () => {
         secureTextEntry
       />
       {!isLogin && (
-       <>
-        <TextInput
-          style={styles.input}
-          value={firstName}
-          onChangeText={setFirstName}
-          placeholder="First Name"
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          value={lastName}
-          onChangeText={setLastName}
-          placeholder="Last Name"
-          autoCapitalize="none"
-        /> 
-         <Picker
+        <>
+          <TextInput
+            style={styles.input}
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder="First Name"
+            autoCapitalize="none"
+          />
+          <TextInput
+            style={styles.input}
+            value={lastName}
+            onChangeText={setLastName}
+            placeholder="Last Name"
+            autoCapitalize="none"
+          />
+          <Picker
             selectedValue={accountType}
             onValueChange={(itemValue) => setAccountType(itemValue)}
           >
@@ -101,9 +97,9 @@ const Auth = () => {
             <Picker.Item label="Tutor" value="Tutor" />
             <Picker.Item label="Staff" value="Staff" />
             <Picker.Item label="Admin" value="Admin" />
-          </Picker> 
-      </>
-       )} 
+          </Picker>
+        </>
+      )}
       {error && <Text style={{ color: "red" }}>{error}</Text>}
 
       {loading ? (

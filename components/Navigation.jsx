@@ -48,15 +48,15 @@ const BottomNavigation = () => {
 };
 
 const AppNavigator = () => {
-  const { user } = useContext(UserContext);
+  const { user, profile } = useContext(UserContext);
   useEffect(() => {
     console.log("Nav user: ", user);
-  }, [user]);
+    console.log("Nav profile: ", profile);
+  }, [profile]);
   return (
     <NavigationContainer>
-      {user ? (
+      {user && profile ? (
         <>
-          <Text>Hello</Text>
           <BottomNavigation />
         </>
       ) : (
