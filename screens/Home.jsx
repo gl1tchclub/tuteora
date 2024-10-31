@@ -18,18 +18,19 @@ const HomeScreen = () => {
     <View className="flex-1 items-center h-full bg-neutral-100">
       <Text className="text-3xl py-6">Welcome, {profile.firstName}</Text>
       <View className="bg-white p-4 w-2/3 mt-10 h-max rounded-xl">
-        <Text className="text-lg bg-neutral-200 rounded-lg p-2 my-4">
+        <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
           Name: {profile.firstName} {profile.lastName}
         </Text>
-        <Text className="text-lg bg-neutral-200 rounded-lg p-2 my-4">
+        <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
           Email: {profile.email}
         </Text>
-        <Text className="text-lg bg-neutral-200 rounded-lg p-2 my-4">
+        <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
           Account: {profile.accountType}
         </Text>
         <Button
           onPress={handleLogout}
           title="Log Out"
+          color="#46ab61"
         />
       </View>
     </View>

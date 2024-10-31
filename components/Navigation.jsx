@@ -10,9 +10,27 @@ import { UserContext } from "../contexts/UserContext";
 import HomeScreen from "../screens/Home.jsx";
 import SessionsScreen from "../screens/Sessions.jsx";
 import AuthScreen from "../screens/AuthScreen";
+import CreateSessionScreen from "../screens/CreateSession";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const SessionStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Sessions">
+      <Stack.Screen
+        name="Sessions"
+        component={SessionsScreen}
+        options={{ title: "Sessions" }}
+      />
+      <Stack.Screen
+        name="CreateSession"
+        component={CreateSessionScreen}
+        options={{ title: "Create Session" }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 const BottomNavigation = () => {
   return (
@@ -30,9 +48,10 @@ const BottomNavigation = () => {
       />
       <Tab.Screen
         name="Sessions"
-        component={SessionsScreen}
+        component={SessionStack}
         options={{
           title: "Sessions",
+          headerShown: false,
           tabBarLabel: "Sessions",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
