@@ -3,7 +3,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { UserProvider } from "./contexts/UserContext";
-import AppNavigator from './components/Navigation';
+import { SessionProvider } from "./contexts/SessionsContext";
+import AppNavigator from "./components/Navigation";
 import AuthScreen from "./screens/AuthScreen";
 import { KeyboardAvoidingView } from "react-native";
 
@@ -43,10 +44,12 @@ export default function App() {
 
   return (
     <UserProvider>
-      <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
+      {/* <SessionProvider> */}
+        <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
           <AppNavigator />
           <StatusBar style="auto" />
-      </View>
+        </View>
+      {/* </SessionProvider> */}
     </UserProvider>
   );
 }

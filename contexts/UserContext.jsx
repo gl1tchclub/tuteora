@@ -78,7 +78,7 @@ export const UserProvider = (props) => {
 
         await setDoc(doc(db, "users", user.uid), {
           id: user.uid,
-          email: user.email,
+          email: newUser.email,
           firstName: newUser.firstName,
           lastName: newUser.lastName,
           accountType: newUser.accountType,
