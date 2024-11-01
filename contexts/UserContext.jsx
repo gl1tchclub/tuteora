@@ -13,8 +13,9 @@ export const UserContext = createContext();
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
+  const [userType, setUserType] = useState("students");
 
-  const loadUser = async() => {
+  const loadUser = async () => {
     try {
       // await logout();
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -23,7 +24,7 @@ export const UserProvider = (props) => {
         if (user) {
           console.log("\nUser: ", user);
           const id = user.uid;
-          const userInfo = await getDoc(doc(db, "users", id));
+          const userInfo = await getDoc(doc(db, userType, id));
           if (userInfo.exists()) {
             const info = {
               id: userInfo.data().id,
@@ -31,18 +32,18 @@ export const UserProvider = (props) => {
               firstName: userInfo.data().firstName,
               lastName: userInfo.data().lastName,
               accountType: userInfo.data().accountType,
+              associates: userInfo.data().students || userInfo.data().tutor,
             };
             setProfile(info);
+            console.log("\nJust info: ", info);
           } else {
-            setProfile(null);
+            // setProfile(null);
+            console.log("\nNO Profile info: ", profile);
           }
-          
         } else {
           console.log("Context No user:", user);
-        };
+        }
       });
-      
-      console.log("\nProfile info: ", profile);
 
       return () => unsubscribe();
     } catch (error) {
@@ -56,15 +57,18 @@ export const UserProvider = (props) => {
 
   const register = async (newUser) => {
     try {
-      if (
-        !(
-          newUser.accountType &&
-          newUser.email &&
-          newUser.password &&
-          newUser.firstName &&
-          newUser.lastName
-        )
-      ) {
+      const requiredFields = [
+        "accountType",
+        "email",
+        "password",
+        "firstName",
+        "lastName",
+      ];
+      const missingFields = requiredFields.filter((field) => !newUser[field]);
+      missingFields.forEach((field) => {
+        console.log(field);
+      });
+      if (missingFields.length > 0) {
         throw new Error("Please fill in all fields");
       } else if (newUser.password.length < 6) {
         throw new Error("Password must be at least 6 characters long");
@@ -75,24 +79,38 @@ export const UserProvider = (props) => {
           newUser.password
         );
         const user = userCredential.user;
+        setUserType(`${newUser.accountType.toLowerCase()}s`);
+        const userAccount =
+          newUser.accountType === "Tutor"
+            ? {
+                id: user.uid,
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                accountType: newUser.accountType,
+                students: [],
+              }
+            : {
+                id: user.uid,
+                email: newUser.email,
+                firstName: newUser.firstName,
+                lastName: newUser.lastName,
+                accountType: newUser.accountType,
+                tutor: null,
+              };
 
-        await setDoc(doc(db, "users", user.uid), {
-          id: user.uid,
-          email: newUser.email,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          accountType: newUser.accountType,
-        });
+        await setDoc(doc(db, userType, user.uid), userAccount);
 
-        await login(newUser.email, newUser.password);
+        await login(newUser.email, newUser.password, userType);
       }
     } catch (error) {
       console.error("Registration error: ", error.message);
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, userType) => {
     try {
+      setUserType(userType);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("Login error: ", error.message);
@@ -103,6 +121,7 @@ export const UserProvider = (props) => {
     try {
       await signOut(auth);
       setProfile(null); // need this here? Already in unsubscribe
+      setUserType("students");
     } catch (error) {
       console.error("Sign out error: ", error.message);
     }

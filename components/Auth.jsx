@@ -17,7 +17,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [accountType, setAccountType] = useState("");
+  const [accountType, setAccountType] = useState("Student");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -28,12 +28,12 @@ const Auth = () => {
 
   const handleAuthentication = async () => {
     try {
-      if (user != null) {
-        console.log("\nSigned in. Welcome!");
-      } else {
+      // if (user != null) {
+      //   console.log("\nSigned in. Welcome!");
+      // } else {
         setLoading(true);
         if (isLogin) {
-          await login(email, password);
+          await login(email, password, `${accountType.toLowerCase()}s`);
         } else {
           await register({
             email,
@@ -43,7 +43,7 @@ const Auth = () => {
             lastName,
           });
         }
-      }
+      // }
       setError(null);
     } catch (error) {
       console.error("Authentication error:", error.message);

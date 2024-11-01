@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { View, Text, Button } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { SessionContext } from "../contexts/SessionsContext";
 
 const CreateSession = ({ navigation }) => {
   const [session, setSession] = useState(null);
@@ -11,6 +12,7 @@ const CreateSession = ({ navigation }) => {
   const [subject, setSubject] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  // const { createSession, sessions } = useContext(SessionContext);
 
   const handleCreateSession = async () => {
     try {
