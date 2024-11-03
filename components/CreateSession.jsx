@@ -41,7 +41,7 @@ const CreateSession = ({ navigation }) => {
   const handleCreateSession = async () => {
     try {
       setLoading(true);
-      if (student && tutor && topic && date && time) {
+      if (tutor && topic && date && time) {
         // session = await createSession(
         //   {
         //     student,
@@ -53,9 +53,8 @@ const CreateSession = ({ navigation }) => {
         //   },
         //   profile.accountType
         // );
-        Alert.alert("Session created successfully!");
         setSession({
-          student,
+          // student,
           tutor,
           topic,
           date,
@@ -71,7 +70,15 @@ const CreateSession = ({ navigation }) => {
     } finally {
       setLoading(false);
       if (session) {
-        console.log("\nSession created successfully!");
+        Alert.alert(
+          "Session Created!",
+          `\nTutor: Jeff
+          \nStudent: Jane
+          \nTopic: ${topic}
+          \nDate: ${date}
+          \nTime: ${time}
+          \nLocation: ${location}`
+        );
       }
     }
   };
