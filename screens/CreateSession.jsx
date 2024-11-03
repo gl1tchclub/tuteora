@@ -1,6 +1,5 @@
 import { View } from "react-native";
-// import CreateSession from "../components/CreateSession";
-import CreateSession from "../components/Sesh";
+import CreateSession from "../components/CreateSession";
 
 const CreateSessionScreen = (props) => {
   return (
