@@ -3,6 +3,7 @@ import { View, Text, Button } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
+import { Picker } from "@react-native-picker/picker";
 
 const CreateSession = ({ navigation }) => {
   const [session, setSession] = useState(null);
@@ -14,45 +15,20 @@ const CreateSession = ({ navigation }) => {
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const { profile } = useContext(UserContext);
-  const associates = profile.associates.tutor || profile.associates.students;
-  // const { createSession, sessions } = useContext(SessionContext);
+  const associates = profile.associates;
 
-  if (profile.accountType === "Tutor") {
-    setTutor(profile.uid);
-  } else {
-    setStudent(profile.uid);
-  }
-
-  const handleCreateSession = async () => {
-    try {
-      setLoading(true);
-      // Create session
-      // const session = await createSession(
-      //   {
-      //     student,
-      //     tutor,
-      //     subject,
-      //     date,
-      //     time,
-      //   },
-      //   profile.accountType
-      // );
-      setError(null);
-    } catch (error) {
-      console.error("Create session error:", error.message);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-      if (session) {
-        console.log("\nSession created successfully!");
-      }
+  useEffect(() => {
+    if (profile.accountType === "Tutor") {
+      setTutor(profile.id);
+    } else {
+      setStudent(profile.id);
     }
-  };
+  }, []);
 
   return (
     <View className="flex-1 w-full p-4">
       <Text className="font-md mb-4 align-center">New Session</Text>
-      
+
       <MaterialCommunityIcons
         name="file-document-edit"
         size={40}
