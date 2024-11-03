@@ -1,12 +1,13 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, Button, TextInput } from "react-native";
+import { View, Text, Button, TextInput, Alert } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 import { Picker } from "@react-native-picker/picker";
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+import DateTimePicker from "react-native-modal-datetime-picker";
 
 const CreateSession = ({ navigation }) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -25,6 +26,20 @@ const CreateSession = ({ navigation }) => {
       setStudent(profile.id);
     }
   }, []);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    console.log("A date has been picked: ", date);
+    setDate(date);
+    hideDatePicker();
+  };
 
   return (
     <View className="flex-1 w-11/12 m-4 rounded-lg bg-white p-6">
@@ -64,26 +79,13 @@ const CreateSession = ({ navigation }) => {
         onChangeText={setSubject}
         placeholder="Subject"
       />
-      <Text>
-        Time:
-      </Text>
-      <ScrollPicker
-        dataSource={["8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm"]}
-        selectedIndex={1}
-        renderItem={(data, index, isSelected) => {
-          //
-        }}
-        onValueChange={(data, selectedIndex) => {
-          //
-        }}
-        wrapperHeight={180}
-        wrapperWidth={150}
-        wrapperBackground={"#FFFFFF"}
-        itemHeight={60}
-        highlightColor={"#d8d8d8"}
-        highlightBorderWidth={2}
+      <Button title="Set Date & Time" onPress={showDatePicker}/>
+      <DateTimePicker
+        isVisible={isDatePickerVisible}
+        mode="datetime"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
       />
-      <Text>Create Screen</Text>
     </View>
   );
 };
