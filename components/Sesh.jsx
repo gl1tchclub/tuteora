@@ -1,5 +1,13 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, Button, TextInput, Alert, KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  TextInput,
+  Alert,
+  KeyboardAvoidingView,
+  Pressable,
+} from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
@@ -42,9 +50,6 @@ const CreateSession = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-        behavior="padding"
-    >
     <View className="flex-1 w-11/12 m-4 rounded-lg bg-white p-6">
       <Text className="font-bold text-2xl self-center mb-6">
         <MaterialCommunityIcons
@@ -77,12 +82,30 @@ const CreateSession = ({ navigation }) => {
         </View>
       )}
       <TextInput
-        className="h-10 rounded-lg border-2 border-gray-400 px-4 text-lg my-4"
+        className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
         value={subject}
         onChangeText={setSubject}
         placeholder="Subject"
       />
-      <TouchableOpacity title="Set Date & Time" onPress={showDatePicker} className="text-[#46ab61]"/>
+      <Text className="text-slate-500 py-2">Put 'General' if non-specific.</Text>
+      <View className="w-full flex-row py-2 space-x-6">
+        <Text className="text-black font-semibold text-lg self-center py-2">
+          Date/Time:
+        </Text>
+        <Pressable
+          onPress={showDatePicker}
+          className="rounded-lg w-2/3 border-2 border-[#46ab61] h-fit self-center items-center flex-row p-2"
+        >
+          <MaterialCommunityIcons
+            name="calendar-clock"
+            size={15}
+            color="black"
+          />
+          <Text className="ml-2" >
+            {date ? date.toLocaleDateString() + "         " + date.toLocaleTimeString() : "Select Date & Time"}
+          </Text>
+        </Pressable>
+      </View>
       <DateTimePicker
         isVisible={isDatePickerVisible}
         mode="datetime"
@@ -95,9 +118,7 @@ const CreateSession = ({ navigation }) => {
         positiveButton={{ label: "Confirm", textColor: "green" }}
         minuteInterval={15}
       />
-      <Text>Selected: {date && date.toLocaleString()}</Text>
     </View>
-    </KeyboardAvoidingView>
   );
 };
 

@@ -77,104 +77,101 @@ const Auth = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-        behavior="padding"
-        style={styles.authContainer}
-    >
-    <View >
-      <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
-      <TextInput
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-      />
-      {!isLogin && (
-        <>
-          <TextInput
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="First Name"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-            placeholder="Last Name"
-            autoCapitalize="none"
-          />
-          <View className="w-full flex-row pb-2">
-            <Text className="w-1/4 mx-2 self-start font-semibold">
-              Field of Study:
-            </Text>
-            <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
-              <Picker
-                selectedValue={study}
-                onValueChange={(itemValue) => setStudy(itemValue)}
-                style={{ color: "white" }}
-              >
-                {studies.map((study) => (
-                  <Picker.Item
-                    label={study.label}
-                    value={study.value}
-                    key={study.value}
-                  />
-                ))}
-              </Picker>
-            </View>
-          </View>
-          <View className="w-full flex-row pt-2 pb-4">
-            <Text className="w-1/4 mx-2 self-start font-semibold">
-              Account Type:
-            </Text>
-            <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
-              <Picker
-                selectedValue={accountType}
-                onValueChange={(itemValue) => setAccountType(itemValue)}
-                style={{ color: "white" }}
-              >
-                <Picker.Item label="Student" value="Student" />
-                <Picker.Item label="Tutor" value="Tutor" />
-                <Picker.Item label="Staff" value="Staff" />
-                <Picker.Item label="Admin" value="Admin" />
-              </Picker>
-            </View>
-          </View>
-        </>
-      )}
-      {error && <Text style={{ color: "red" }}>{error}</Text>}
-
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <Button
-          title={isLogin ? "Sign In" : "Sign Up"}
-          onPress={handleAuthentication}
-          color="#3d8e52"
+    <KeyboardAvoidingView behavior="padding" style={styles.authContainer}>
+      <View>
+        <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          autoCapitalize="none"
         />
-      )}
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+        />
+        {!isLogin && (
+          <>
+            <TextInput
+              style={styles.input}
+              value={firstName}
+              onChangeText={setFirstName}
+              placeholder="First Name"
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.input}
+              value={lastName}
+              onChangeText={setLastName}
+              placeholder="Last Name"
+              autoCapitalize="none"
+            />
+            <View className="w-full flex-row pb-2">
+              <Text className="w-1/4 mx-2 self-start font-semibold">
+                Field of Study:
+              </Text>
+              <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
+                <Picker
+                  selectedValue={study}
+                  onValueChange={(itemValue) => setStudy(itemValue)}
+                  style={{ color: "white" }}
+                >
+                  {studies.map((study) => (
+                    <Picker.Item
+                      label={study.label}
+                      value={study.value}
+                      key={study.value}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </View>
+            <View className="w-full flex-row pt-2 pb-4">
+              <Text className="w-1/4 mx-2 self-start font-semibold">
+                Account Type:
+              </Text>
+              <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
+                <Picker
+                  selectedValue={accountType}
+                  onValueChange={(itemValue) => setAccountType(itemValue)}
+                  style={{ color: "white" }}
+                >
+                  <Picker.Item label="Student" value="Student" />
+                  <Picker.Item label="Tutor" value="Tutor" />
+                  <Picker.Item label="Staff" value="Staff" />
+                  <Picker.Item label="Admin" value="Admin" />
+                </Picker>
+              </View>
+            </View>
+          </>
+        )}
+        {error && <Text style={{ color: "red" }}>{error}</Text>}
 
-      <View style={styles.bottomContainer}>
-        <Text
-          className="text-[#46ab61] self-center pb-4"
-          onPress={() => setIsLogin(!isLogin)}
-        >
-          {isLogin
-            ? "Need an account? Sign Up"
-            : "Already have an account? Sign In"}
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <Button
+            title={isLogin ? "Sign In" : "Sign Up"}
+            onPress={handleAuthentication}
+            color="#3d8e52"
+          />
+        )}
+
+        <View style={styles.bottomContainer}>
+          <Text
+            className="text-[#46ab61] self-center pb-4"
+            onPress={() => setIsLogin(!isLogin)}
+          >
+            {isLogin
+              ? "Need an account? Sign Up"
+              : "Already have an account? Sign In"}
+          </Text>
+        </View>
       </View>
-    </View>
     </KeyboardAvoidingView>
   );
 };
