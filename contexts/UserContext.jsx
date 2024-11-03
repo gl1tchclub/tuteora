@@ -67,10 +67,10 @@ export const UserProvider = (props) => {
         "study",
       ];
       const missingFields = requiredFields.filter((field) => !newUser[field]);
-      missingFields.forEach((field) => {
-        console.log(field);
-      });
       if (missingFields.length > 0) {
+        missingFields.forEach((field) => {
+          console.log(field);
+        });
         throw new Error("Please fill in all fields");
       } else if (newUser.password.length < 6) {
         throw new Error("Password must be at least 6 characters long");

@@ -6,11 +6,9 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
-
 import { UserContext } from "../contexts/UserContext";
 
 const Auth = () => {
@@ -22,8 +20,7 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [open, setOpen] = useState(false);
-  const [study, setStudy] = useState(null);
+  const [study, setStudy] = useState("IT");
   const studies = [
     {
       label: "IT",
@@ -49,9 +46,6 @@ const Auth = () => {
 
   const handleAuthentication = async () => {
     try {
-      // if (user != null) {
-      //   console.log("\nSigned in. Welcome!");
-      // } else {
       setLoading(true);
       if (isLogin) {
         await login(email, password, `${accountType.toLowerCase()}s`);
@@ -163,7 +157,10 @@ const Auth = () => {
       )}
 
       <View style={styles.bottomContainer}>
-        <Text className="text-[#46ab61] self-center" onPress={() => setIsLogin(!isLogin)}>
+        <Text
+          className="text-[#46ab61] self-center"
+          onPress={() => setIsLogin(!isLogin)}
+        >
           {isLogin
             ? "Need an account? Sign Up"
             : "Already have an account? Sign In"}
