@@ -5,6 +5,8 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
@@ -49,6 +51,7 @@ const Auth = () => {
       setLoading(true);
       if (isLogin) {
         await login(email, password, `${accountType.toLowerCase()}s`);
+        Alert.alert("Logged in successfully!");
       } else {
         await register({
           email,
@@ -58,6 +61,7 @@ const Auth = () => {
           lastName,
           study,
         });
+        Alert.alert("Registered successfully!");
       }
       // }
       setError(null);
@@ -73,7 +77,11 @@ const Auth = () => {
   };
 
   return (
-    <View style={styles.authContainer}>
+    <KeyboardAvoidingView
+        behavior="padding"
+        style={styles.authContainer}
+    >
+    <View >
       <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
       <TextInput
         style={styles.input}
@@ -158,7 +166,7 @@ const Auth = () => {
 
       <View style={styles.bottomContainer}>
         <Text
-          className="text-[#46ab61] self-center"
+          className="text-[#46ab61] self-center pb-4"
           onPress={() => setIsLogin(!isLogin)}
         >
           {isLogin
@@ -167,6 +175,7 @@ const Auth = () => {
         </Text>
       </View>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 

@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, Text, Button, TextInput, Alert } from "react-native";
+import { View, Text, Button, TextInput, Alert, KeyboardAvoidingView } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
@@ -42,6 +42,9 @@ const CreateSession = ({ navigation }) => {
   };
 
   return (
+    <KeyboardAvoidingView
+        behavior="padding"
+    >
     <View className="flex-1 w-11/12 m-4 rounded-lg bg-white p-6">
       <Text className="font-bold text-2xl self-center mb-6">
         <MaterialCommunityIcons
@@ -79,13 +82,14 @@ const CreateSession = ({ navigation }) => {
         onChangeText={setSubject}
         placeholder="Subject"
       />
-      <Button title="Set Date & Time" onPress={showDatePicker} />
+      <TouchableOpacity title="Set Date & Time" onPress={showDatePicker} className="text-[#46ab61]"/>
       <DateTimePicker
         isVisible={isDatePickerVisible}
         mode="datetime"
         value={date}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        display="spinner"
         is24Hour={false}
         negativeButton={{ label: "Cancel", textColor: "red" }}
         positiveButton={{ label: "Confirm", textColor: "green" }}
@@ -93,6 +97,7 @@ const CreateSession = ({ navigation }) => {
       />
       <Text>Selected: {date && date.toLocaleString()}</Text>
     </View>
+    </KeyboardAvoidingView>
   );
 };
 
