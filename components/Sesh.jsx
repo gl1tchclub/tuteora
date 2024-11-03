@@ -79,13 +79,19 @@ const CreateSession = ({ navigation }) => {
         onChangeText={setSubject}
         placeholder="Subject"
       />
-      <Button title="Set Date & Time" onPress={showDatePicker}/>
+      <Button title="Set Date & Time" onPress={showDatePicker} />
       <DateTimePicker
         isVisible={isDatePickerVisible}
         mode="datetime"
+        value={date}
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
+        is24Hour={false}
+        negativeButton={{ label: "Cancel", textColor: "red" }}
+        positiveButton={{ label: "Confirm", textColor: "green" }}
+        minuteInterval={15}
       />
+      <Text>Selected: {date && date.toLocaleString()}</Text>
     </View>
   );
 };
