@@ -1,11 +1,11 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   View,
+  ScrollView,
   Text,
   Button,
   TextInput,
   Alert,
-  KeyboardAvoidingView,
   Pressable,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
@@ -100,112 +100,110 @@ const CreateSession = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding">
-      <View className="flex-1 w-11/12 m-10 rounded-lg bg-white p-6">
-        <Text className="font-bold text-2xl self-center mb-6">
+    <ScrollView className="flex-1 w-11/12 m-12 rounded-lg bg-white p-6">
+      <Text className="font-bold text-2xl self-center mb-6">
+        <MaterialCommunityIcons
+          name="file-document-edit"
+          size={40}
+          color="black"
+        />
+        New Session
+      </Text>
+      {tutor && (
+        <View className="w-full flex-row pb-2 space-x-10">
+          <Text className="font-semibold text-lg self-center pb-2">
+            Student:
+          </Text>
+          {!associates || !associates.length == 0 ? (
+            <View className="h-10 w-8/12 justify-center bg-[#46ab61]/[.6] rounded-lg">
+              <Picker
+                selectedValue={student}
+                onValueChange={(itemValue) => setStudent(itemValue)}
+                style={{ color: "white" }}
+              >
+                {associates.map((student) => (
+                  <Picker.Item
+                    label={student.firstName + " " + student.lastName}
+                    value={student.uid}
+                    key={student.uid}
+                  />
+                ))}
+              </Picker>
+            </View>
+          ) : (
+            <Text className="font-semibold text-lg pb-2 italic">
+              No students found
+            </Text>
+          )}
+        </View>
+      )}
+      {student && (
+        <Text className="font-semibold text-lg self-center pb-2">
+          Session with <Text className="italic">{associates}</Text>
+        </Text>
+      )}
+      <TextInput
+        className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
+        value={topic}
+        onChangeText={setTopic}
+        placeholder="Topic"
+      />
+      <Text className="text-slate-500 py-2">
+        Put 'General' if non-specific.
+      </Text>
+      <View className="w-full flex-row py-2 space-x-6">
+        <Text className="text-black font-semibold text-lg self-center py-2">
+          Date/Time:
+        </Text>
+        <Pressable
+          onPress={showDatePicker}
+          className="rounded-lg border-2 border-[#46ab61] h-fit self-center items-center flex-row p-2 pr-4"
+        >
           <MaterialCommunityIcons
-            name="file-document-edit"
-            size={40}
+            name="calendar-clock"
+            size={15}
             color="black"
           />
-          New Session
-        </Text>
-        {tutor && (
-          <View className="w-full flex-row pb-2 space-x-10">
-            <Text className="font-semibold text-lg self-center pb-2">
-              Student:
-            </Text>
-            {!associates || !associates.length == 0 ? (
-              <View className="h-10 w-8/12 justify-center bg-[#46ab61]/[.6] rounded-lg">
-                <Picker
-                  selectedValue={student}
-                  onValueChange={(itemValue) => setStudent(itemValue)}
-                  style={{ color: "white" }}
-                >
-                  {associates.map((student) => (
-                    <Picker.Item
-                      label={student.firstName + " " + student.lastName}
-                      value={student.uid}
-                      key={student.uid}
-                    />
-                  ))}
-                </Picker>
-              </View>
-            ) : (
-              <Text className="font-semibold text-lg pb-2 italic">
-                No students found
-              </Text>
-            )}
-          </View>
-        )}
-        {student && (
-          <Text className="font-semibold text-lg self-center pb-2">
-            Session with <Text className="italic">{associates}</Text>
+          <Text className="ml-1">
+            {dateTime
+              ? dateTime.toLocaleDateString() +
+                "     " +
+                dateTime.toLocaleTimeString()
+              : "Select Date & Time"}
           </Text>
-        )}
-        <TextInput
-          className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
-          value={topic}
-          onChangeText={setTopic}
-          placeholder="Topic"
-        />
-        <Text className="text-slate-500 py-2">
-          Put 'General' if non-specific.
-        </Text>
-        <View className="w-full flex-row py-2 space-x-6">
-          <Text className="text-black font-semibold text-lg self-center py-2">
-            Date/Time:
-          </Text>
-          <Pressable
-            onPress={showDatePicker}
-            className="rounded-lg w-2/3 border-2 border-[#46ab61] h-fit self-center items-center flex-row p-2"
-          >
-            <MaterialCommunityIcons
-              name="calendar-clock"
-              size={15}
-              color="black"
-            />
-            <Text className="ml-2">
-              {dateTime
-                ? dateTime.toLocaleDateString() +
-                  "         " +
-                  dateTime.toLocaleTimeString()
-                : "Select Date & Time"}
-            </Text>
-          </Pressable>
-        </View>
-        <DateTimePicker
-          isVisible={isDatePickerVisible}
-          mode="datetime"
-          value={dateTime}
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-          display="spinner"
-          is24Hour={false}
-          negativeButton={{ label: "Cancel", textColor: "red" }}
-          positiveButton={{ label: "Confirm", textColor: "green" }}
-          minuteInterval={15}
-        />
-        <TextInput
-          className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
-          value={location}
-          onChangeText={setLocation}
-          placeholder="Location (optional)"
-        />
-        {error && <Text className="text-red-500 my-6">{error}</Text>}
-        {loading ? (
-          <ActivityIndicator size="large" />
-        ) : (
-          <View className="mt-10 self-center">
-            <Button
-              title="Create Session"
-              onPress={handleCreateSession}
-              color="#46ab61"
-            />
-          </View>
-        )}
+        </Pressable>
       </View>
-    </KeyboardAvoidingView>
+      <DateTimePicker
+        isVisible={isDatePickerVisible}
+        mode="datetime"
+        value={dateTime}
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+        display="spinner"
+        is24Hour={false}
+        negativeButton={{ label: "Cancel", textColor: "red" }}
+        positiveButton={{ label: "Confirm", textColor: "green" }}
+        minuteInterval={15}
+      />
+      <TextInput
+        className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
+        value={location}
+        onChangeText={setLocation}
+        placeholder="Location (optional)"
+      />
+      {error && <Text className="text-red-500 my-6">{error}</Text>}
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
+        <View className="mt-10 self-center">
+          <Button
+            title="Create Session"
+            onPress={handleCreateSession}
+            color="#46ab61"
+          />
+        </View>
+      )}
+    </ScrollView>
   );
 };
 

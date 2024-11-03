@@ -3,6 +3,7 @@ import {
   Text,
   TextInput,
   View,
+  ScrollView,
   StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -78,7 +79,7 @@ const Auth = () => {
 
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.authContainer}>
-      <View>
+      <ScrollView>
         <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
         <TextInput
           style={styles.input}
@@ -171,7 +172,7 @@ const Auth = () => {
               : "Already have an account? Sign In"}
           </Text>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
