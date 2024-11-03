@@ -22,7 +22,7 @@ const CreateSession = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [student, setStudent] = useState(null);
   const [tutor, setTutor] = useState(null);
-  const [subject, setSubject] = useState(null);
+  const [topic, setTopic] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [dateTime, setDateTime] = useState(null);
@@ -42,20 +42,32 @@ const CreateSession = ({ navigation }) => {
     try {
       setLoading(true);
       // Create session
-      session = await createSession(
-        {
+      // session = await createSession(
+      //   {
+      //     student,
+      //     tutor,
+      //     topic,
+      //     date,
+      //     time,
+      //     location,
+      //   },
+      //   profile.accountType
+      // );
+      if (student && tutor && topic && date && time) {
+        Alert.alert("Session created successfully!");
+        setSession({
           student,
           tutor,
-          subject,
+          topic,
           date,
           time,
           location,
-        },
-        profile.accountType
-      );
+        });
+      }
       setError(null);
     } catch (error) {
       console.error("Create session error:", error.message);
+      Alert.alert("Error creating session", error.message);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -114,11 +126,16 @@ const CreateSession = ({ navigation }) => {
             </View>
           </View>
         )}
+        {student && (
+          <Text className="font-semibold text-lg self-center pb-2">
+            Session with <Text className="italic">{associates}</Text>
+          </Text>
+        )}
         <TextInput
           className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
-          value={subject}
-          onChangeText={setSubject}
-          placeholder="Subject"
+          value={topic}
+          onChangeText={setTopic}
+          placeholder="Topic"
         />
         <Text className="text-slate-500 py-2">
           Put 'General' if non-specific.
@@ -145,7 +162,6 @@ const CreateSession = ({ navigation }) => {
             </Text>
           </Pressable>
         </View>
-        <Text>Date: {dateTime && dateTime.toLocaleTimeString()}</Text>
         <DateTimePicker
           isVisible={isDatePickerVisible}
           mode="datetime"
@@ -162,7 +178,7 @@ const CreateSession = ({ navigation }) => {
           className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
           value={location}
           onChangeText={setLocation}
-          placeholder="Location"
+          placeholder="Location (optional)"
         />
         {error && <Text className="text-red-500 my-6">{error}</Text>}
         {loading ? (
