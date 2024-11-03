@@ -44,12 +44,12 @@ export default function App() {
 
   return (
     <UserProvider>
-      {/* <SessionProvider> */}
+      <SessionProvider>
         <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
           <AppNavigator />
           <StatusBar style="auto" />
         </View>
-      {/* </SessionProvider> */}
+      </SessionProvider>
     </UserProvider>
   );
 }

@@ -25,7 +25,9 @@ const CreateSession = ({ navigation }) => {
   const [subject, setSubject] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
+  const [dateTime, setDateTime] = useState(null);
   const { profile } = useContext(UserContext);
+  const { createSession, sessions } = useContext(SessionContext);
   const associates = profile.associates;
 
   useEffect(() => {
@@ -36,6 +38,33 @@ const CreateSession = ({ navigation }) => {
     }
   }, []);
 
+  const handleCreateSession = async () => {
+    try {
+      setLoading(true);
+      // Create session
+      session = await createSession(
+        {
+          student,
+          tutor,
+          subject,
+          date,
+          time,
+          location,
+        },
+        profile.accountType
+      );
+      setError(null);
+    } catch (error) {
+      console.error("Create session error:", error.message);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+      if (session) {
+        console.log("\nSession created successfully!");
+      }
+    }
+  };
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -44,15 +73,17 @@ const CreateSession = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
-    console.log("A date has been picked: ", date);
-    setDate(date);
+  const handleConfirm = (dateTime) => {
+    console.log("A date has been picked: ", dateTime);
+    setDateTime(dateTime);
+    setTime(dateTime.toLocaleTimeString());
+    setDate(dateTime.toLocaleDateString());
     hideDatePicker();
   };
 
   return (
     <KeyboardAvoidingView behavior="padding">
-      <View className="flex-1 w-11/12 m-4 rounded-lg bg-white p-6">
+      <View className="flex-1 w-11/12 m-10 rounded-lg bg-white p-6">
         <Text className="font-bold text-2xl self-center mb-6">
           <MaterialCommunityIcons
             name="file-document-edit"
@@ -106,18 +137,19 @@ const CreateSession = ({ navigation }) => {
               color="black"
             />
             <Text className="ml-2">
-              {date
-                ? date.toLocaleDateString() +
+              {dateTime
+                ? dateTime.toLocaleDateString() +
                   "         " +
-                  date.toLocaleTimeString()
+                  dateTime.toLocaleTimeString()
                 : "Select Date & Time"}
             </Text>
           </Pressable>
         </View>
+        <Text>Date: {dateTime && dateTime.toLocaleTimeString()}</Text>
         <DateTimePicker
           isVisible={isDatePickerVisible}
           mode="datetime"
-          value={date}
+          value={dateTime}
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
           display="spinner"
@@ -132,6 +164,18 @@ const CreateSession = ({ navigation }) => {
           onChangeText={setLocation}
           placeholder="Location"
         />
+        {error && <Text className="text-red-500 my-6">{error}</Text>}
+        {loading ? (
+          <ActivityIndicator size="large" />
+        ) : (
+          <View className="mt-10 self-center">
+            <Button
+              title="Create Session"
+              onPress={handleCreateSession}
+              color="#46ab61"
+            />
+          </View>
+        )}
       </View>
     </KeyboardAvoidingView>
   );
