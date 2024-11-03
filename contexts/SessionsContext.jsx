@@ -14,7 +14,7 @@ export const SessionProvider = (props) => {
         setSessions(null);
         return;
       }
-      const sessionsRef = doc(db, "sessions", user.uid); //get sessions for current user
+      const sessionsRef = doc(db, `sessions/${user.uid}`); //get sessions for current user
       const sessionsSnapshot = await getDoc(sessionsRef); //get the snapshot of the sessions
       if (sessionsSnapshot.exists()) {
         const sessionList = sessionsSnapshot.docs.map((doc) => doc.data()); //convert

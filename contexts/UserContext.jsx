@@ -32,6 +32,7 @@ export const UserProvider = (props) => {
               firstName: userInfo.data().firstName,
               lastName: userInfo.data().lastName,
               accountType: userInfo.data().accountType,
+              study: userInfo.data().study,
               associates: userInfo.data().students || userInfo.data().tutor,
             };
             setProfile(info);
@@ -63,6 +64,7 @@ export const UserProvider = (props) => {
         "password",
         "firstName",
         "lastName",
+        "study",
       ];
       const missingFields = requiredFields.filter((field) => !newUser[field]);
       missingFields.forEach((field) => {
@@ -88,6 +90,7 @@ export const UserProvider = (props) => {
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 accountType: newUser.accountType,
+                study: newUser.study,
                 students: [],
               }
             : {
@@ -96,6 +99,7 @@ export const UserProvider = (props) => {
                 firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 accountType: newUser.accountType,
+                study: newUser.study,
                 tutor: null,
               };
 

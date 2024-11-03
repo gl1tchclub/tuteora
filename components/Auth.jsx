@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import DropDownPicker from "react-native-dropdown-picker";
 import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
@@ -21,6 +22,26 @@ const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [study, setStudy] = useState(null);
+  const studies = [
+    {
+      label: "IT",
+      value: "IT",
+    },
+    {
+      label: "Nursing",
+      value: "Nursing",
+    },
+    {
+      label: "Communications",
+      value: "Communications",
+    },
+    {
+      label: "Occupational Therapy",
+      value: "OT",
+    },
+  ];
 
   const { register, login, user, profile } = useContext(UserContext);
   console.log("\nAuth User:", user);
@@ -31,18 +52,19 @@ const Auth = () => {
       // if (user != null) {
       //   console.log("\nSigned in. Welcome!");
       // } else {
-        setLoading(true);
-        if (isLogin) {
-          await login(email, password, `${accountType.toLowerCase()}s`);
-        } else {
-          await register({
-            email,
-            password,
-            accountType,
-            firstName,
-            lastName,
-          });
-        }
+      setLoading(true);
+      if (isLogin) {
+        await login(email, password, `${accountType.toLowerCase()}s`);
+      } else {
+        await register({
+          email,
+          password,
+          accountType,
+          firstName,
+          lastName,
+          study,
+        });
+      }
       // }
       setError(null);
     } catch (error) {
@@ -89,15 +111,43 @@ const Auth = () => {
             placeholder="Last Name"
             autoCapitalize="none"
           />
-          <Picker
-            selectedValue={accountType}
-            onValueChange={(itemValue) => setAccountType(itemValue)}
-          >
-            <Picker.Item label="Student" value="Student" />
-            <Picker.Item label="Tutor" value="Tutor" />
-            <Picker.Item label="Staff" value="Staff" />
-            <Picker.Item label="Admin" value="Admin" />
-          </Picker>
+          <View className="w-full flex-row pb-2">
+            <Text className="w-1/4 mx-2 self-start font-semibold">
+              Field of Study:
+            </Text>
+            <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
+              <Picker
+                selectedValue={study}
+                onValueChange={(itemValue) => setStudy(itemValue)}
+                style={{ color: "white" }}
+              >
+                {studies.map((study) => (
+                  <Picker.Item
+                    label={study.label}
+                    value={study.value}
+                    key={study.value}
+                  />
+                ))}
+              </Picker>
+            </View>
+          </View>
+          <View className="w-full flex-row pt-2 pb-4">
+            <Text className="w-1/4 mx-2 self-start font-semibold">
+              Account Type:
+            </Text>
+            <View className="h-12 w-8/12 justify-center self-center bg-[#46ab61]/[.75] rounded-lg">
+              <Picker
+                selectedValue={accountType}
+                onValueChange={(itemValue) => setAccountType(itemValue)}
+                style={{ color: "white" }}
+              >
+                <Picker.Item label="Student" value="Student" />
+                <Picker.Item label="Tutor" value="Tutor" />
+                <Picker.Item label="Staff" value="Staff" />
+                <Picker.Item label="Admin" value="Admin" />
+              </Picker>
+            </View>
+          </View>
         </>
       )}
       {error && <Text style={{ color: "red" }}>{error}</Text>}
@@ -105,17 +155,15 @@ const Auth = () => {
       {loading ? (
         <ActivityIndicator size="large" />
       ) : (
-        <View style={styles.buttonContainer}>
-          <Button
-            title={isLogin ? "Sign In" : "Sign Up"}
-            onPress={handleAuthentication}
-            color="#3498db"
-          />
-        </View>
+        <Button
+          title={isLogin ? "Sign In" : "Sign Up"}
+          onPress={handleAuthentication}
+          color="#3d8e52"
+        />
       )}
 
       <View style={styles.bottomContainer}>
-        <Text style={styles.toggleText} onPress={() => setIsLogin(!isLogin)}>
+        <Text className="text-[#46ab61] self-center" onPress={() => setIsLogin(!isLogin)}>
           {isLogin
             ? "Need an account? Sign Up"
             : "Already have an account? Sign In"}
@@ -159,13 +207,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     padding: 8,
     borderRadius: 4,
-  },
-  buttonContainer: {
-    marginBottom: 16,
-  },
-  toggleText: {
-    color: "#3498db",
-    textAlign: "center",
   },
   bottomContainer: {
     marginTop: 20,
