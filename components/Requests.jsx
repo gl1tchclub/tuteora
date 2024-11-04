@@ -79,11 +79,19 @@ const RequestsList = ({ navigation }) => {
     // if type "student", delete request and getDoc for student profile and add to tutor associates
   };
 
-  const renderSectionHeader = ({ section }) => (
-    <Text className="p-4 font-bold bg-slate-300 w-full text-lg">
-      {section.title}
-    </Text>
-  );
+  const renderSectionHeader = ({ section }) => {
+    if (
+      profile.accountType === "Tutor" ||
+      section.title === "Session Requests"
+    ) {
+      return (
+        <Text className="p-4 font-bold bg-slate-300 w-full text-lg">
+          {section.title}
+        </Text>
+      );
+    }
+    return null;
+  };
 
   const renderItem = ({ item }) => (
     // return (
