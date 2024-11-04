@@ -1,6 +1,8 @@
-import { View, Text, Button, SectionList } from "react-native";
+import { View, Text, Button, SectionList, TouchableOpacity } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import SessionWidget from "./SessionWidget";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RequestsList = ({ navigation }) => {
   const { profile } = useContext(UserContext);
@@ -66,8 +68,12 @@ const RequestsList = ({ navigation }) => {
     setSessions(sessions.filter((_, i) => i !== index));
   };
 
+  const handleAcceptRequest = (index, session, setSessions) => {
+
+  };
+
   const renderSectionHeader = ({ section }) => (
-    <Text className="p-4 font-bold bg-slate-300">{section.title}</Text>
+    <Text className="p-4 font-bold bg-slate-300 w-full text-lg">{section.title}</Text>
   );
 
   const renderItem = ({ item }) => {
@@ -89,9 +95,17 @@ const RequestsList = ({ navigation }) => {
         </View>
       )}
       <View className="flex-row justify-between mb-4">
-        <Text className="font-bold">{item.data.student}</Text>
-        <Text className="font-bold">{item.data.topic}</Text>
-        <Text className="font-bold">{item.data.topic}</Text>
+        <SessionWidget {...item} accountType={profile.accountType} />
+        <TouchableOpacity
+          onPress={() => handleAcceptRequest(index)}
+          className="bg-green-500 p-2 rounded w-fit-content self-center"
+        >
+          <MaterialCommunityIcons
+            name="check"
+            size={24}
+            color="white"
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleDeleteRequest(index)}
           className="bg-red-500 p-2 rounded w-fit-content self-center"
@@ -107,12 +121,14 @@ const RequestsList = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View className="flex-1 w-full">
       <SectionList
-        className="flex-1 justify-center items-center"
+        className="flex-1 w-full"
         sections={profile.accountType === "Tutor" ? sections : studentSections}
         renderSectionHeader={renderSectionHeader}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        contentContainerStyle="pt-5"
       />
     </View>
   );
