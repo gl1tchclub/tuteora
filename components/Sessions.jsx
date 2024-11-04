@@ -22,6 +22,7 @@ const SessionsComponent = ({ navigation }) => {
       time: "12:00:00 PM",
       location: "Online",
       isAccepted: true,
+      isCompleted: false,
     },
     {
       tutor: "John Doe",
@@ -31,6 +32,7 @@ const SessionsComponent = ({ navigation }) => {
       time: "12:00:00 PM",
       location: "Online",
       isAccepted: true,
+      isCompleted: false,
     },
   ]);
 
@@ -78,18 +80,20 @@ const SessionsComponent = ({ navigation }) => {
         </View>
         {sessions.map((item, index) => (
           <View key={index}>
-            <SessionWidget {...item} accountType={profile.accountType}>
-              <TouchableOpacity
-                onPress={() => handleDeleteSession(index)}
-                className="bg-red-500 p-2 rounded w-fit-content self-center"
-              >
-                <MaterialCommunityIcons
-                  name="delete-outline"
-                  size={24}
-                  color="white"
-                />
-              </TouchableOpacity>
-            </SessionWidget>
+            {!item.isCompleted && (
+              <SessionWidget {...item} accountType={profile.accountType}>
+                <TouchableOpacity
+                  onPress={() => handleDeleteSession(index)}
+                  className="bg-red-500 p-2 rounded w-fit-content self-center"
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </SessionWidget>
+            )}
           </View>
         ))}
       </View>
