@@ -20,7 +20,6 @@ const RequestsList = ({ navigation }) => {
       requestDate: "11/4/2024",
       isAccepted: false,
     },
-
   ]);
 
   const [sessionRequests, setSessionRequests] = useState([
@@ -53,35 +52,68 @@ const RequestsList = ({ navigation }) => {
       title: "Session Requests",
       data: sessionRequests,
     },
-  ]
+  ];
 
   const studentSections = [
     {
       title: "Session Requests",
       data: sessionRequests,
     },
-  ]
+  ];
+
+  const handleDeleteRequest = (index, session, setSessions) => {
+    session[index].isAccepted = false;
+    setSessions(sessions.filter((_, i) => i !== index));
+  };
 
   const renderSectionHeader = ({ section }) => (
     <Text className="p-4 font-bold bg-slate-300">{section.title}</Text>
   );
 
   const renderItem = ({ item }) => {
-    {profile.accountType === "Tutor" && 
-      
-
-    }
+    <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
+      {item.title == "Student Requests" && (
+        <View className="flex-row justify-between mb-4">
+          <Text className="font-bold">{item.data.student}</Text>
+          <Text className="font-bold">{item.data.subject}</Text>
+          <TouchableOpacity
+            onPress={() => handleDeleteRequest(index)}
+            className="bg-red-500 p-2 rounded w-fit-content self-center"
+          >
+            <MaterialCommunityIcons
+              name="delete-outline"
+              size={24}
+              color="white"
+            />
+          </TouchableOpacity>
+        </View>
+      )}
+      <View className="flex-row justify-between mb-4">
+        <Text className="font-bold">{item.data.student}</Text>
+        <Text className="font-bold">{item.data.topic}</Text>
+        <Text className="font-bold">{item.data.topic}</Text>
+        <TouchableOpacity
+          onPress={() => handleDeleteRequest(index)}
+          className="bg-red-500 p-2 rounded w-fit-content self-center"
+        >
+          <MaterialCommunityIcons
+            name="delete-outline"
+            size={24}
+            color="white"
+          />
+        </TouchableOpacity>
+      </View>
+    </View>;
   };
 
   return (
     <View>
-    <SectionList 
-    className="flex-1 justify-center items-center"
-    sections={profile.accountType === "Tutor" ? sections : studentSections}
-    renderSectionHeader={renderSectionHeader}
-    keyExtractor={(item) => item.id}
-    >
-    </SectionList>
+      <SectionList
+        className="flex-1 justify-center items-center"
+        sections={profile.accountType === "Tutor" ? sections : studentSections}
+        renderSectionHeader={renderSectionHeader}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };

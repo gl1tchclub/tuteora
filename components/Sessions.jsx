@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import SessionWidget from "./SessionWidget";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
@@ -60,40 +61,11 @@ const SessionsComponent = ({ navigation }) => {
     setSessions(sessions.filter((_, i) => i !== index));
   };
 
-  const SessionWidget = (props) => {
-    return (
-      <View className="bg-green-100 p-3 my-2 rounded-xl">
-        <View className="flex-row justify-between mb-4">
-          {profile.accountType === "Tutor" ? (
-            <>
-              <Text className="font-bold mx-2">Student:</Text>
-              <Text>{props.student}</Text>
-            </>
-          ) : (
-            <>
-              <Text className="font-bold mx-2">Tutor:</Text>
-              <Text>{props.tutor}</Text>
-            </>
-          )}
-          <Text className="font-bold ml-4 mr-2">Location:</Text>
-          <Text>{props.location}</Text>
-        </View>
-        <View className="flex-row justify-between">
-          <Text className="font-bold ml-2">Date:</Text>
-          <Text>{props.date}</Text>
-          <Text className="font-bold pl-9">Time:</Text>
-          <Text>{props.time}</Text>
-        </View>
-        {props.children}
-      </View>
-    );
-  };
-
   return (
     <ScrollView contentContainerStyle="pt-5" className="w-full m-4 px-4">
       <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
         <Text className="text-lg mb-2 font-bold">Next Session:</Text>
-        <SessionWidget {...earliestSession} />
+        <SessionWidget {...earliestSession} accountType={profile.accountType} />
       </View>
       <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
         <View className="flex-row justify-between items-center mb-4">
@@ -106,7 +78,7 @@ const SessionsComponent = ({ navigation }) => {
         </View>
         {sessions.map((item, index) => (
           <View key={index}>
-            <SessionWidget {...item}>
+            <SessionWidget {...item} accountType={profile.accountType}>
               <TouchableOpacity
                 onPress={() => handleDeleteSession(index)}
                 className="bg-red-500 p-2 rounded w-fit-content self-center"
