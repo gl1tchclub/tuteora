@@ -33,7 +33,7 @@ const SessionsComponent = ({ navigation }) => {
 
   const { profile } = useContext(UserContext);
 
-  useEffect(() => { 
+  useEffect(() => {
     sessions.forEach((session, i) => {
       console.log("\n", session);
     });
@@ -55,25 +55,36 @@ const SessionsComponent = ({ navigation }) => {
 
   const handleDeleteSession = (index) => {
     setSessions(sessions.filter((_, i) => i !== index));
-    
   };
 
-  const SessionWidget = (sesh) => (
-    <View className="bg-green-100 p-3 my-2 rounded-xl">
-      <View className="flex-row mb-2">
-        <Text className="font-bold mx-2">Student:</Text>
-        <Text>{sesh.student}</Text>
-        <Text className="font-bold ml-4 mr-2">Location:</Text>
-        <Text>{sesh.location}</Text>
+  const SessionWidget = (props) => {
+    return (
+      <View className="bg-green-100 p-3 my-2 rounded-xl">
+        <View className="flex-row mb-2">
+          {profile.accountType === "Tutor" ? (
+            <>
+              <Text className="font-bold mx-2">Student:</Text>
+              <Text>{props.student}</Text>
+            </>
+          ) : (
+            <>
+              <Text className="font-bold mx-2">Tutor:</Text>
+              <Text>{props.tutor}</Text>
+            </>
+          )}
+          <Text className="font-bold ml-4 mr-2">Location:</Text>
+          <Text>{props.location}</Text>
+        </View>
+        <View className="flex-row space-x-4">
+          <Text className="font-bold ml-2">Date:</Text>
+          <Text>{props.date}</Text>
+          <Text className="font-bold pl-9">Time:</Text>
+          <Text>{props.time}</Text>
+        </View>
+        {props.children}
       </View>
-      <View className="flex-row space-x-4">
-        <Text className="font-bold ml-2">Date:</Text>
-        <Text>{sesh.date}</Text>
-        <Text className="font-bold pl-9">Time:</Text>
-        <Text>{sesh.time}</Text>
-      </View>
-    </View>
-  );
+    );
+  };
 
   return (
     <ScrollView contentContainerStyle="pt-5" className="w-full m-4 px-4">
@@ -91,24 +102,19 @@ const SessionsComponent = ({ navigation }) => {
           />
         </View>
         {sessions.map((item, index) => (
-          <View key={index} className="bg-green-100 p-4 my-2 rounded-xl">
-            <Text className="text-md mb-2">
-              <Text className="font-bold">Tutor:</Text> {item.tutor}
-              {"\n"}
-              <Text className="font-bold">Student:</Text> {item.student}
-              {"\n"}
-              <Text className="font-bold">Date:</Text> {item.date}
-              {"\n"}
-              <Text className="font-bold">Time:</Text> {item.time}
-              {"\n"}
-              <Text className="font-bold">Location:</Text> {item.location}
-            </Text>
-            <TouchableOpacity
-              onPress={() => handleDeleteSession(index)}
-              className="bg-red-500 p-2 rounded"
-            >
-              <Text className="text-white text-center">Delete</Text>
-            </TouchableOpacity>
+          <View key={index}>
+            <SessionWidget {...item}>
+              <TouchableOpacity
+                onPress={() => handleDeleteSession(index)}
+                className="bg-red-500 p-2 rounded w-fit-content self-center"
+              >
+                <MaterialCommunityIcons
+                  name="delete-outline"
+                  size={24}
+                  color="white"
+                />
+              </TouchableOpacity>
+            </SessionWidget>
           </View>
         ))}
       </View>
