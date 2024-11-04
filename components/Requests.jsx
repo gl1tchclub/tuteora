@@ -1,4 +1,10 @@
-import { View, Text, Button, SectionList, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  SectionList,
+  TouchableOpacity,
+} from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import SessionWidget from "./SessionWidget";
@@ -6,10 +12,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RequestsList = ({ navigation }) => {
   const { profile } = useContext(UserContext);
-  // Tutor requests
-  const [studentRequests, setStudentRequests] = useState([
+  const [requests, setRequests] = useState([
     {
       id: 1,
+      type: "student",
       student: "John Doe",
       subject: "Math",
       requestDate: "11/4/2024",
@@ -17,16 +23,15 @@ const RequestsList = ({ navigation }) => {
     },
     {
       id: 2,
+      type: "student",
       student: "Jane Doe",
       subject: "Programming",
       requestDate: "11/4/2024",
       isAccepted: false,
     },
-  ]);
-
-  const [sessionRequests, setSessionRequests] = useState([
     {
-      id: 1,
+      id: 3,
+      type: "session",
       student: "Janadsde Doe",
       topic: "Math",
       date: "11/9/2024",
@@ -35,7 +40,8 @@ const RequestsList = ({ navigation }) => {
       isAccepted: false,
     },
     {
-      id: 2,
+      id: 4,
+      type: "session",
       student: "Joseph Dunn",
       topic: "IT",
       date: "11/13/2024",
@@ -43,94 +49,106 @@ const RequestsList = ({ navigation }) => {
       location: "Online",
       isAccepted: false,
     },
-  ]); // tutor and student requests
+  ]);
 
   const sections = [
     {
       title: "Student Requests",
-      data: studentRequests,
+      data:
+        profile.accountType === "Tutor"
+          ? requests.filter((req) => req.type === "student")
+          : [],
     },
     {
       title: "Session Requests",
-      data: sessionRequests,
+      data: requests.filter((req) => req.type === "session"),
     },
   ];
 
-  const studentSections = [
-    {
-      title: "Session Requests",
-      data: sessionRequests,
-    },
-  ];
-
-  const handleDeleteRequest = (index, session, setSessions) => {
-    session[index].isAccepted = false;
-    setSessions(sessions.filter((_, i) => i !== index));
+  const handleDeleteRequest = (index) => {
+    setRequests(
+      requests.map((req, i) =>
+        i === index ? { ...req, isAccepted: false } : req
+      )
+    );
   };
 
-  const handleAcceptRequest = (index, session, setSessions) => {
-
+  const handleAcceptRequest = (index) => {
+    setRequests(
+      requests.map((req, i) =>
+        i === index ? { ...req, isAccepted: true } : req
+      )
+    );
   };
 
   const renderSectionHeader = ({ section }) => (
-    <Text className="p-4 font-bold bg-slate-300 w-full text-lg">{section.title}</Text>
+    <Text className="p-4 font-bold bg-slate-300 w-full text-lg">
+      {section.title}
+    </Text>
   );
 
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }) => (
+    // return (
     <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
-      {item.title == "Student Requests" && (
-        <View className="flex-row justify-between mb-4">
-          <Text className="font-bold">{item.data.student}</Text>
-          <Text className="font-bold">{item.data.subject}</Text>
-          <TouchableOpacity
-            onPress={() => handleDeleteRequest(index)}
-            className="bg-red-500 p-2 rounded w-fit-content self-center"
-          >
-            <MaterialCommunityIcons
-              name="delete-outline"
-              size={24}
-              color="white"
-            />
-          </TouchableOpacity>
+      {item.type == "student" && (
+        <View className="flex-row justify-between">
+          <Text className="font-bold text-lg">{item.student}</Text>
+          <Text className="font-bold text-lg">{item.subject}</Text>
+          <View className="flex-row">
+            <TouchableOpacity
+              onPress={() => handleAcceptRequest(item.id - 1)}
+              className="bg-green-500 rounded w-fit-content self-center mr-2"
+            >
+              <MaterialCommunityIcons name="check" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleDeleteRequest(item.id - 1)}
+              className="bg-red-500 rounded w-fit-content self-center"
+            >
+              <MaterialCommunityIcons
+                name="delete-outline"
+                size={24}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
-      <View className="flex-row justify-between mb-4">
-        <SessionWidget {...item} accountType={profile.accountType} />
-        <TouchableOpacity
-          onPress={() => handleAcceptRequest(index)}
-          className="bg-green-500 p-2 rounded w-fit-content self-center"
-        >
-          <MaterialCommunityIcons
-            name="check"
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => handleDeleteRequest(index)}
-          className="bg-red-500 p-2 rounded w-fit-content self-center"
-        >
-          <MaterialCommunityIcons
-            name="delete-outline"
-            size={24}
-            color="white"
-          />
-        </TouchableOpacity>
-      </View>
-    </View>;
-  };
+      {item.type === "session" && (
+        <View className="flex-row justify-between">
+          <SessionWidget {...item} accountType={profile.accountType} />
+          <View className="self-center">
+            <TouchableOpacity
+              onPress={() => handleAcceptRequest(item.id - 1)}
+              className="bg-green-500 rounded w-fit-content self-center mb-4"
+            >
+              <MaterialCommunityIcons name="check" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleDeleteRequest(item.id - 1)}
+              className="bg-red-500 rounded w-fit-content self-center"
+            >
+              <MaterialCommunityIcons
+                name="delete-outline"
+                size={24}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
+    </View>
+  );
+  // };
 
   return (
-    <View className="flex-1 w-full">
-      <SectionList
-        className="flex-1 w-full"
-        sections={profile.accountType === "Tutor" ? sections : studentSections}
-        renderSectionHeader={renderSectionHeader}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle="pt-5"
-      />
-    </View>
+    <SectionList
+      sections={sections}
+      keyExtractor={(item) => item.id}
+      renderItem={renderItem}
+      renderSectionHeader={renderSectionHeader}
+      className="w-11/12"
+    />
   );
 };
 
