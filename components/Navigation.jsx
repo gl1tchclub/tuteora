@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useEffect, useState, useContext } from "react";
-import { Text } from "react-native";
 
 import { UserContext } from "../contexts/UserContext";
 
@@ -12,6 +11,7 @@ import SessionsScreen from "../screens/Sessions.jsx";
 import AuthScreen from "../screens/AuthScreen";
 import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
+import CreateRequestScreen from "../screens/CreateRequest";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -31,7 +31,24 @@ const SessionStack = () => {
       />
     </Stack.Navigator>
   );
-}
+};
+
+const RequestStack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Requests">
+      <Stack.Screen
+        name="RequestScreen"
+        component={RequestsScreen}
+        options={{ title: "Requests" }}
+      />
+      <Stack.Screen
+        name="CreateRequest"
+        component={CreateRequestScreen}
+        options={{ title: "CreateRequest" }}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const BottomNavigation = () => {
   return (
@@ -48,13 +65,18 @@ const BottomNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Requests"
-        component={RequestsScreen}
+        name="RequestHome"
+        component={RequestStack}
         options={{
-          title: "Requests",
+          headerShown: false,
+          title: "RequestHome",
           tabBarLabel: "Requests",
           tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="human-greeting-variant" color={color} size={size} />
+            <MaterialCommunityIcons
+              name="human-greeting-variant"
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

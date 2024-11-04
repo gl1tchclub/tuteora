@@ -10,7 +10,7 @@ import { UserContext } from "../contexts/UserContext";
 import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const RequestsList = ({ navigation }) => {
+const RequestsList = () => {
   const { profile } = useContext(UserContext);
   const [requests, setRequests] = useState([
     {
@@ -65,17 +65,17 @@ const RequestsList = ({ navigation }) => {
     },
   ];
 
-  const handleDeleteRequest = (index) => {
-    setRequests(requests.filter((_, i) => i !== index));
+  const handleDeleteRequest = (id) => {
+    setRequests(requests.filter((req) => req.id !== id));
   };
-
-  const handleAcceptRequest = (index) => {
+  
+  const handleAcceptRequest = (id) => {
     setRequests(
-      requests.map((req, i) =>
-        i === index ? { ...req, isAccepted: true } : req
+      requests.map((req) =>
+        req.id === id ? { ...req, isAccepted: true } : req
       )
     );
-    // handleDeleteRequest(index);
+    // handleDeleteRequest(id);
     // if type "student", delete request and getDoc for student profile and add to tutor associates
   };
 
@@ -104,7 +104,7 @@ const RequestsList = ({ navigation }) => {
               <Text className="font-bold text-lg">{item.subject}</Text>
               <View className="flex-row">
                 <TouchableOpacity
-                  onPress={() => handleAcceptRequest(item.id - 1)}
+                  onPress={() => handleAcceptRequest(item.id)}
                   className="bg-green-500 rounded w-fit-content self-center mr-2"
                 >
                   <MaterialCommunityIcons
@@ -114,7 +114,7 @@ const RequestsList = ({ navigation }) => {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => handleDeleteRequest(item.id - 1)}
+                  onPress={() => handleDeleteRequest(item.id)}
                   className="bg-red-500 rounded w-fit-content self-center"
                 >
                   <MaterialCommunityIcons
@@ -139,7 +139,7 @@ const RequestsList = ({ navigation }) => {
               <SessionWidget {...item} accountType={profile.accountType} />
               <View className="self-center">
                 <TouchableOpacity
-                  onPress={() => handleAcceptRequest(item.id - 1)}
+                  onPress={() => handleAcceptRequest(item.id)}
                   className="bg-green-500 rounded w-fit-content self-center mb-4"
                 >
                   <MaterialCommunityIcons
@@ -149,7 +149,7 @@ const RequestsList = ({ navigation }) => {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => handleDeleteRequest(item.id - 1)}
+                  onPress={() => handleDeleteRequest(item.id)}
                   className="bg-red-500 rounded w-fit-content self-center"
                 >
                   <MaterialCommunityIcons

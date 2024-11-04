@@ -59,7 +59,6 @@ const SessionsComponent = ({ navigation }) => {
   };
 
   const handleDeleteSession = (index) => {
-    sessions[index].isAccepted = false;
     setSessions(sessions.filter((_, i) => i !== index));
   };
 
