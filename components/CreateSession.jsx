@@ -29,7 +29,7 @@ const CreateSession = ({ navigation }) => {
   const { profile } = useContext(UserContext);
   const { createSession, sessions } = useContext(SessionContext);
   const associates = profile.associates;
-  console.log("\nAssociates: ", associates);
+
   useEffect(() => {
     if (profile.accountType === "Tutor") {
       setTutor(profile.id);

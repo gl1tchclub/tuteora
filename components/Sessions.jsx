@@ -15,7 +15,7 @@ const SessionsComponent = ({ navigation }) => {
   const [sessions, setSessions] = useState([
     {
       tutor: "John Doe",
-      student: "Jane Doe",
+      student: "Janadsde Doe",
       topic: "Math",
       date: "11/9/2024",
       time: "12:00:00 PM",
@@ -33,13 +33,16 @@ const SessionsComponent = ({ navigation }) => {
 
   const { profile } = useContext(UserContext);
 
-  //const that holds the session with the earliest date/time
-  // Function to parse date and time into a Date object
+  useEffect(() => { 
+    sessions.forEach((session, i) => {
+      console.log("\n", session);
+    });
+  }, [sessions]);
+
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);
   };
 
-  // Find the session with the earliest date and time
   const earliestSession = sessions.reduce((earliest, current) => {
     const earliestDateTime = parseDateTime(earliest.date, earliest.time);
     const currentDateTime = parseDateTime(current.date, current.time);
@@ -52,29 +55,33 @@ const SessionsComponent = ({ navigation }) => {
 
   const handleDeleteSession = (index) => {
     setSessions(sessions.filter((_, i) => i !== index));
+    
   };
 
-  const NextSessionHeader = () => (
-    <View className="bg-white p-4 my-2 rounded-xl w-4/5 self-center">
-      <Text className="text-lg mb-2">Next Session:</Text>
-      <Text className="text-md mb-2">
-        <Text className="font-bold">Tutor:</Text> {earliestSession.tutor}
-        {"\n"}
-        <Text className="font-bold">Student:</Text> {earliestSession.student}
-        {"\n"}
-        <Text className="font-bold">Date:</Text> {earliestSession.date}
-        {"\n"}
-        <Text className="font-bold">Time:</Text> {earliestSession.time}
-        {"\n"}
-        <Text className="font-bold">Location:</Text> {earliestSession.location}
-      </Text>
+  const SessionWidget = (sesh) => (
+    <View className="bg-green-100 p-3 my-2 rounded-xl">
+      <View className="flex-row mb-2">
+        <Text className="font-bold mx-2">Student:</Text>
+        <Text>{sesh.student}</Text>
+        <Text className="font-bold ml-4 mr-2">Location:</Text>
+        <Text>{sesh.location}</Text>
+      </View>
+      <View className="flex-row space-x-4">
+        <Text className="font-bold ml-2">Date:</Text>
+        <Text>{sesh.date}</Text>
+        <Text className="font-bold pl-9">Time:</Text>
+        <Text>{sesh.time}</Text>
+      </View>
     </View>
   );
 
   return (
-    <ScrollView contentContainerStyle="pt-5">
-      <NextSessionHeader />
-      <View className="bg-white p-4 my-2 rounded-xl w-4/5 self-center">
+    <ScrollView contentContainerStyle="pt-5" className="w-full m-4 px-4">
+      <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
+        <Text className="text-lg mb-2 font-bold">Next Session:</Text>
+        <SessionWidget {...earliestSession} />
+      </View>
+      <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
         <View className="flex-row justify-between items-center mb-4">
           <Text className="text-lg font-bold">Schedule</Text>
           <Button
