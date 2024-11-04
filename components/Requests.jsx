@@ -66,11 +66,7 @@ const RequestsList = ({ navigation }) => {
   ];
 
   const handleDeleteRequest = (index) => {
-    setRequests(
-      requests.map((req, i) =>
-        i === index ? { ...req, isAccepted: false } : req
-      )
-    );
+    setRequests(requests.filter((_, i) => i !== index));
   };
 
   const handleAcceptRequest = (index) => {
@@ -79,6 +75,8 @@ const RequestsList = ({ navigation }) => {
         i === index ? { ...req, isAccepted: true } : req
       )
     );
+    // handleDeleteRequest(index);
+    // if type "student", delete request and getDoc for student profile and add to tutor associates
   };
 
   const renderSectionHeader = ({ section }) => (
@@ -92,49 +90,73 @@ const RequestsList = ({ navigation }) => {
     <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
       {item.type == "student" && (
         <View className="flex-row justify-between">
-          <Text className="font-bold text-lg">{item.student}</Text>
-          <Text className="font-bold text-lg">{item.subject}</Text>
-          <View className="flex-row">
-            <TouchableOpacity
-              onPress={() => handleAcceptRequest(item.id - 1)}
-              className="bg-green-500 rounded w-fit-content self-center mr-2"
-            >
-              <MaterialCommunityIcons name="check" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDeleteRequest(item.id - 1)}
-              className="bg-red-500 rounded w-fit-content self-center"
-            >
-              <MaterialCommunityIcons
-                name="delete-outline"
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
+          {item.isAccepted == false ? (
+            <>
+              <Text className="font-bold text-lg">{item.student}</Text>
+              <Text className="font-bold text-lg">{item.subject}</Text>
+              <View className="flex-row">
+                <TouchableOpacity
+                  onPress={() => handleAcceptRequest(item.id - 1)}
+                  className="bg-green-500 rounded w-fit-content self-center mr-2"
+                >
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleDeleteRequest(item.id - 1)}
+                  className="bg-red-500 rounded w-fit-content self-center"
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <View className="items-center w-full">
+              <Text className="font-bold text-lg text-lime-600">Accepted!</Text>
+            </View>
+          )}
         </View>
       )}
       {item.type === "session" && (
         <View className="flex-row justify-between">
-          <SessionWidget {...item} accountType={profile.accountType} />
-          <View className="self-center">
-            <TouchableOpacity
-              onPress={() => handleAcceptRequest(item.id - 1)}
-              className="bg-green-500 rounded w-fit-content self-center mb-4"
-            >
-              <MaterialCommunityIcons name="check" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDeleteRequest(item.id - 1)}
-              className="bg-red-500 rounded w-fit-content self-center"
-            >
-              <MaterialCommunityIcons
-                name="delete-outline"
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
+          {item.isAccepted == false ? (
+            <>
+              <SessionWidget {...item} accountType={profile.accountType} />
+              <View className="self-center">
+                <TouchableOpacity
+                  onPress={() => handleAcceptRequest(item.id - 1)}
+                  className="bg-green-500 rounded w-fit-content self-center mb-4"
+                >
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleDeleteRequest(item.id - 1)}
+                  className="bg-red-500 rounded w-fit-content self-center"
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          ) : (
+            <View className="items-center w-full">
+              <Text className="font-bold text-lg text-lime-600">Accepted!</Text>
+            </View>
+          )}
         </View>
       )}
     </View>
