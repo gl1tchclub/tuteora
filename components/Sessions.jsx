@@ -20,6 +20,7 @@ const SessionsComponent = ({ navigation }) => {
       date: "11/9/2024",
       time: "12:00:00 PM",
       location: "Online",
+      isAccepted: true,
     },
     {
       tutor: "John Doe",
@@ -28,6 +29,7 @@ const SessionsComponent = ({ navigation }) => {
       date: "11/13/2024",
       time: "12:00:00 PM",
       location: "Online",
+      isAccepted: true,
     },
   ]);
 
@@ -54,6 +56,7 @@ const SessionsComponent = ({ navigation }) => {
   };
 
   const handleDeleteSession = (index) => {
+    sessions[index].isAccepted = false;
     setSessions(sessions.filter((_, i) => i !== index));
   };
 
