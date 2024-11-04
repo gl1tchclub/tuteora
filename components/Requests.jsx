@@ -87,7 +87,7 @@ const RequestsList = ({ navigation }) => {
 
   const renderItem = ({ item }) => (
     // return (
-    <View className="bg-white p-4 my-2 rounded-xl w-full self-center">
+    <View className="bg-white p-4 my-2 rounded-xl w-11/12 self-center">
       {item.type == "student" && (
         <View className="flex-row justify-between">
           {item.isAccepted == false ? (
@@ -169,7 +169,7 @@ const RequestsList = ({ navigation }) => {
       keyExtractor={(item) => item.id}
       renderItem={renderItem}
       renderSectionHeader={renderSectionHeader}
-      className="w-11/12"
+      className="w-full"
     />
   );
 };
