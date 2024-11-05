@@ -23,14 +23,16 @@ const TutorDetails = (props) => {
         </TouchableOpacity>
       </Text>
       <Text className="text-lg mb-3">Bio</Text>
+      <Text className="text-base mb-8">{tutor.bio || "No Bio"}</Text>
+      <Text className="text-lg mb-3">Studying: {tutor.study}</Text>
       <Text className="text-xl font-bold mb-2">Topics:</Text>
-      {tutor.topics.map((topic, idx) => (
+      {tutor.topics && tutor.topics.map((topic, idx) => (
         <Text key={idx} className="text-base mb-1">
           - {topic}
         </Text>
       ))}
       <Text className="text-xl font-bold mb-2">Availability:</Text>
-      <Text className="text-base mb-8">{tutor.availability}</Text>
+      <Text className="text-base mb-8">{tutor.availability || "No Schedule Set"}</Text>
     </ScrollView>
   );
 };

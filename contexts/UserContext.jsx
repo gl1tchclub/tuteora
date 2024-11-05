@@ -10,6 +10,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const UserContext = createContext();
@@ -50,6 +51,16 @@ export const UserProvider = (props) => {
     loadUser();
   }, [auth]);
 
+  const updateProfile = async (updatedProfile) => {
+    try {
+      const profileRef = doc(db, `${profile.accountType.toLowerCase()}s`, profile.id);
+      await setDoc(profileRef, updatedProfile);
+      setProfile(updatedProfile);
+    } catch (error) {
+      console.error("Profile update error: ", error.message);
+    }
+  }
+
   const register = async (newUser) => {
     try {
       const requiredFields = [
@@ -86,6 +97,9 @@ export const UserProvider = (props) => {
                 study: newUser.study,
                 isAvailable: true,
                 students: [],
+                bio: "",
+                topics: [],
+                availability: [],
               }
             : {
                 id: user.uid,
@@ -127,7 +141,7 @@ export const UserProvider = (props) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, register, profile, login, logout }}>
+    <UserContext.Provider value={{ user, register, profile, login, logout, updateProfile }}>
       {props.children}
     </UserContext.Provider>
   );

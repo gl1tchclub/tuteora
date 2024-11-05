@@ -143,8 +143,6 @@ const Auth = () => {
                 >
                   <Picker.Item label="Student" value="Student" />
                   <Picker.Item label="Tutor" value="Tutor" />
-                  <Picker.Item label="Staff" value="Staff" />
-                  <Picker.Item label="Admin" value="Admin" />
                 </Picker>
               </View>
             </View>
