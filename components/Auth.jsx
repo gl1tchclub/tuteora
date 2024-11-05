@@ -44,8 +44,8 @@ const Auth = () => {
   ];
 
   const { register, login, user, profile } = useContext(UserContext);
-  console.log("\nAuth User:", user);
-  console.log("\nAuth Profile:", profile);
+  // console.log("\nAuth User:", user);
+  // console.log("\nAuth Profile:", profile);
 
   const handleAuthentication = async () => {
     try {

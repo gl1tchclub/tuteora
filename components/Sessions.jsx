@@ -38,11 +38,11 @@ const SessionsComponent = ({ navigation }) => {
 
   const { profile } = useContext(UserContext);
 
-  useEffect(() => {
-    sessions.forEach((session, i) => {
-      console.log("\n", session);
-    });
-  }, [sessions]);
+  // useEffect(() => {
+  //   sessions.forEach((session, i) => {
+  //     console.log("\n", session);
+  //   });
+  // }, [sessions]);
 
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);

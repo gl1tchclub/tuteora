@@ -9,9 +9,8 @@ export const TutorProvider = (props) => {
 
   const loadTutors = async () => {
     try {
-      const tutorsQuery = query(collection(db, "tutors"), where("isAvailable", "==", true));
-      const tutorsSnapshot = await getDocs(tutorsQuery);       
-      const tutorsList = tutorsSnapshot.docs.map((doc) => doc.data());
+      const tutorsSnapshot = await getDocs(collection(db, "tutors"));     
+      const tutorsList = tutorsSnapshot ? tutorsSnapshot.docs.map((doc) => doc.data()) : null;
       setTutors(tutorsList);
       console.log("Tutors: ", tutorsList);
     } catch (error) {
@@ -23,8 +22,16 @@ export const TutorProvider = (props) => {
     loadTutors();
   }, [auth]);
 
+  const updateTutor = async (tutor) => {
+    try {
+      await setDoc(doc(db, "tutors", tutor.uid), tutor);
+    } catch (error) {
+      console.error("Tutor update error: ", error.message);
+    }
+  };
+
   return (
-    <TutorContext.Provider value={{ tutors }}>
+    <TutorContext.Provider value={{ tutors, updateTutor }}>
       {props.children}
     </TutorContext.Provider>
   );

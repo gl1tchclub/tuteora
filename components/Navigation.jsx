@@ -108,10 +108,10 @@ const BottomNavigation = () => {
 
 const AppNavigator = () => {
   const { user, profile } = useContext(UserContext);
-  useEffect(() => {
-    console.log("Nav user: ", user);
-    console.log("Nav profile: ", profile);
-  }, [profile]);
+  // useEffect(() => {
+  //   console.log("Nav user: ", user);
+  //   console.log("Nav profile: ", profile);
+  // }, [profile]);
   return (
     <NavigationContainer>
       {user && profile ? (

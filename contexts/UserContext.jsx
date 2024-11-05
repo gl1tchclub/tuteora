@@ -6,14 +6,17 @@ import {
   signOut,
 } from "@firebase/auth";
 import { db, auth } from "../services/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
 
 export const UserContext = createContext();
 
 export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
-  const [userType, setUserType] = useState("students");
 
   const loadUser = async () => {
     try {
@@ -22,16 +25,15 @@ export const UserProvider = (props) => {
         const isUser = user ? user : null;
         setUser(isUser);
         if (user) {
-          console.log("\nUser: ", user);
-          const id = user.uid;
-          const userInfo = await getDoc(doc(db, userType, id));
-          if (userInfo.exists()) {
-            const info = userInfo.data();
-            setProfile(info);
-            console.log("\nJust info: ", info);
-          } else {
-            // setProfile(null);
-            console.log("\nNO Profile info: ", profile);
+          const tutor = await getDoc(doc(db, "tutors", user.uid));
+          const student = await getDoc(doc(db, "students", user.uid));
+
+          if (tutor.exists()) {
+            setProfile(tutor.data());
+            console.log("\nTutor Profile:", profile);
+          } else if (student.exists()) {
+            setProfile(student.data());
+            console.log("\nStudent Profile:", profile);
           }
         } else {
           console.log("Context No user:", user);
@@ -73,7 +75,6 @@ export const UserProvider = (props) => {
           newUser.password
         );
         const user = userCredential.user;
-        setUserType(`${newUser.accountType.toLowerCase()}s`);
         const userAccount =
           newUser.accountType === "Tutor"
             ? {
@@ -96,18 +97,20 @@ export const UserProvider = (props) => {
                 tutor: null,
               };
 
-        await setDoc(doc(db, userType, user.uid), userAccount);
+        await setDoc(
+          doc(db, `${newUser.accountType.toLowerCase()}s`, user.uid),
+          userAccount
+        );
 
-        await login(newUser.email, newUser.password, userType);
+        await login(newUser.email, newUser.password);
       }
     } catch (error) {
       console.error("Registration error: ", error.message);
     }
   };
 
-  const login = async (email, password, userType) => {
+  const login = async (email, password) => {
     try {
-      setUserType(userType);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error("Login error: ", error.message);
@@ -118,7 +121,6 @@ export const UserProvider = (props) => {
     try {
       await signOut(auth);
       setProfile(null); // need this here? Already in unsubscribe
-      setUserType("students");
     } catch (error) {
       console.error("Sign out error: ", error.message);
     }
