@@ -1,9 +1,19 @@
 import { View, Text, Button } from "react-native";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);
+  const [buttonMessage, setButtonMessage] = useState("");
+  const [endpoint, setEndpoint] = useState("");
+
+  useEffect(() => {
+    if (profile.associates != null) {
+      setButtonMessage("Change Tutor");
+    } else {
+      setButtonMessage("Request A Tutor");
+    }
+  }, [profile.associates]);
 
   const handleLogout = async () => {
     try {
@@ -27,11 +37,16 @@ const HomeScreen = () => {
         <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
           Account: {profile.accountType}
         </Text>
-        <Button
-          onPress={handleLogout}
-          title="Log Out"
-          color="#46ab61"
-        />
+        {profile.accountType === "Student" && (
+          <View className="mb-2">
+            <Button
+              color="#46ab61"
+              title={buttonMessage}
+              onPress={() => props.navigation.navigate("Tutors")}
+            />
+          </View>
+        )}
+        <Button onPress={handleLogout} title="Log Out" color="#2b69ba" />
       </View>
     </View>
   );

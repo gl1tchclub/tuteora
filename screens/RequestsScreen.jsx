@@ -8,7 +8,7 @@ const RequestsScreen = (props) => {
   return (
     <View className="flex-1 justify-center items-center">
       <RequestsList />
-      {(profile.accountType === "Student" && profile.associates == null) && (
+      {/* {(profile.accountType === "Student" && profile.associates == null) && (
         <View className="m-4">
           <Button
             title="Request A Tutor"
@@ -16,7 +16,7 @@ const RequestsScreen = (props) => {
             color="#46ab61"
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 };

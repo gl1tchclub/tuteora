@@ -12,6 +12,7 @@ import AuthScreen from "../screens/AuthScreen";
 import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
 import CreateRequestScreen from "../screens/CreateRequest";
+import TutorListScreen from "../screens/TutorsScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -33,18 +34,23 @@ const SessionStack = () => {
   );
 };
 
-const RequestStack = () => {
+const HomeStack = () => {
   return (
     <Stack.Navigator initialRouteName="Requests">
       <Stack.Screen
-        name="RequestScreen"
-        component={RequestsScreen}
-        options={{ title: "Requests" }}
+        name="Dashboard"
+        component={HomeScreen}
+        options={{ title: "Dashboard" }}
       />
       <Stack.Screen
         name="CreateRequest"
         component={CreateRequestScreen}
         options={{ title: "CreateRequest" }}
+      />
+      <Stack.Screen
+        name="Tutors"
+        component={TutorListScreen}
+        options={{ title: "Tutors" }}
       />
     </Stack.Navigator>
   );
@@ -55,8 +61,9 @@ const BottomNavigation = () => {
     <Tab.Navigator initialRouteName="Home">
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStack}
         options={{
+          headerShown: false,
           title: "My Home",
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
@@ -65,11 +72,10 @@ const BottomNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="RequestHome"
-        component={RequestStack}
+        name="Requests"
+        component={RequestsScreen}
         options={{
-          headerShown: false,
-          title: "RequestHome",
+          title: "Requests",
           tabBarLabel: "Requests",
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
