@@ -15,12 +15,14 @@ const TutorList = ({ navigation }) => {
   const [request, setRequest] = useState(null);
 
   return (
-    <View className="bg-white w-full h-full">
+    <ScrollView className="bg-white w-full h-full">
       <View className="p-6">
         <Text className="font-semibold text-3xl">Select A Tutor</Text>
       </View>
-      
-    </View>
+      <View className="flex-1">
+        
+      </View>
+    </ScrollView>
   );
 };
 

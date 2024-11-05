@@ -4,6 +4,7 @@ import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { UserProvider } from "./contexts/UserContext";
 import { SessionProvider } from "./contexts/SessionsContext";
+import { TutorProvider } from "./contexts/TutorsContext";
 import AppNavigator from "./components/Navigation";
 import AuthScreen from "./screens/AuthScreen";
 import { KeyboardAvoidingView } from "react-native";
@@ -45,10 +46,12 @@ export default function App() {
   return (
     <UserProvider>
       <SessionProvider>
-        <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
-          <AppNavigator />
-          <StatusBar style="auto" />
-        </View>
+        <TutorProvider>
+          <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
+            <AppNavigator />
+            <StatusBar style="auto" />
+          </View>
+        </TutorProvider>
       </SessionProvider>
     </UserProvider>
   );

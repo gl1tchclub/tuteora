@@ -26,15 +26,7 @@ export const UserProvider = (props) => {
           const id = user.uid;
           const userInfo = await getDoc(doc(db, userType, id));
           if (userInfo.exists()) {
-            const info = {
-              id: userInfo.data().id,
-              email: userInfo.data().email,
-              firstName: userInfo.data().firstName,
-              lastName: userInfo.data().lastName,
-              accountType: userInfo.data().accountType,
-              study: userInfo.data().study,
-              associates: userInfo.data().students || userInfo.data().tutor,
-            };
+            const info = userInfo.data();
             setProfile(info);
             console.log("\nJust info: ", info);
           } else {
@@ -91,6 +83,7 @@ export const UserProvider = (props) => {
                 lastName: newUser.lastName,
                 accountType: newUser.accountType,
                 study: newUser.study,
+                isAvailable: true,
                 students: [],
               }
             : {

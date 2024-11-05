@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import { db, auth } from "../services/firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 
 export const TutorContext = createContext();
 
@@ -9,10 +9,11 @@ export const TutorProvider = (props) => {
 
   const loadTutors = async () => {
     try {
-      const tutorsRef = db.collection("tutors");
-      const tutorsSnapshot = await tutorsRef.get();
+      const tutorsQuery = query(collection(db, "tutors"), where("isAvailable", "==", true));
+      const tutorsSnapshot = await getDocs(tutorsQuery);       
       const tutorsList = tutorsSnapshot.docs.map((doc) => doc.data());
       setTutors(tutorsList);
+      console.log("Tutors: ", tutorsList);
     } catch (error) {
       console.error("Tutors loading error: ", error.message);
     }
@@ -20,7 +21,7 @@ export const TutorProvider = (props) => {
 
   useEffect(() => {
     loadTutors();
-  }, []);
+  }, [auth]);
 
   return (
     <TutorContext.Provider value={{ tutors }}>

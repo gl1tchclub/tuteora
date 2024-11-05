@@ -28,7 +28,7 @@ const CreateSession = ({ navigation }) => {
   const [dateTime, setDateTime] = useState(null);
   const { profile } = useContext(UserContext);
   const { createSession, sessions } = useContext(SessionContext);
-  const associates = profile.associates;
+  const associates = profile.accountType == "Tutor" ? profile.students : profile.tutor;
 
   useEffect(() => {
     if (profile.accountType === "Tutor") {

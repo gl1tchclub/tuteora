@@ -8,12 +8,12 @@ const HomeScreen = (props) => {
   const [endpoint, setEndpoint] = useState("");
 
   useEffect(() => {
-    if (profile.associates != null) {
+    if (profile.tutor) {
       setButtonMessage("Change Tutor");
     } else {
       setButtonMessage("Request A Tutor");
     }
-  }, [profile.associates]);
+  }, [profile]);
 
   const handleLogout = async () => {
     try {
