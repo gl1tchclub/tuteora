@@ -24,15 +24,24 @@ const TutorList = ({ navigation }) => {
 
   const RenderTutor = (tutor) => {
     return (
-      <View>
-        <TouchableOpacity className="flex-row space-x-6 p-4">
+      <TouchableOpacity
+        onPress={() => handlePress(tutor)}
+        className="flex-row justify-between items-center p-4 border-b border-[#46ab61]/[0.5]"
+      >
+        <View className="space-x-6 flex-row">
           <Text className="font-bold text-lg text-black">
             {tutor.firstName}
           </Text>
           <Text className="font-bold text-lg text-black">{tutor.lastName}</Text>
-        </TouchableOpacity>
-        <View className="border-b w-full border-[#46ab61]/[0.5] rounded-lg" />
-      </View>
+        </View>
+        <View className="">
+          <MaterialCommunityIcons
+            name="arrow-right"
+            size={24}
+            color="#46ab61"
+          />
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -45,14 +54,12 @@ const TutorList = ({ navigation }) => {
           tutors.
         </Text>
       </View>
-      <View className="bg-white shadow-lg rounded-lg shadow-black m-6">
-        <View className="flex-1 p-6">
-          {availableTutors.map((tutor, idx) => (
-            <View key={idx}>
-              <RenderTutor {...tutor} />
-            </View>
-          ))}
-        </View>
+      <View className="flex-1 p-6 bg-white shadow-lg rounded-lg shadow-black m-6">
+        {availableTutors.map((tutor, idx) => (
+          <View key={idx}>
+            <RenderTutor {...tutor} />
+          </View>
+        ))}
       </View>
     </ScrollView>
   );
