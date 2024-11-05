@@ -13,6 +13,7 @@ import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
 import CreateRequestScreen from "../screens/CreateRequest";
 import TutorListScreen from "../screens/TutorsScreen";
+import TutorInfoScreen from "../screens/TutorInfoScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,6 +52,13 @@ const HomeStack = () => {
         name="Tutors"
         component={TutorListScreen}
         options={{ title: "Tutors" }}
+      />
+      <Stack.Screen
+        name="TutorInfo"
+        component={TutorInfoScreen}
+        options={({ route }) => ({
+          title: `${route.params.tutor.firstName} ${route.params.tutor.lastName}'s Info`,
+        })}
       />
     </Stack.Navigator>
   );

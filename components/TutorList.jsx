@@ -19,7 +19,7 @@ const TutorList = ({ navigation }) => {
   const availableTutors = tutors.filter((tutor) => tutor.isAvailable);
 
   const handlePress = (tutor) => {
-    navigation.navigate("TutorDetails", { tutor });
+    navigation.navigate("TutorInfo", { tutor });
   };
 
   const RenderTutor = (tutor) => {

@@ -1,5 +1,6 @@
-import { ScrollView, Text, Image } from "react-native";
+import { ScrollView, Text, Image, View, TouchableOpacity } from "react-native";
 import { useEffect, useState, useContext } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "../contexts/UserContext";
 
 const TutorDetails = (props) => {
