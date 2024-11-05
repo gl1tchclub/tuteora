@@ -8,12 +8,23 @@ const TutorDetails = (props) => {
   const [request, setRequest] = useState(null);
   const [topic, setTopic] = useState(null);
   const tutor = props.tutor;
+  
+  const getRandomColor = () => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const randomColor = getRandomColor();
 
   const handleRequestTutor = (tutorId) => {};
 
   return (
-    <ScrollView className="flex-1 p-4 bg-white rounded-lg">
-      <View className="w-full h-48 rounded-lg mb-3 bg-cover bg-center bg-no-repeat bg-gray-300" />
+    <ScrollView className="flex-1 bg-white w-full">
+      <View className="w-full h-2/3 mb-3 bg-cover bg-center bg-no-repeat" style={{ backgroundColor: randomColor, opacity: 0.6 }} />
       <Text className="text-2xl font-bold mb-2">
         {tutor.firstName} {tutor.lastName}{" "}
         <TouchableOpacity
