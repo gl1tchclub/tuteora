@@ -22,16 +22,16 @@ export const TutorProvider = (props) => {
     loadTutors();
   }, [auth]);
 
-  const updateTutor = async (tutor) => {
-    try {
-      await setDoc(doc(db, "tutors", tutor.uid), tutor);
-    } catch (error) {
-      console.error("Tutor update error: ", error.message);
-    }
-  };
+  // const updateTutor = async (tutor) => {
+  //   try {
+  //     await setDoc(doc(db, "tutors", tutor.uid), tutor);
+  //   } catch (error) {
+  //     console.error("Tutor update error: ", error.message);
+  //   }
+  // };
 
   return (
-    <TutorContext.Provider value={{ tutors, updateTutor }}>
+    <TutorContext.Provider value={{ tutors }}>
       {props.children}
     </TutorContext.Provider>
   );

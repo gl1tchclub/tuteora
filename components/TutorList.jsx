@@ -40,13 +40,19 @@ const TutorList = ({ navigation }) => {
     <ScrollView className="bg-white w-full h-full">
       <View className="p-6">
         <Text className="font-semibold text-3xl">Select A Tutor</Text>
+        <Text className="text-md text-slate-500">
+          View any tutor profile from the following available {profile.study}{" "}
+          tutors.
+        </Text>
       </View>
-      <View className="flex-1 p-6">
-        {availableTutors.map((tutor, idx) => (
-          <View key={idx}>
-            <RenderTutor {...tutor} />
-          </View>
-        ))}
+      <View className="bg-white shadow-lg rounded-lg shadow-black m-6">
+        <View className="flex-1 p-6">
+          {availableTutors.map((tutor, idx) => (
+            <View key={idx}>
+              <RenderTutor {...tutor} />
+            </View>
+          ))}
+        </View>
       </View>
     </ScrollView>
   );

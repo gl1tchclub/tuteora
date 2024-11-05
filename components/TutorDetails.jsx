@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 
 const TutorDetails = (props) => {
-  const { profile } = useContext(UserContext);
+  const { profile, updateProfile } = useContext(UserContext);
   const [request, setRequest] = useState(null);
   const [topic, setTopic] = useState(null);
   const tutor = props.tutor;

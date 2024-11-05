@@ -25,9 +25,9 @@ const HomeScreen = (props) => {
   };
 
   return (
-    <View className="flex-1 items-center h-full bg-neutral-100">
+    <View className="flex-1 items-center h-full bg-white">
       <Text className="text-3xl py-6">Welcome, {profile.firstName}</Text>
-      <View className="bg-white p-4 w-2/3 mt-10 h-max rounded-xl">
+      <View className="bg-white p-4 w-2/3 mt-10 h-max rounded-xl shadow-md shadow-black">
         <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
           Name: {profile.firstName} {profile.lastName}
         </Text>
