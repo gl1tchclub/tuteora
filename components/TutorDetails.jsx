@@ -8,6 +8,7 @@ const TutorDetails = (props) => {
   const [request, setRequest] = useState(null);
   const [topic, setTopic] = useState(null);
   const [icon, setIcon] = useState("account-arrow-right");
+  const [msg, setMsg] = useState("Request Tutor");
   const tutor = props.tutor.tutor;
 
   const getRandomColor = () => {
@@ -21,7 +22,21 @@ const TutorDetails = (props) => {
 
   const randomColor = getRandomColor();
 
-  const handleRequestTutor = (tutorId) => {};
+  const handleRequestTutor = (tutorId) => {
+    setIcon("check");
+    setMsg("Sent!");
+    setRequest({
+      id: profile.id,
+      type: "student",
+      student: `${profile.firstName} ${profile.lastName}`,
+      study: profile.study,
+      tutorId: tutorId,
+      requestDate: new Date().toLocaleDateString(),
+    });
+    setTimeout(() => {
+      props.navigation.navigate("Dashboard");
+    }, 500);
+  };
 
   return (
     <ScrollView className="flex-1 bg-white w-full">
@@ -66,7 +81,7 @@ const TutorDetails = (props) => {
             color="black"
             style={{ paddingHorizontal: 4, paddingVertical: 2 }}
           />
-          <Text className="text-black px-2 text-lg">Request Tutor</Text>
+          <Text className="text-black px-2 text-lg">{msg}</Text>
         </TouchableOpacity>
         <View className="border-b-neutral-400 border-b m-4">
           <Text className="text-xl mb-3 font-semibold">About Me</Text>
@@ -78,22 +93,46 @@ const TutorDetails = (props) => {
             <Text className="text-lg mb-3 ml-4">{tutor.study}</Text>
           </View>
           <View className="flex-row my-2 text-wrap">
-            <Text className="text-lg font-semibold self-center mb-2">Topics:</Text>
+            <Text className="text-lg font-semibold self-center mb-2">
+              Topics:
+            </Text>
             {tutor.topics ? (
               tutor.topics.map((topic, idx) => (
-                <Text key={idx} className="mb-1 ml-2 bg-neutral-200 rounded-2xl p-2">
+                <Text
+                  key={idx}
+                  className="mb-1 ml-2 bg-neutral-200 rounded-2xl p-2"
+                >
                   {topic}
                 </Text>
               ))
             ) : (
-              <Text className="mb-1 bg-neutral-200 rounded-2xl p-2 ml-2">None</Text>
+              <Text className="mb-1 bg-neutral-200 rounded-2xl p-2 ml-3">
+                None
+              </Text>
             )}
           </View>
         </View>
-        <Text className="text-xl font-bold mb-2">Availability:</Text>
-        <Text className="text-base mb-8">
-          {tutor.availability || "No Schedule Set"}
-        </Text>
+        <View className="border-b-neutral-400 border-b mx-4 py-3">
+          <View className="flex-row">
+            <Text className="text-xl font-semibold self-center">Availability:</Text>
+            <View className="flex-row my-2 text-wrap">
+              {tutor.availability ? (
+                tutor.availability.map((day, idx) => (
+                  <Text
+                    key={idx}
+                    className="ml-2 bg-neutral-200 rounded-2xl p-2"
+                  >
+                    {day}
+                  </Text>
+                ))
+              ) : (
+                <Text className="bg-neutral-200 rounded-2xl p-2 ml-3">
+                  No Schedule Set
+                </Text>
+              )}
+            </View>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );

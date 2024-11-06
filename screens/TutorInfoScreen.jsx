@@ -5,7 +5,7 @@ const TutorInfoScreen = (props) => {
     const tutor = props.route.params;
   return (
     <View className="flex-1 justify-center items-center">
-       <TutorDetails tutor={tutor}/>
+       <TutorDetails tutor={tutor} navigation={props.navigation} />
     </View>
   );
 };
