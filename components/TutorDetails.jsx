@@ -1,4 +1,12 @@
-import { ScrollView, Text, Image, View, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "../contexts/UserContext";
@@ -9,6 +17,7 @@ const TutorDetails = (props) => {
   const [topic, setTopic] = useState(null);
   const [icon, setIcon] = useState("account-arrow-right");
   const [msg, setMsg] = useState("Request Tutor");
+  const [loading, setLoading] = useState(false);
   const tutor = props.tutor.tutor;
 
   const getRandomColor = () => {
@@ -23,19 +32,25 @@ const TutorDetails = (props) => {
   const randomColor = getRandomColor();
 
   const handleRequestTutor = (tutorId) => {
-    setIcon("check");
-    setMsg("Sent!");
-    setRequest({
-      id: profile.id,
-      type: "student",
-      student: `${profile.firstName} ${profile.lastName}`,
-      study: profile.study,
-      tutorId: tutorId,
-      requestDate: new Date().toLocaleDateString(),
-    });
-    setTimeout(() => {
-      props.navigation.navigate("Dashboard");
-    }, 500);
+    try {
+      setLoading(true);
+      setIcon("check");
+      setMsg("Sent!");
+      setRequest({
+        creatorId: profile.id,
+        receiverId: tutorId,
+        type: "student",
+        student: `${profile.firstName} ${profile.lastName}`,
+        study: profile.study,
+        requestDate: new Date().toLocaleDateString(),
+      });
+    } catch (error) {
+      console.error("Request creation error: ", error.message);
+      Alert.alert("Request Failed:", error.message);
+    } finally {
+      setLoading(false);
+      if (!console.error) props.navigation.navigate("Dashboard");
+    }
   };
 
   return (
@@ -64,25 +79,29 @@ const TutorDetails = (props) => {
         </View>
       </View>
       <View className="w-full flex-1 justify-center">
-        <TouchableOpacity
-          onPress={() => handleRequestTutor(tutor.id)}
-          className="bg-white rounded-2xl p-1 w-fit-content self-center m-2 flex-row items-center border border-neutral-400/[0.1]"
-          style={{
-            shadowColor: "#000000",
-            shadowOffset: { width: 2, height: 2 },
-            shadowOpacity: 0.9,
-            shadowRadius: 2,
-            elevation: 3,
-          }}
-        >
-          <MaterialCommunityIcons
-            name={icon}
-            size={24}
-            color="black"
-            style={{ paddingHorizontal: 4, paddingVertical: 2 }}
-          />
-          <Text className="text-black px-2 text-lg">{msg}</Text>
-        </TouchableOpacity>
+        {!loading ? (
+          <TouchableOpacity
+            onPress={() => handleRequestTutor(tutor.id)}
+            className="bg-white rounded-2xl p-1 w-fit-content self-center m-2 flex-row items-center border border-neutral-400/[0.1]"
+            style={{
+              shadowColor: "#000000",
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.9,
+              shadowRadius: 2,
+              elevation: 3,
+            }}
+          >
+            <MaterialCommunityIcons
+              name={icon}
+              size={24}
+              color="black"
+              style={{ paddingHorizontal: 4, paddingVertical: 2 }}
+            />
+            <Text className="text-black px-2 text-lg">{msg}</Text>
+          </TouchableOpacity>
+        ) : (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )}
         <View className="border-b-neutral-400 border-b m-4">
           <Text className="text-xl mb-3 font-semibold">About Me</Text>
           <Text className="text-base mb-8">{tutor.bio || "No Bio"}</Text>
@@ -114,7 +133,9 @@ const TutorDetails = (props) => {
         </View>
         <View className="border-b-neutral-400 border-b mx-4 py-3">
           <View className="flex-row">
-            <Text className="text-xl font-semibold self-center">Availability:</Text>
+            <Text className="text-xl font-semibold self-center">
+              Availability:
+            </Text>
             <View className="flex-row my-2 text-wrap">
               {tutor.availability ? (
                 tutor.availability.map((day, idx) => (
