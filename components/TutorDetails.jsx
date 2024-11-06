@@ -7,6 +7,7 @@ const TutorDetails = (props) => {
   const { profile, updateProfile } = useContext(UserContext);
   const [request, setRequest] = useState(null);
   const [topic, setTopic] = useState(null);
+  const [icon, setIcon] = useState("account-arrow-right");
   const tutor = props.tutor.tutor;
 
   const getRandomColor = () => {
@@ -31,7 +32,7 @@ const TutorDetails = (props) => {
         />
         <View className="absolute bottom-0 left-0 flex-row justify-between w-full">
           <View
-            className="rounded-lg mb-4 ml-4 border border-neutral-400/[0.1]"
+            className="rounded-lg m-6 border border-neutral-400/[0.1]"
             style={{
               backgroundColor: randomColor,
               shadowColor: "#00000",
@@ -41,45 +42,53 @@ const TutorDetails = (props) => {
               elevation: 3,
             }}
           >
-            <Text className="text-2xl font-bold text-white p-3">
+            <Text className="text-2xl font-bold text-white px-2 py-1">
               {tutor.firstName} {tutor.lastName}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() => handleRequestTutor(tutor.id)}
-            className="bg-green-500 rounded-lg w-fit-content self-center mx-4 flex-row items-center border border-neutral-400/[0.1]"
-            style={{
-              shadowColor: "#000000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.9,
-              shadowRadius: 2,
-              elevation: 3,
-            }}
-          >
-            <MaterialCommunityIcons
-              name="account-arrow-right"
-              size={24}
-              color="white"
-              style={{ paddingHorizontal: 4, paddingVertical: 2 }}
-            />
-            <Text className="text-white px-2 text-lg">Request Tutoring</Text>
-          </TouchableOpacity>
         </View>
       </View>
       <View className="w-full flex-1 justify-center">
-        <View className="w-full p-4 bg-green-200">
-          <Text className="text-xl mb-3 font-bold">About Me</Text>
+        <TouchableOpacity
+          onPress={() => handleRequestTutor(tutor.id)}
+          className="bg-white rounded-2xl p-1 w-fit-content self-center m-2 flex-row items-center border border-neutral-400/[0.1]"
+          style={{
+            shadowColor: "#000000",
+            shadowOffset: { width: 2, height: 2 },
+            shadowOpacity: 0.9,
+            shadowRadius: 2,
+            elevation: 3,
+          }}
+        >
+          <MaterialCommunityIcons
+            name={icon}
+            size={24}
+            color="black"
+            style={{ paddingHorizontal: 4, paddingVertical: 2 }}
+          />
+          <Text className="text-black px-2 text-lg">Request Tutor</Text>
+        </TouchableOpacity>
+        <View className="border-b-neutral-400 border-b m-4">
+          <Text className="text-xl mb-3 font-semibold">About Me</Text>
           <Text className="text-base mb-8">{tutor.bio || "No Bio"}</Text>
         </View>
-        <View className="w-full flex-grow">
-          <Text className="text-lg mb-3">Studying: {tutor.study}</Text>
-          <Text className="text-xl font-bold mb-2">Topics:</Text>
-          {tutor.topics &&
-            tutor.topics.map((topic, idx) => (
-              <Text key={idx} className="text-base mb-1">
-                - {topic}
-              </Text>
-            ))}
+        <View className="border-b-neutral-400 border-b mx-4 py-2">
+          <View className="flex-row">
+            <Text className="text-lg mb-3 font-semibold">Studying: </Text>
+            <Text className="text-lg mb-3 ml-4">{tutor.study}</Text>
+          </View>
+          <View className="flex-row my-2 text-wrap">
+            <Text className="text-lg font-semibold self-center mb-2">Topics:</Text>
+            {tutor.topics ? (
+              tutor.topics.map((topic, idx) => (
+                <Text key={idx} className="mb-1 ml-2 bg-neutral-200 rounded-2xl p-2">
+                  {topic}
+                </Text>
+              ))
+            ) : (
+              <Text className="mb-1 bg-neutral-200 rounded-2xl p-2 ml-2">None</Text>
+            )}
+          </View>
         </View>
         <Text className="text-xl font-bold mb-2">Availability:</Text>
         <Text className="text-base mb-8">

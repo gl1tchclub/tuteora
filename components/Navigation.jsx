@@ -56,9 +56,7 @@ const HomeStack = () => {
       <Stack.Screen
         name="TutorInfo"
         component={TutorInfoScreen}
-        options={({ route }) => ({
-          title: `${route.params.tutor.firstName} ${route.params.tutor.lastName}'s Info`,
-        })}
+        options={{ title: null }}
       />
     </Stack.Navigator>
   );
