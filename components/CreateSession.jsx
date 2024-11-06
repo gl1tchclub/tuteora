@@ -20,8 +20,9 @@ const CreateSession = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState(null);
-  const [student, setStudent] = useState(null);
-  const [tutor, setTutor] = useState(null);
+  // const [student, setStudent] = useState(null);
+  // const [tutor, setTutor] = useState(null);
+  const [receiverId, setReceiverId] = useState(null);
   const [topic, setTopic] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
@@ -29,14 +30,15 @@ const CreateSession = ({ navigation }) => {
   const { profile } = useContext(UserContext);
   const { createSession, sessions } = useContext(SessionContext);
   const associates = profile.accountType == "Tutor" ? profile.students : profile.tutor;
+  const creatorId = profile.id;
 
-  useEffect(() => {
-    if (profile.accountType === "Tutor") {
-      setTutor(profile.id);
-    } else {
-      setStudent(profile.id);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (profile.accountType === "Tutor") {
+  //     setTutor(profile.id);
+  //   } else {
+  //     setStudent(profile.id);
+  //   }
+  // }, []);
 
   const handleCreateSession = async () => {
     try {
@@ -114,10 +116,10 @@ const CreateSession = ({ navigation }) => {
           <Text className="font-semibold text-lg self-center pb-2">
             Student:
           </Text>
-          {!associates || !associates.length == 0 ? (
+          {associates || !associates.length == 0 ? (
             <View className="h-10 w-8/12 justify-center bg-[#46ab61]/[.6] rounded-lg">
               <Picker
-                selectedValue={student}
+                selectedValue={receiverId}
                 onValueChange={(itemValue) => setStudent(itemValue)}
                 style={{ color: "white" }}
               >
@@ -139,7 +141,7 @@ const CreateSession = ({ navigation }) => {
       )}
       {student && (
         <Text className="font-semibold text-lg self-center pb-2">
-          Session with <Text className="italic">{associates}</Text>
+          Session with <Text className="italic">{associates.firstName} {associates.lastName}</Text>
         </Text>
       )}
       <TextInput

@@ -1,4 +1,4 @@
-import { db } from "../services/firebase";
+import { db, auth } from "../services/firebase";
 import {
   doc,
   setDoc,
@@ -9,14 +9,13 @@ import {
   query,
   or,
 } from "firebase/firestore";
-import { createContext, useState, useEffect, useContext } from "react";
-import { UserContext } from "./UserContext";
+import { createContext, useState, useEffect } from "react";
 
 export const RequestsContext = createContext();
 
 export const RequestsProvider = (props) => {
   const [requests, setRequests] = useState([]);
-  const { user } = useContext(UserContext);
+  const user = auth.currentUser;
 
   const loadRequests = async () => {
     try {

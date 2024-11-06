@@ -6,6 +6,7 @@ import { UserProvider } from "./contexts/UserContext";
 import { SessionProvider } from "./contexts/SessionsContext";
 import { TutorProvider } from "./contexts/TutorsContext";
 import { RequestsProvider } from "./contexts/RequestsContext";
+import { StudentProvider } from "./contexts/StudentsContext";
 import AppNavigator from "./components/Navigation";
 import AuthScreen from "./screens/AuthScreen";
 import { KeyboardAvoidingView } from "react-native";
@@ -48,12 +49,17 @@ export default function App() {
     <UserProvider>
       <SessionProvider>
         <RequestsProvider>
-          <TutorProvider>
-            <View className="flex-1 justify-center" onLayout={onLayoutRootView}>
-              <AppNavigator />
-              <StatusBar style="auto" />
-            </View>
-          </TutorProvider>
+          <StudentProvider>
+            <TutorProvider>
+              <View
+                className="flex-1 justify-center"
+                onLayout={onLayoutRootView}
+              >
+                <AppNavigator />
+                <StatusBar style="auto" />
+              </View>
+            </TutorProvider>
+          </StudentProvider>
         </RequestsProvider>
       </SessionProvider>
     </UserProvider>

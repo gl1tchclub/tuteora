@@ -10,9 +10,11 @@ import {
 import { useEffect, useState, useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "../contexts/UserContext";
+import { RequestsContext } from "../contexts/RequestsContext";
 
 const TutorDetails = (props) => {
   const { profile, updateProfile } = useContext(UserContext);
+  const { requests, createRequest } = useContext(RequestsContext);
   const [request, setRequest] = useState(null);
   const [topic, setTopic] = useState(null);
   const [icon, setIcon] = useState("account-arrow-right");
@@ -31,25 +33,31 @@ const TutorDetails = (props) => {
 
   const randomColor = getRandomColor();
 
-  const handleRequestTutor = (tutorId) => {
+  const handleRequestTutor = async (tutor) => {
     try {
       setLoading(true);
       setIcon("check");
       setMsg("Sent!");
-      setRequest({
-        creatorId: profile.id,
-        receiverId: tutorId,
+      const req = await createRequest({
+        creator: {
+          id: profile.id,
+          name: `${profile.firstName} ${profile.lastName}`,
+        },
+        receiver: {
+          id: tutor.id,
+          name: `${tutor.firstName} ${tutor.lastName}`,
+        },
         type: "student",
-        student: `${profile.firstName} ${profile.lastName}`,
         study: profile.study,
         requestDate: new Date().toLocaleDateString(),
       });
+      console.log("Request sent: ", req);
+      if (req) props.navigation.goBack();
     } catch (error) {
       console.error("Request creation error: ", error.message);
       Alert.alert("Request Failed:", error.message);
     } finally {
       setLoading(false);
-      if (!console.error) props.navigation.navigate("Dashboard");
     }
   };
 
@@ -81,7 +89,7 @@ const TutorDetails = (props) => {
       <View className="w-full flex-1 justify-center">
         {!loading ? (
           <TouchableOpacity
-            onPress={() => handleRequestTutor(tutor.id)}
+            onPress={() => handleRequestTutor(tutor)}
             className="bg-white rounded-2xl p-1 w-fit-content self-center m-2 flex-row items-center border border-neutral-400/[0.1]"
             style={{
               shadowColor: "#000000",

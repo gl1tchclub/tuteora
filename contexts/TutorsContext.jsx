@@ -20,18 +20,18 @@ export const TutorProvider = (props) => {
 
   useEffect(() => {
     loadTutors();
-  }, [auth]);
+  }, []);
 
-  // const updateTutor = async (tutor) => {
-  //   try {
-  //     await setDoc(doc(db, "tutors", tutor.uid), tutor);
-  //   } catch (error) {
-  //     console.error("Tutor update error: ", error.message);
-  //   }
-  // };
+  const updateTutor = async (tutor) => {
+    try {
+      await setDoc(doc(db, "tutors", tutor.id), tutor);
+    } catch (error) {
+      console.error("Tutor update error: ", error.message);
+    }
+  };
 
   return (
-    <TutorContext.Provider value={{ tutors }}>
+    <TutorContext.Provider value={{ tutors, updateTutor }}>
       {props.children}
     </TutorContext.Provider>
   );
