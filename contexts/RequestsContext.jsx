@@ -71,6 +71,7 @@ export const RequestsProvider = (props) => {
         loadRequests,
         createRequest,
         deleteRequest,
+        setRequests,
       }}
     >
       {props.children}

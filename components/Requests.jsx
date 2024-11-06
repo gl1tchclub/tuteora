@@ -7,49 +7,14 @@ import {
 } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { RequestsContext } from "../contexts/RequestsContext";
 import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      type: "student",
-      student: "John Doe",
-      study: "Math",
-      requestDate: "11/4/2024",
-      isAccepted: false,
-    },
-    {
-      id: 2,
-      type: "student",
-      student: "Jane Doe",
-      study: "Programming",
-      requestDate: "11/4/2024",
-      isAccepted: false,
-    },
-    {
-      id: 3,
-      type: "session",
-      student: "Janadsde Doe",
-      topic: "Math",
-      date: "11/9/2024",
-      time: "12:00:00 PM",
-      location: "Online",
-      isAccepted: false,
-    },
-    {
-      id: 4,
-      type: "session",
-      student: "Joseph Dunn",
-      topic: "IT",
-      date: "11/13/2024",
-      time: "12:00:00 PM",
-      location: "Online",
-      isAccepted: false,
-    },
-  ]);
+  const { requests, deleteRequest } =
+    useContext(RequestsContext);
 
   const sections = [
     {
@@ -66,15 +31,17 @@ const RequestsList = () => {
   ];
 
   const handleDeleteRequest = (id) => {
-    setRequests(requests.filter((req) => req.id !== id));
+    deleteRequest(id);
+    // setRequests(requests.filter((req) => req.id !== id));
   };
-  
+
   const handleAcceptRequest = (id) => {
-    setRequests(
-      requests.map((req) =>
-        req.id === id ? { ...req, isAccepted: true } : req
-      )
-    );
+    // create session and delete request
+    // setRequests(
+    //   requests.map((req) =>
+    //     req.id === id ? { ...req, isAccepted: true } : req
+    //   )
+    // );
     // handleDeleteRequest(id);
     // if type "student", delete request and getDoc for student profile and add to tutor associates
   };
@@ -98,11 +65,11 @@ const RequestsList = () => {
     <View className="bg-white p-4 my-2 rounded-xl w-11/12 self-center">
       {item.type == "student" && (
         <View className="flex-row justify-between">
-          {item.isAccepted == false ? (
-            <>
-              <Text className="font-bold text-lg">{item.student}</Text>
-              <Text className="font-bold text-lg">{item.subject}</Text>
-              <View className="flex-row">
+          <Text className="font-bold text-lg">{item.student}</Text>
+          <Text className="font-bold text-lg">{item.subject}</Text>
+          <View className="flex-row">
+            {item.receiverId === profile.id ? (
+              <>
                 <TouchableOpacity
                   onPress={() => handleAcceptRequest(item.id)}
                   className="bg-green-500 rounded w-fit-content self-center mr-2"
@@ -123,13 +90,11 @@ const RequestsList = () => {
                     color="white"
                   />
                 </TouchableOpacity>
-              </View>
-            </>
-          ) : (
-            <View className="items-center w-full">
-              <Text className="font-bold text-lg text-lime-600">Accepted!</Text>
-            </View>
-          )}
+              </>
+            ) : (
+              <Text className="font-bold text-lg">Pending...</Text>
+            )}
+          </View>
         </View>
       )}
       {item.type === "session" && (
