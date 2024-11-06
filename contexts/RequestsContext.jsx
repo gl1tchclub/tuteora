@@ -25,6 +25,7 @@ export const RequestsProvider = (props) => {
           }))
         : null;
       setRequests(requestsData);
+      if (requests) requests.forEach((req) => console.log("Requests Loaded: ", req));
     } catch (error) {
       console.error("Requests loading error: ", error.message);
     }
@@ -44,21 +45,11 @@ export const RequestsProvider = (props) => {
     }
   };
 
-  const deleteRequest = async (request) => {
+  const deleteRequest = async (requestId) => {
     try {
-      const q = query(collection(db, "requests"), where(doc, "==", request));
-      const querySnapshot = await getDocs(q);
-      await deleteDoc(q);
+      await deleteDoc(doc(db, "requests", requestId));
     } catch (error) {
       console.error("Request deletion error: ", error.message);
-    }
-  };
-
-  const updateRequest = async (updatedRequest) => {
-    try {
-      await setDoc(doc(db, "requests", updatedRequest.id), updatedRequest);
-    } catch (error) {
-      console.error("Request update error: ", error.message);
     }
   };
 
@@ -69,7 +60,6 @@ export const RequestsProvider = (props) => {
         loadRequests,
         createRequest,
         deleteRequest,
-        updateRequest,
       }}
     >
       {props.children}
