@@ -1,23 +1,33 @@
-import { db, auth } from "../services/firebase";
+import { db } from "../services/firebase";
 import {
   doc,
   setDoc,
-  getDoc,
+  where,
   deleteDoc,
   getDocs,
-  where,
   collection,
+  query,
+  or,
 } from "firebase/firestore";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { UserContext } from "./UserContext";
 
 export const RequestsContext = createContext();
 
 export const RequestsProvider = (props) => {
   const [requests, setRequests] = useState([]);
+  const { user } = useContext(UserContext);
 
   const loadRequests = async () => {
     try {
-      const requestsSnapshot = await getDocs(doc(db, "requests"));
+      const requestQuery = query(
+        collection(db, "requests"),
+        or(
+          where("creatorId", "==", user.uid),
+          where("receiverId", "==", user.uid)
+        )
+      );
+      const requestsSnapshot = await getDocs(requestQuery);
       const requestsData = requestsSnapshot
         ? requestsSnapshot.docs.map((doc) => ({
             id: doc.id,
@@ -25,7 +35,8 @@ export const RequestsProvider = (props) => {
           }))
         : null;
       setRequests(requestsData);
-      if (requests) requests.forEach((req) => console.log("Requests Loaded: ", req));
+      if (requests)
+        requests.forEach((req) => console.log("Requests Loaded: ", req));
     } catch (error) {
       console.error("Requests loading error: ", error.message);
     }
