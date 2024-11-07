@@ -16,7 +16,6 @@ const TutorDetails = (props) => {
   const { profile, updateProfile } = useContext(UserContext);
   const { requests, createRequest } = useContext(RequestsContext);
   const [request, setRequest] = useState(null);
-  const [topic, setTopic] = useState(null);
   const [icon, setIcon] = useState("account-arrow-right");
   const [msg, setMsg] = useState("Request Tutor");
   const [loading, setLoading] = useState(false);
@@ -38,7 +37,7 @@ const TutorDetails = (props) => {
       setLoading(true);
       setIcon("check");
       setMsg("Sent!");
-      const req = await createRequest({
+      const req = {
         creator: {
           id: profile.id,
           name: `${profile.firstName} ${profile.lastName}`,
@@ -50,14 +49,33 @@ const TutorDetails = (props) => {
         type: "student",
         study: profile.study,
         requestDate: new Date().toLocaleDateString(),
-      });
-      console.log("Request sent: ", req);
-      if (req) props.navigation.goBack();
+      };
+      console.log("Req: ", req);
+      await createRequest(req);
+      console.log(requests);
+      // setRequest({
+      //   creator: {
+      //     id: profile.id,
+      //     name: `${profile.firstName} ${profile.lastName}`,
+      //   },
+      //   receiver: {
+      //     id: tutor.id,
+      //     name: `${tutor.firstName} ${tutor.lastName}`,
+      //   },
+      //   type: "student",
+      //   study: profile.study,
+      //   requestDate: new Date().toLocaleDateString(),
+      // });
+      // await createRequest(request);
+      // console.log("Request sent: ", request);
     } catch (error) {
       console.error("Request creation error: ", error.message);
       Alert.alert("Request Failed:", error.message);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        props.navigation.navigate("Dashboard");
+      }, 500);
     }
   };
 

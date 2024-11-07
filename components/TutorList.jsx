@@ -16,30 +16,30 @@ const TutorList = ({ navigation }) => {
   const { profile } = useContext(UserContext);
   const { tutors } = useContext(TutorContext);
   const { requests } = useContext(RequestsContext);
-  console.log("Tutors: ", tutors);
+  const [availableTutors, setAvailableTutors] = useState([]);
 
-  const availableTutors = tutors.filter((tutor) => tutor.isAvailable);
+  useEffect(() => {
+    setAvailableTutors(
+      tutors.filter(
+        (tutor) =>
+          tutor.isAvailable &&
+          !tutor.students.includes((student) => student.id === profile.id) &&
+          !requests.includes(
+            (req) =>
+              req.receiver.id === tutor.id &&
+              req.creator.id === profile.id &&
+              req.type === "student"
+          )
+      )
+    );
+    console.log("Tutors: ", availableTutors);
+  }, [tutors]);
 
   const handlePress = (tutor) => {
     navigation.navigate("TutorInfo", { tutor });
   };
 
   const RenderTutor = (tutor) => {
-    const isAlreadyRequested =
-    requests.find(
-      (req) =>
-        req.receiver.id === tutor.id &&
-        req.creator.id === profile.id &&
-        req.type === "student"
-    ) ||
-    tutors.find((tutor) => tutor.students.includes(profile.id))
-      ? true
-      : false;
-
-  if (isAlreadyRequested) {
-    return null;
-  }
-
     return (
       <TouchableOpacity
         onPress={() => handlePress(tutor)}

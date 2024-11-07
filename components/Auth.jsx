@@ -51,7 +51,7 @@ const Auth = () => {
     try {
       setLoading(true);
       if (isLogin) {
-        await login(email, password, `${accountType.toLowerCase()}s`);
+        await login(email, password);
         Alert.alert("Logged in successfully!");
       } else {
         await register({

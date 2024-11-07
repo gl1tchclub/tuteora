@@ -22,18 +22,16 @@ export const RequestsProvider = (props) => {
       const requestQuery = query(
         collection(db, "requests"),
         or(
-          where("creatorId", "==", user.uid),
-          where("receiverId", "==", user.uid)
+          where("creator.id", "==", user.uid),
+          where("receiver.id", "==", user.uid)
         )
       );
       const requestsSnapshot = await getDocs(requestQuery);
       const requestsData = requestsSnapshot
-        ? requestsSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
+        ? requestsSnapshot.docs.map((doc) => doc.data())
         : null;
       setRequests(requestsData);
+      console.log("Requests: ", requests);
       if (requests)
         requests.forEach((req) => console.log("Requests Loaded: ", req));
     } catch (error) {
@@ -49,7 +47,9 @@ export const RequestsProvider = (props) => {
     try {
       const newReqRef = doc(collection(db, "requests"));
       newRequest.id = newReqRef.id;
+      console.log("ID: ", newRequest.id);
       await setDoc(newReqRef, newRequest);
+      loadRequests();
     } catch (error) {
       console.error("Request creation error: ", error.message);
     }
