@@ -15,11 +15,11 @@ import { RequestsContext } from "../contexts/RequestsContext";
 const TutorDetails = (props) => {
   const { profile, updateProfile } = useContext(UserContext);
   const { requests, createRequest } = useContext(RequestsContext);
-  const [request, setRequest] = useState(null);
-  const [icon, setIcon] = useState("account-arrow-right");
   const [msg, setMsg] = useState("Request Tutor");
+  const [icon, setIcon] = useState("account-check");
   const [loading, setLoading] = useState(false);
   const tutor = props.tutor.tutor;
+  console.log("Tutor: ", tutor);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -50,24 +50,7 @@ const TutorDetails = (props) => {
         study: profile.study,
         requestDate: new Date().toLocaleDateString(),
       };
-      console.log("Req: ", req);
       await createRequest(req);
-      console.log(requests);
-      // setRequest({
-      //   creator: {
-      //     id: profile.id,
-      //     name: `${profile.firstName} ${profile.lastName}`,
-      //   },
-      //   receiver: {
-      //     id: tutor.id,
-      //     name: `${tutor.firstName} ${tutor.lastName}`,
-      //   },
-      //   type: "student",
-      //   study: profile.study,
-      //   requestDate: new Date().toLocaleDateString(),
-      // });
-      // await createRequest(request);
-      // console.log("Request sent: ", request);
     } catch (error) {
       console.error("Request creation error: ", error.message);
       Alert.alert("Request Failed:", error.message);

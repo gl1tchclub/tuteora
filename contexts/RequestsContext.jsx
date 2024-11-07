@@ -15,6 +15,7 @@ export const RequestsContext = createContext();
 
 export const RequestsProvider = (props) => {
   const [requests, setRequests] = useState([]);
+  const [isRequested, setIsRequested] = useState(false);
   const user = auth.currentUser;
 
   const loadRequests = async () => {
@@ -32,8 +33,6 @@ export const RequestsProvider = (props) => {
         : null;
       setRequests(requestsData);
       console.log("Requests: ", requests);
-      if (requests)
-        requests.forEach((req) => console.log("Requests Loaded: ", req));
     } catch (error) {
       console.error("Requests loading error: ", error.message);
     }
@@ -45,11 +44,16 @@ export const RequestsProvider = (props) => {
 
   const createRequest = async (newRequest) => {
     try {
-      const newReqRef = doc(collection(db, "requests"));
-      newRequest.id = newReqRef.id;
-      console.log("ID: ", newRequest.id);
-      await setDoc(newReqRef, newRequest);
-      loadRequests();
+      if (requests.includes(newRequest)) {
+        setIsRequested(true);
+        return null;
+      } else {
+        setIsRequested(false);
+        const newReqRef = doc(collection(db, "requests"));
+        newRequest.id = newReqRef.id;
+        await setDoc(newReqRef, newRequest);
+        loadRequests();
+      }
     } catch (error) {
       console.error("Request creation error: ", error.message);
     }
@@ -71,6 +75,7 @@ export const RequestsProvider = (props) => {
         createRequest,
         deleteRequest,
         setRequests,
+        isRequested,
       }}
     >
       {props.children}

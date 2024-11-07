@@ -1,15 +1,27 @@
 import { View, Text, Button } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { RequestsContext } from "../contexts/RequestsContext";
 
 const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);
+  const { requests } = useContext(RequestsContext);
+  const [isRequested, setIsRequested] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("");
   const [endpoint, setEndpoint] = useState("");
 
   useEffect(() => {
     if (profile.tutor) {
       setButtonMessage("Change Tutor");
+    } else if (
+      !requests.includes(
+        (req) =>
+          req.receiver.id === tutor.id &&
+          req.creator.id === profile.id &&
+          req.type === "student"
+      )
+    ) {
+      setIsRequested(true);
     } else {
       setButtonMessage("Request A Tutor");
     }
@@ -39,11 +51,15 @@ const HomeScreen = (props) => {
         </Text>
         {profile.accountType === "Student" && (
           <View className="mb-2">
-            <Button
-              color="#46ab61"
-              title={buttonMessage}
-              onPress={() => props.navigation.navigate("Tutors")}
-            />
+            {!isRequested ? (
+              <Button
+                color="#46ab61"
+                title={buttonMessage}
+                onPress={() => props.navigation.navigate("Tutors")}
+              />
+            ) : (
+              <Text className="text-lg self-center">Tutor Pending . . .</Text>
+            )}
           </View>
         )}
         <Button onPress={handleLogout} title="Log Out" color="#2b69ba" />
