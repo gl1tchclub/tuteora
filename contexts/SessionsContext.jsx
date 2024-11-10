@@ -1,5 +1,5 @@
 import { db, auth } from "../services/firebase";
-import { doc, setDoc, getDoc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc, onSnapshot, collection } from "firebase/firestore";
 import { createContext, useState, useEffect } from "react";
 
 export const SessionContext = createContext();
@@ -37,12 +37,8 @@ export const SessionProvider = (props) => {
 
   const createSession = async (newSession, accountType) => {
     try {
-      const sessionRef = "";
-      if (accountType === "tutor") {
-        sessionRef = doc(db, `sessions/${user.uid}`, newSession.studentId);
-      } else {
-        sessionRef = doc(db, `sessions/${user.uid}`, newSession.tutorId);
-      };
+      const sessionRef = doc(collection(db, `sessions/${user.uid}`));
+      newSession.id = sessionRef.id;
       await setDoc(sessionRef, newSession);
     } catch (error) {
       console.error("Session creation error: ", error.message);

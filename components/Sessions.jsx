@@ -104,6 +104,17 @@ const SessionsComponent = ({ navigation }) => {
                     color="white"
                   />
                 </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleDeleteSession(index)}
+                  className="bg-green-500 p-2 rounded w-fit-content self-center"
+                >
+                  <Text>Complete</Text>
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
               </SessionWidget>
             )}
           </View>
