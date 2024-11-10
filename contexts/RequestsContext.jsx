@@ -8,6 +8,7 @@ import {
   collection,
   query,
   or,
+  onSnapshot,
 } from "firebase/firestore";
 import { createContext, useState, useEffect } from "react";
 
@@ -20,18 +21,22 @@ export const RequestsProvider = (props) => {
 
   const loadRequests = async () => {
     try {
-      const requestQuery = query(
-        collection(db, "requests"),
-        or(
-          where("creator.id", "==", user.uid),
-          where("receiver.id", "==", user.uid)
-        )
-      );
-      const requestsSnapshot = await getDocs(requestQuery);
-      const requestsData = requestsSnapshot
-        ? requestsSnapshot.docs.map((doc) => doc.data())
-        : null;
-      setRequests(requestsData);
+      if (user) {
+        const requestQuery = query(
+          collection(db, "requests"),
+          or(
+            where("creator.id", "==", user.uid),
+            where("receiver.id", "==", user.uid)
+          )
+        );
+        const unsubscribe = onSnapshot(requestQuery, (snapshot) => {
+          const requestsData = snapshot.docs.map((doc) => doc.data());
+          setRequests(requestsData);
+        });
+        return () => unsubscribe();
+      } else {
+        setRequests([]);
+      }
       console.log("Requests: ", requests);
     } catch (error) {
       console.error("Requests loading error: ", error.message);
@@ -39,8 +44,9 @@ export const RequestsProvider = (props) => {
   };
 
   useEffect(() => {
-    loadRequests();
-  }, []);
+    const unsubscribe = loadRequests();
+    return () => unsubscribe && unsubscribe();
+  }, [user]);
 
   const createRequest = async (newRequest) => {
     try {

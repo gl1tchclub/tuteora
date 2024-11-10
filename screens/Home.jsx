@@ -11,9 +11,12 @@ const HomeScreen = (props) => {
   const [endpoint, setEndpoint] = useState("");
 
   useEffect(() => {
+    console.log(requests);
     if (profile.tutor) {
       setButtonMessage("Change Tutor");
+      setIsRequested(false);
     } else if (
+      requests.length > 0 &&
       !requests.includes(
         (req) =>
           req.receiver.id === tutor.id &&
@@ -24,8 +27,9 @@ const HomeScreen = (props) => {
       setIsRequested(true);
     } else {
       setButtonMessage("Request A Tutor");
+      setIsRequested(false);
     }
-  }, [profile]);
+  }, [requests]);
 
   const handleLogout = async () => {
     try {

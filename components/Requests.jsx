@@ -10,11 +10,12 @@ import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
 import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SessionContext } from "../contexts/SessionsContext";
 
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
-  const { requests, deleteRequest } =
-    useContext(RequestsContext);
+  const { requests, deleteRequest } = useContext(RequestsContext);
+  const { createSession } = useContext(SessionContext);
 
   const sections = [
     {
