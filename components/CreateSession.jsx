@@ -15,6 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 const CreateSession = ({ navigation }) => {
+  const { createSession } = useContext(SessionContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,10 +29,6 @@ const CreateSession = ({ navigation }) => {
   const [time, setTime] = useState(null);
   const [dateTime, setDateTime] = useState(null);
   const { profile } = useContext(UserContext);
-  const { createSession, sessions } = useContext(SessionContext);
-  const associates =
-    profile.accountType == "Tutor" ? profile.students : profile.tutor;
-  const creatorId = profile.id;
 
   // useEffect(() => {
   //   if (profile.accountType === "Tutor") {

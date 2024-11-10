@@ -13,6 +13,8 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
+  const { cancelSession } = useContext(SessionContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [sessions, setSessions] = useState([
     {
       tutor: "John Doe",
@@ -58,8 +60,19 @@ const SessionsComponent = ({ navigation }) => {
     navigation.navigate("CreateSession");
   };
 
-  const handleDeleteSession = (index) => {
-    setSessions(sessions.filter((_, i) => i !== index));
+  const handleDeleteSession = async (sessionId) => {
+    try {
+      setIsLoading(true);
+      await cancelSession(sessionId);
+    } catch (error) {
+      console.error("Session deletion error: ", error.message);
+    } finally {
+      console.log("\nSession deleted successfully!");
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+    // setSessions(sessions.filter((_, i) => i !== index));
   };
 
   return (
