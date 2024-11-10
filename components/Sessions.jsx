@@ -94,27 +94,30 @@ const SessionsComponent = ({ navigation }) => {
           <View key={index}>
             {!item.isCompleted && (
               <SessionWidget {...item} accountType={profile.accountType}>
-                <TouchableOpacity
-                  onPress={() => handleDeleteSession(index)}
-                  className="bg-red-500 p-2 rounded w-fit-content self-center"
-                >
-                  <MaterialCommunityIcons
-                    name="delete-outline"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteSession(index)}
-                  className="bg-green-500 p-2 rounded w-fit-content self-center"
-                >
-                  <Text>Complete</Text>
-                  <MaterialCommunityIcons
-                    name="check"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
+                <View className="flex-row justify-center space-x-2 mt-2">
+                  <TouchableOpacity
+                    onPress={() => handleDeleteSession(index)}
+                    className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                  >
+                    <MaterialCommunityIcons
+                      name="delete-outline"
+                      size={20}
+                      color="white"
+                    />
+                    <Text className="text-white">Cancel</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleDeleteSession(index)}
+                    className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                  >
+                    <MaterialCommunityIcons
+                      name="check"
+                      size={20}
+                      color="white"
+                    />
+                    <Text className="text-white">Complete</Text>
+                  </TouchableOpacity>
+                </View>
               </SessionWidget>
             )}
           </View>
