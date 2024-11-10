@@ -1,5 +1,5 @@
 import { db, auth } from "../services/firebase";
-import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc, onSnapshot } from "firebase/firestore";
 import { createContext, useState, useEffect } from "react";
 
 export const SessionContext = createContext();
@@ -8,30 +8,32 @@ export const SessionProvider = (props) => {
   const [sessions, setSessions] = useState(null);
   const user = auth.currentUser;
 
-  const loadSessions = async () => {
-    try {
-      if (!user) {
-        setSessions(null);
-        return;
-      }
-      const sessionsRef = doc(db, `sessions/${user.uid}`); //get sessions for current user
-      const sessionsSnapshot = await getDoc(sessionsRef); //get the snapshot of the sessions
+  const loadSessions = () => {
+    if (!user) {
+      setSessions(null);
+      return;
+    }
+    const sessionsRef = doc(db, `sessions/${user.uid}`);
+    const unsubscribe = onSnapshot(sessionsRef, (sessionsSnapshot) => {
       if (sessionsSnapshot.exists()) {
-        const sessionList = sessionsSnapshot.docs.map((doc) => doc.data()); //convert
-        setSessions(sessionList); //set
+        const sessionList = sessionsSnapshot.docs.map((doc) => doc.data());
+        setSessions(sessionList);
         console.log("\nSessions found: ", sessionList);
       } else {
         setSessions(null);
         console.log("\nNo sessions found.");
       }
-    } catch (error) {
+    }, (error) => {
       console.error("Session loading error: ", error.message);
-    }
+    });
+
+    return unsubscribe;
   };
 
   useEffect(() => {
-    loadSessions();
-  }, [sessions]);
+    const unsubscribe = loadSessions();
+    return () => unsubscribe && unsubscribe();
+  }, [user]);
 
   const createSession = async (newSession, accountType) => {
     try {

@@ -62,36 +62,40 @@ const RequestsList = () => {
   };
 
   const renderItem = ({ item }) => (
-    // return (
     <View className="bg-white p-4 my-2 rounded-xl w-11/12 self-center">
       {item.type == "student" && (
         <View className="flex-row justify-between">
           <Text className="font-bold text-lg">{item.student}</Text>
           <Text className="font-bold text-lg">{item.subject}</Text>
           <View className="flex-row">
-            {item.receiverId === profile.id ? (
-              <>
-                <TouchableOpacity
-                  onPress={() => handleAcceptRequest(item.id)}
-                  className="bg-green-500 rounded w-fit-content self-center mr-2"
-                >
-                  <MaterialCommunityIcons
-                    name="check"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteRequest(item.id)}
-                  className="bg-red-500 rounded w-fit-content self-center"
-                >
-                  <MaterialCommunityIcons
-                    name="delete-outline"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              </>
+            {item.receiver.id === profile.id ? (
+              <View className="w-full flex-row justify-between">
+                <Text className="font-semibold text-lg ">
+                  {item.creator.name}
+                </Text>
+                <View className="flex-row">
+                  <TouchableOpacity
+                    onPress={() => handleAcceptRequest(item.id)}
+                    className="bg-green-500 rounded w-fit-content self-center mr-2"
+                  >
+                    <MaterialCommunityIcons
+                      name="check"
+                      size={24}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => handleDeleteRequest(item.id)}
+                    className="bg-red-500 rounded w-fit-content self-center"
+                  >
+                    <MaterialCommunityIcons
+                      name="delete-outline"
+                      size={24}
+                      color="white"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
             ) : (
               <Text className="font-bold text-lg">Pending...</Text>
             )}
@@ -135,7 +139,6 @@ const RequestsList = () => {
       )}
     </View>
   );
-  // };
 
   return (
     <SectionList

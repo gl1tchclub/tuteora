@@ -12,22 +12,24 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     console.log(requests);
-    if (profile.tutor) {
-      setButtonMessage("Change Tutor");
-      setIsRequested(false);
-    } else if (
-      requests.length > 0 &&
-      !requests.includes(
-        (req) =>
-          req.receiver.id === tutor.id &&
-          req.creator.id === profile.id &&
-          req.type === "student"
-      )
-    ) {
-      setIsRequested(true);
-    } else {
-      setButtonMessage("Request A Tutor");
-      setIsRequested(false);
+    if (profile.accountType === "Student") {
+      if (profile.tutor) {
+        setButtonMessage("Change Tutor");
+        setIsRequested(false);
+      } else if (
+        requests.length > 0 &&
+        !requests.includes(
+          (req) =>
+            req.receiver.id === tutor.id &&
+            req.creator.id === profile.id &&
+            req.type === "student"
+        )
+      ) {
+        setIsRequested(true);
+      } else {
+        setButtonMessage("Request A Tutor");
+        setIsRequested(false);
+      }
     }
   }, [requests]);
 
