@@ -6,12 +6,7 @@ import {
   signOut,
 } from "@firebase/auth";
 import { db, auth } from "../services/firebase";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 export const UserContext = createContext();
 
@@ -53,13 +48,17 @@ export const UserProvider = (props) => {
 
   const updateProfile = async (updatedProfile) => {
     try {
-      const profileRef = doc(db, `${profile.accountType.toLowerCase()}s`, profile.id);
+      const profileRef = doc(
+        db,
+        `${profile.accountType.toLowerCase()}s`,
+        profile.id
+      );
       await setDoc(profileRef, updatedProfile);
       setProfile(updatedProfile);
     } catch (error) {
       console.error("Profile update error: ", error.message);
     }
-  }
+  };
 
   const register = async (newUser) => {
     try {
@@ -141,7 +140,9 @@ export const UserProvider = (props) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, register, profile, login, logout, updateProfile }}>
+    <UserContext.Provider
+      value={{ user, register, profile, login, logout, updateProfile }}
+    >
       {props.children}
     </UserContext.Provider>
   );

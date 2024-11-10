@@ -1,12 +1,5 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  View,
-  ScrollView,
-  Text,
-  Button,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { View, ScrollView, Text, TouchableOpacity } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { TutorContext } from "../contexts/TutorsContext";

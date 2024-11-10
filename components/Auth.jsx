@@ -4,7 +4,6 @@ import {
   TextInput,
   View,
   ScrollView,
-  StyleSheet,
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
@@ -44,8 +43,6 @@ const Auth = () => {
   ];
 
   const { register, login, user, profile } = useContext(UserContext);
-  // console.log("\nAuth User:", user);
-  // console.log("\nAuth Profile:", profile);
 
   const handleAuthentication = async () => {
     try {
@@ -78,18 +75,26 @@ const Auth = () => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.authContainer}>
-      <ScrollView>
-        <Text style={styles.title}>{isLogin ? "Sign In" : "Sign Up"}</Text>
+    <KeyboardAvoidingView
+      behavior="padding"
+      className="w-4/5 max-w-md bg-white p-4 rounded-lg"
+      style={{
+        elevation: 5,
+      }}
+    >
+      <ScrollView className="shadow-black shadow-md">
+        <Text className="mb-6 text-base self-center">
+          {isLogin ? "Sign In" : "Sign Up"}
+        </Text>
         <TextInput
-          style={styles.input}
+          className="h-10 border-gray-300 border rounded p-2 mb-4"
           value={email}
           onChangeText={setEmail}
           placeholder="Email"
           autoCapitalize="none"
         />
         <TextInput
-          style={styles.input}
+          className="h-10 border-gray-300 border rounded p-2 mb-4"
           value={password}
           onChangeText={setPassword}
           placeholder="Password"
@@ -98,14 +103,14 @@ const Auth = () => {
         {!isLogin && (
           <>
             <TextInput
-              style={styles.input}
+              className="h-10 border-gray-300 border rounded p-2 mb-4"
               value={firstName}
               onChangeText={setFirstName}
               placeholder="First Name"
               autoCapitalize="none"
             />
             <TextInput
-              style={styles.input}
+              className="h-10 border-gray-300 border rounded p-2 mb-4"
               value={lastName}
               onChangeText={setLastName}
               placeholder="Last Name"
@@ -160,7 +165,7 @@ const Auth = () => {
           />
         )}
 
-        <View style={styles.bottomContainer}>
+        <View className="mt-4">
           <Text
             className="text-[#46ab61] self-center pb-4"
             onPress={() => setIsLogin(!isLogin)}
@@ -174,50 +179,5 @@ const Auth = () => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
-  },
-  container: {
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
-    backgroundColor: "#f0f0f0",
-  },
-  authContainer: {
-    width: "80%",
-    maxWidth: 400,
-    backgroundColor: "#fff",
-    padding: 16,
-    borderRadius: 8,
-    elevation: 3,
-  },
-  title: {
-    fontSize: 24,
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  input: {
-    height: 40,
-    borderColor: "#ddd",
-    borderWidth: 1,
-    marginBottom: 16,
-    padding: 8,
-    borderRadius: 4,
-  },
-  bottomContainer: {
-    marginTop: 20,
-  },
-  emailText: {
-    fontSize: 18,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-});
 
 export default Auth;

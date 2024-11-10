@@ -1,13 +1,12 @@
 import {
   ScrollView,
   Text,
-  Image,
   View,
   TouchableOpacity,
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";

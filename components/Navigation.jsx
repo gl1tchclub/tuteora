@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 
 import { UserContext } from "../contexts/UserContext";
 
@@ -11,7 +11,6 @@ import SessionsScreen from "../screens/Sessions.jsx";
 import AuthScreen from "../screens/AuthScreen";
 import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
-// import CreateRequestScreen from "../screens/CreateRequest";
 import TutorListScreen from "../screens/TutorsScreen";
 import TutorInfoScreen from "../screens/TutorInfoScreen";
 
@@ -43,11 +42,6 @@ const HomeStack = () => {
         component={HomeScreen}
         options={{ title: "Dashboard" }}
       />
-      {/* <Stack.Screen
-        name="CreateRequest"
-        component={CreateRequestScreen}
-        options={{ title: "CreateRequest" }}
-      /> */}
       <Stack.Screen
         name="Tutors"
         component={TutorListScreen}
@@ -114,10 +108,6 @@ const BottomNavigation = () => {
 
 const AppNavigator = () => {
   const { user, profile } = useContext(UserContext);
-  // useEffect(() => {
-  //   console.log("Nav user: ", user);
-  //   console.log("Nav profile: ", profile);
-  // }, [profile]);
   return (
     <NavigationContainer>
       {user && profile ? (
