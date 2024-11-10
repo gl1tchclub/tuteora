@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { UserProvider } from "./contexts/UserContext";
 import { SessionProvider } from "./contexts/SessionsContext";
 import { TutorProvider } from "./contexts/TutorsContext";

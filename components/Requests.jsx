@@ -12,12 +12,15 @@ import { TutorContext } from "../contexts/TutorsContext";
 import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SessionContext } from "../contexts/SessionsContext";
+import { StudentContext } from "../contexts/StudentsContext";
 
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
   const { requests, deleteRequest } = useContext(RequestsContext);
   const { createSession } = useContext(SessionContext);
   const { tutors, updateTutor } = useContext(TutorContext);
+  const { students, updateStudent } = useContext(StudentContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const sections = [
     {
@@ -33,12 +36,43 @@ const RequestsList = () => {
     },
   ];
 
-  const handleDeleteRequest = (id) => {
-    deleteRequest(id);
-    // setRequests(requests.filter((req) => req.id !== id));
+  const handleDeleteRequest = async (id) => {
+    try {
+      setIsLoading(true);
+      await deleteRequest(id);
+    } catch (error) {
+      console.error("Request deletion error: ", error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleAcceptRequest = (id) => {
+  const handleAcceptStudent = async (req) => {
+    try {
+      // console.log(students.find((student) => student.id === req.creator.id));
+      const student = students.find((student) => student.id === req.creator.id);
+      student.tutor = {
+        id: profile.id,
+        name: profile.firstName + " " + profile.lastName,
+        // availability: profile.availability,
+        // topics: profile.topics,
+        isAvailable: profile.isAvailable,
+      };
+      profile.students.push({
+        id: student.id,
+        name: student.firstName + " " + student.lastName,
+      });
+      console.log("New Student: ", student);
+      console.log("New Tutor: ", profile);
+      await updateStudent(student);
+      await updateTutor(profile);
+      handleDeleteRequest(req.id);
+    } catch (error) {
+      console.error("Student acceptance error: ", error.message);
+    }
+  };
+
+  const handleAcceptSession = (id) => {
     // create session and delete request
     // setRequests(
     //   requests.map((req) =>
@@ -77,7 +111,7 @@ const RequestsList = () => {
                 </Text>
                 <View className="flex-row">
                   <TouchableOpacity
-                    onPress={() => handleAcceptRequest(item.id)}
+                    onPress={() => handleAcceptStudent(item)}
                     className="bg-green-500 rounded w-fit-content self-center mr-2"
                   >
                     <MaterialCommunityIcons

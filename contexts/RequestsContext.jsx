@@ -44,9 +44,8 @@ export const RequestsProvider = (props) => {
   };
 
   useEffect(() => {
-    const unsubscribe = () => loadRequests();
-    return () => unsubscribe && unsubscribe();
-  }, [user]);
+    loadRequests();
+  }, []);
 
   const createRequest = async (newRequest) => {
     try {
