@@ -1,16 +1,20 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { db, auth } from "../services/firebase";
 import { getDocs, collection, query, where } from "firebase/firestore";
+import { UserContext } from "./UserContext";
 
 export const TutorContext = createContext();
 
 export const TutorProvider = (props) => {
   const [tutors, setTutors] = useState(null);
+  const { profile } = useContext(UserContext);
 
   const loadTutors = async () => {
     try {
-      const tutorsSnapshot = await getDocs(collection(db, "tutors"));     
-      const tutorsList = tutorsSnapshot ? tutorsSnapshot.docs.map((doc) => doc.data()) : null;
+      const tutorsSnapshot = await getDocs(collection(db, "tutors"));
+      const tutorsList = tutorsSnapshot
+        ? tutorsSnapshot.docs.map((doc) => doc.data())
+        : null;
       setTutors(tutorsList);
       console.log("Tutors: ", tutorsList);
     } catch (error) {
@@ -19,8 +23,8 @@ export const TutorProvider = (props) => {
   };
 
   useEffect(() => {
-    loadTutors();
-  }, []);
+    if (profile && profile.accountType === "Student") loadTutors();
+  }, [profile]);
 
   const updateTutor = async (tutor) => {
     try {

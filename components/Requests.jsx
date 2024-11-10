@@ -8,6 +8,7 @@ import {
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
+import { TutorContext } from "../contexts/TutorsContext";
 import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SessionContext } from "../contexts/SessionsContext";
@@ -16,6 +17,7 @@ const RequestsList = () => {
   const { profile } = useContext(UserContext);
   const { requests, deleteRequest } = useContext(RequestsContext);
   const { createSession } = useContext(SessionContext);
+  const { tutors, updateTutor } = useContext(TutorContext);
 
   const sections = [
     {
