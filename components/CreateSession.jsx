@@ -9,13 +9,13 @@ import {
   Pressable,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
-import { SessionContext } from "../contexts/SessionsContext";
+import { RequestsContext } from "../contexts/RequestsContext";
 import { UserContext } from "../contexts/UserContext";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 const CreateSession = ({ navigation }) => {
-  const { createSession } = useContext(SessionContext);
+  const { createRequest } = useContext(RequestsContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -38,7 +38,7 @@ const CreateSession = ({ navigation }) => {
   //   }
   // }, []);
 
-  const handleCreateSession = async () => {
+  const handleCreateSessionRequest = async () => {
     try {
       setLoading(true);
       if (tutor && topic && date && time) {
@@ -72,8 +72,8 @@ const CreateSession = ({ navigation }) => {
       if (session) {
         Alert.alert(
           "Session Created!",
-          `\nTutor: Jeff
-          \nStudent: Jane
+          `\nTutor: ${tutor}
+          \nStudent: ${student}
           \nTopic: ${topic}
           \nDate: ${date}
           \nTime: ${time}
@@ -198,7 +198,7 @@ const CreateSession = ({ navigation }) => {
         <View className="mt-10 self-center">
           <Button
             title="Create Session"
-            onPress={handleCreateSession}
+            onPress={handleCreateSessionRequest}
             color="#46ab61"
           />
         </View>

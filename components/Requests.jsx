@@ -22,6 +22,10 @@ const RequestsList = () => {
   const { students, updateStudent } = useContext(StudentContext);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    console.log(requests);
+  }, [requests]);
+
   const sections = [
     {
       title: "Student Requests",
@@ -72,7 +76,7 @@ const RequestsList = () => {
     }
   };
 
-  const handleAcceptSession = (id) => {
+  const handleAcceptSession = (session) => {
     // create session and delete request
     // setRequests(
     //   requests.map((req) =>
@@ -140,37 +144,25 @@ const RequestsList = () => {
       )}
       {item.type === "session" && (
         <View className="flex-row justify-between">
-          {item.isAccepted == false ? (
-            <>
-              <SessionWidget {...item} accountType={profile.accountType} />
-              <View className="self-center">
-                <TouchableOpacity
-                  onPress={() => handleAcceptRequest(item.id)}
-                  className="bg-green-500 rounded w-fit-content self-center mb-4"
-                >
-                  <MaterialCommunityIcons
-                    name="check"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteRequest(item.id)}
-                  className="bg-red-500 rounded w-fit-content self-center"
-                >
-                  <MaterialCommunityIcons
-                    name="delete-outline"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              </View>
-            </>
-          ) : (
-            <View className="items-center w-full">
-              <Text className="font-bold text-lg text-lime-600">Accepted!</Text>
-            </View>
-          )}
+          <SessionWidget {...item} accountType={profile.accountType} />
+          <View className="self-center">
+            <TouchableOpacity
+              onPress={() => handleAcceptSession(item)}
+              className="bg-green-500 rounded w-fit-content self-center mb-4"
+            >
+              <MaterialCommunityIcons name="check" size={24} color="white" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleDeleteRequest(item.id)}
+              className="bg-red-500 rounded w-fit-content self-center"
+            >
+              <MaterialCommunityIcons
+                name="delete-outline"
+                size={24}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </View>
