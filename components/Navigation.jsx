@@ -11,7 +11,7 @@ import SessionsScreen from "../screens/Sessions.jsx";
 import AuthScreen from "../screens/AuthScreen";
 import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
-import CreateRequestScreen from "../screens/CreateRequest";
+// import CreateRequestScreen from "../screens/CreateRequest";
 import TutorListScreen from "../screens/TutorsScreen";
 import TutorInfoScreen from "../screens/TutorInfoScreen";
 
@@ -43,11 +43,11 @@ const HomeStack = () => {
         component={HomeScreen}
         options={{ title: "Dashboard" }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="CreateRequest"
         component={CreateRequestScreen}
         options={{ title: "CreateRequest" }}
-      />
+      /> */}
       <Stack.Screen
         name="Tutors"
         component={TutorListScreen}

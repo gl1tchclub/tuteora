@@ -29,7 +29,8 @@ const CreateSession = ({ navigation }) => {
   const [dateTime, setDateTime] = useState(null);
   const { profile } = useContext(UserContext);
   const { createSession, sessions } = useContext(SessionContext);
-  const associates = profile.accountType == "Tutor" ? profile.students : profile.tutor;
+  const associates =
+    profile.accountType == "Tutor" ? profile.students : profile.tutor;
   const creatorId = profile.id;
 
   // useEffect(() => {
@@ -111,21 +112,21 @@ const CreateSession = ({ navigation }) => {
         />
         New Session
       </Text>
-      {tutor && (
+      {profile.students && (
         <View className="w-full flex-row pb-2 space-x-10">
           <Text className="font-semibold text-lg self-center pb-2">
             Student:
           </Text>
-          {associates || !associates.length == 0 ? (
+          {profile.students.length > 0 ? (
             <View className="h-10 w-8/12 justify-center bg-[#46ab61]/[.6] rounded-lg">
               <Picker
                 selectedValue={receiverId}
                 onValueChange={(itemValue) => setStudent(itemValue)}
                 style={{ color: "white" }}
               >
-                {associates.map((student) => (
+                {profile.students.map((student) => (
                   <Picker.Item
-                    label={student.firstName + " " + student.lastName}
+                    label={student.name}
                     value={student.uid}
                     key={student.uid}
                   />
@@ -139,9 +140,9 @@ const CreateSession = ({ navigation }) => {
           )}
         </View>
       )}
-      {student && (
+      {profile.tutor && (
         <Text className="font-semibold text-lg self-center pb-2">
-          Session with <Text className="italic">{associates.firstName} {associates.lastName}</Text>
+          Session with <Text className="italic">{profile.tutor.name}</Text>
         </Text>
       )}
       <TextInput

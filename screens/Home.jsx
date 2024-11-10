@@ -43,7 +43,7 @@ const HomeScreen = (props) => {
   };
 
   return (
-    <ScrollView contentContainerStyle="pt-5">
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="h-full">
       <View className="flex-1 h-full bg-white items-center">
         <Text className="text-3xl py-6">Welcome, {profile.firstName}</Text>
         <View className="bg-white p-4 w-2/3 mt-10 h-max rounded-xl shadow-md shadow-black">
