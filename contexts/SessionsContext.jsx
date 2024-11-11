@@ -66,9 +66,24 @@ export const SessionProvider = (props) => {
     }
   };
 
+  const completeSession = async (sessionId) => {
+    try {
+      const sessionRef = doc(db, "sessions", sessionId);
+      const sessionDoc = await getDoc(sessionRef);
+      if (sessionDoc.exists()) {
+        await setDoc(sessionRef, { isCompleted: true }, { merge: true });
+        console.log("\nSession completed successfully!");
+      } else {
+        console.error("Session not found!");
+      }
+    } catch (error) {
+      console.error("Session completion error: ", error.message);
+    }
+  };
+
   const cancelSession = async (sessionId) => {
     try {
-      const sessionRef = doc(db, `sessions`, sessionId);
+      const sessionRef = doc(db, "sessions", sessionId);
       await deleteDoc(sessionRef);
       console.log("\nSession cancelled successfully!");
     } catch (error) {
@@ -77,7 +92,7 @@ export const SessionProvider = (props) => {
   };
 
   return (
-    <SessionContext.Provider value={{ sessions, createSession, cancelSession }}>
+    <SessionContext.Provider value={{ sessions, createSession, cancelSession, completeSession }}>
       {props.children}
     </SessionContext.Provider>
   );

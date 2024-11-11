@@ -13,7 +13,7 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions } = useContext(SessionContext);
+  const { cancelSession, sessions, completeSession } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
   // const [sessions, setSessions] = useState([
   //   {
@@ -72,6 +72,20 @@ const SessionsComponent = ({ navigation }) => {
     }
   };
 
+  const handleCompleteSession = async (sessionId) => {
+    try {
+      setIsLoading(true);
+      await completeSession(sessionId);
+    } catch (error) {
+      console.error("Session completion error: ", error.message);
+    } finally {
+      console.log("\nSession completed successfully!");
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  }
+
   return (
     <ScrollView className="flex-1 w-full bg-white">
       <View
@@ -107,7 +121,7 @@ const SessionsComponent = ({ navigation }) => {
                 <SessionWidget {...item} accountType={profile.accountType}>
                   <View className="flex-row justify-center space-x-2 mt-2">
                     <TouchableOpacity
-                      onPress={() => handleDeleteSession(index)}
+                      onPress={() => handleDeleteSession(item.id)}
                       className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
                     >
                       <MaterialCommunityIcons
@@ -118,7 +132,7 @@ const SessionsComponent = ({ navigation }) => {
                       <Text className="text-white">Cancel</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      onPress={() => handleDeleteSession(index)}
+                      onPress={() => handleDeleteSession(item.id)}
                       className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
                     >
                       <MaterialCommunityIcons
