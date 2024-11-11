@@ -49,7 +49,6 @@ const Auth = () => {
       setLoading(true);
       if (isLogin) {
         await login(email, password);
-        Alert.alert("Logged in successfully!");
       } else {
         await register({
           email,
@@ -59,9 +58,7 @@ const Auth = () => {
           lastName,
           study,
         });
-        Alert.alert("Registered successfully!");
       }
-      // }
       setError(null);
     } catch (error) {
       console.error("Authentication error:", error.message);
@@ -69,7 +66,9 @@ const Auth = () => {
     } finally {
       setLoading(false);
       if (user && profile) {
-        console.log("\nUser signed in successfully!");
+        Alert.alert("\nSigned in successfully!");
+      } else {
+        setError("Invalid credentials. Please try again.");
       }
     }
   };
@@ -153,7 +152,7 @@ const Auth = () => {
             </View>
           </>
         )}
-        {error && <Text style={{ color: "red" }}>{error}</Text>}
+        {error && <Text className="text-red-500 mb-2">{error}</Text>}
 
         {loading ? (
           <ActivityIndicator size="large" />
