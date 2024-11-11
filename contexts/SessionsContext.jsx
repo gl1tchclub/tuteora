@@ -1,45 +1,66 @@
 import { db, auth } from "../services/firebase";
-import { doc, setDoc, getDoc, deleteDoc, onSnapshot, collection } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  deleteDoc,
+  query,
+  where,
+  or,
+  onSnapshot,
+  collection,
+} from "firebase/firestore";
 import { createContext, useState, useEffect } from "react";
 
 export const SessionContext = createContext();
 
 export const SessionProvider = (props) => {
-  const [sessions, setSessions] = useState(null);
+  const [sessions, setSessions] = useState([]);
   const user = auth.currentUser;
 
   const loadSessions = () => {
-    if (!user) {
-      setSessions(null);
-      return;
-    }
-    const sessionsRef = doc(db, `sessions`);
-    const unsubscribe = onSnapshot(sessionsRef, (sessionsSnapshot) => {
-      if (sessionsSnapshot.exists()) {
-        const sessionList = sessionsSnapshot.docs.map((doc) => doc.data());
-        setSessions(sessionList);
-        console.log("\nSessions found: ", sessionList);
+    try {
+      if (user) {
+        const sessionsQuery = query(
+          collection(db, "sessions"),
+          or(
+            where("creator.id", "==", user.uid),
+            where("receiver.id", "==", user.uid)
+          )
+        );
+        const unsubscribe = onSnapshot(
+          sessionsQuery,
+          (snapshot) => {
+            const sessionsData = snapshot.docs.map((doc) => doc.data());
+            setSessions(sessionsData);
+          },
+          (error) => {
+            console.error("Session loading error: ", error.message);
+          }
+        );
+        return () => unsubscribe();
       } else {
-        setSessions(null);
-        console.log("\nNo sessions found.");
+        setSessions([]);
       }
-    }, (error) => {
+    } catch (error) {
       console.error("Session loading error: ", error.message);
-    });
-
-    return unsubscribe;
+    }
   };
 
   useEffect(() => {
-    const unsubscribe = loadSessions();
-    return () => unsubscribe && unsubscribe();
+    loadSessions();
   }, [user]);
 
   const createSession = async (newSession) => {
     try {
-      const sessionRef = doc(collection(db, `sessions`));
-      newSession.id = sessionRef.id;
-      await setDoc(sessionRef, newSession);
+      if (sessions.includes(newSession)) {
+        return;
+      } else {
+        const newSessionRef = doc(collection(db, "sessions"));
+        newSession.id = newSessionRef.id;
+        await setDoc(newSessionRef, newSession);
+        loadSessions();
+      }
     } catch (error) {
       console.error("Session creation error: ", error.message);
     }
@@ -47,7 +68,7 @@ export const SessionProvider = (props) => {
 
   const cancelSession = async (sessionId) => {
     try {
-      const sessionRef = doc(db, `sessions/${user.uid}`, sessionId);
+      const sessionRef = doc(db, `sessions`, sessionId);
       await deleteDoc(sessionRef);
       console.log("\nSession cancelled successfully!");
     } catch (error) {

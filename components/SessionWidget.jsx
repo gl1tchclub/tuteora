@@ -1,5 +1,8 @@
 import { View, Text } from "react-native";
 
+const setDetails = (person) => {
+}
+
 const SessionWidget = (props) => {
   return (
     <View className="bg-green-100 p-3 my-2 rounded-xl">
@@ -12,7 +15,7 @@ const SessionWidget = (props) => {
         ) : (
           <>
             <Text className="font-bold mx-2">Tutor:</Text>
-            <Text>{props.tutor}</Text>
+            <Text>{}</Text>
           </>
         )}
         <Text className="font-bold ml-4 mr-2">Location:</Text>

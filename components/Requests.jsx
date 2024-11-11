@@ -75,10 +75,6 @@ const RequestsList = () => {
   };
 
   const handleAcceptSession = async (request) => {
-    // if tutor, set creator to student and receiver to tutor
-    // else vice versa
-    // set request details except creator/receiver to newSession
-    // create session and delete request
     try {
       const newSession = {
         tutor:
@@ -127,8 +123,9 @@ const RequestsList = () => {
     return null;
   };
 
-  const renderItem = ({ item }) => (
-    <View
+  const renderItem = ({ item }) => {
+    console.log("\n\nReq:",item);
+   return ( <View
       className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
       style={{
         elevation: 5,
@@ -175,7 +172,7 @@ const RequestsList = () => {
       )}
       {item.type === "session" && (
         <View className="flex-row justify-between" style={{ elevation: 5 }}>
-          {item.creator ? (
+          {!item.receiver.id === profile.id ? (
             <View className="flex-row justify-between w-full">
               <Text className="text-base">{item.receiver.name}</Text>
               <Text className="text-base">Waiting for response...</Text>
@@ -209,8 +206,8 @@ const RequestsList = () => {
           )}
         </View>
       )}
-    </View>
-  );
+    </View>)
+  };
 
   return (
     <View className="w-full h-full bg-white">

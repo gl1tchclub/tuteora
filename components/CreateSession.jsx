@@ -24,8 +24,6 @@ const CreateSession = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState(null);
-  // const [student, setStudent] = useState(null);
-  // const [tutor, setTutor] = useState(null);
   const [receiver, setReceiver] = useState(null);
   const [topic, setTopic] = useState(null);
   const [date, setDate] = useState(null);
@@ -114,6 +112,7 @@ const CreateSession = ({ navigation }) => {
           \nTime: ${time}
           \nLocation: ${location}`
         );
+        navigation.navigate("Requests");
       }
     }
   };

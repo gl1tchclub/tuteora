@@ -16,7 +16,6 @@ export const RequestsContext = createContext();
 
 export const RequestsProvider = (props) => {
   const [requests, setRequests] = useState([]);
-  const [isRequested, setIsRequested] = useState(false);
   const user = auth.currentUser;
 
   const loadRequests = async () => {
@@ -29,10 +28,16 @@ export const RequestsProvider = (props) => {
             where("receiver.id", "==", user.uid)
           )
         );
-        const unsubscribe = onSnapshot(requestQuery, (snapshot) => {
-          const requestsData = snapshot.docs.map((doc) => doc.data());
-          setRequests(requestsData);
-        });
+        const unsubscribe = onSnapshot(
+          requestQuery,
+          (snapshot) => {
+            const requestsData = snapshot.docs.map((doc) => doc.data());
+            setRequests(requestsData);
+          },
+          (error) => {
+            console.error("Requests loading error: ", error.message);
+          }
+        );
         return () => unsubscribe();
       } else {
         setRequests([]);
@@ -45,15 +50,13 @@ export const RequestsProvider = (props) => {
 
   useEffect(() => {
     loadRequests();
-  }, []);
+  }, [user]);
 
   const createRequest = async (newRequest) => {
     try {
       if (requests.includes(newRequest)) {
-        setIsRequested(true);
         return;
       } else {
-        setIsRequested(false);
         const newReqRef = doc(collection(db, "requests"));
         newRequest.id = newReqRef.id;
         await setDoc(newReqRef, newRequest);
@@ -80,7 +83,6 @@ export const RequestsProvider = (props) => {
         createRequest,
         deleteRequest,
         setRequests,
-        isRequested,
       }}
     >
       {props.children}
