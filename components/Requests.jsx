@@ -104,7 +104,7 @@ const RequestsList = () => {
   const renderItem = ({ item }) => (
     <View className="bg-white p-4 my-2 rounded-xl w-11/12 self-center">
       {item.type == "student" && (
-        <View className="flex-row justify-between">
+        <View className="flex-row justify-between" style={{ elevation: 5 }}>
           <Text className="font-bold text-lg">{item.student}</Text>
           <Text className="font-bold text-lg">{item.subject}</Text>
           <View className="flex-row">
@@ -143,7 +143,7 @@ const RequestsList = () => {
         </View>
       )}
       {item.type === "session" && (
-        <View className="flex-row justify-between">
+        <View className="flex-row justify-between" style={{ elevation: 5 }}>
           <SessionWidget {...item} accountType={profile.accountType} />
           <View className="self-center">
             <TouchableOpacity
@@ -169,13 +169,15 @@ const RequestsList = () => {
   );
 
   return (
-    <SectionList
-      sections={sections}
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-      renderSectionHeader={renderSectionHeader}
-      className="w-full"
-    />
+    <View className="w-full h-full bg-white">
+      <SectionList
+        sections={sections}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        className="w-full"
+      />
+    </View>
   );
 };
 
