@@ -4,6 +4,7 @@ import {
   Button,
   SectionList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
@@ -17,7 +18,7 @@ import { StudentContext } from "../contexts/StudentsContext";
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
   const { requests, deleteRequest } = useContext(RequestsContext);
-  const { createSession } = useContext(SessionContext);
+  const { createSession, sessions } = useContext(SessionContext);
   const { tutors, updateTutor } = useContext(TutorContext);
   const { students, updateStudent } = useContext(StudentContext);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,13 +54,10 @@ const RequestsList = () => {
 
   const handleAcceptStudent = async (req) => {
     try {
-      // console.log(students.find((student) => student.id === req.creator.id));
       const student = students.find((student) => student.id === req.creator.id);
       student.tutor = {
         id: profile.id,
         name: profile.firstName + " " + profile.lastName,
-        // availability: profile.availability,
-        // topics: profile.topics,
         isAvailable: profile.isAvailable,
       };
       profile.students.push({
@@ -76,15 +74,43 @@ const RequestsList = () => {
     }
   };
 
-  const handleAcceptSession = (session) => {
+  const handleAcceptSession = async (request) => {
+    // if tutor, set creator to student and receiver to tutor
+    // else vice versa
+    // set request details except creator/receiver to newSession
     // create session and delete request
-    // setRequests(
-    //   requests.map((req) =>
-    //     req.id === id ? { ...req, isAccepted: true } : req
-    //   )
-    // );
-    // handleDeleteRequest(id);
-    // if type "student", delete request and getDoc for student profile and add to tutor associates
+    try {
+      const newSession = {
+        tutor:
+          profile.accountType === "Tutor" ? request.receiver : request.creator,
+        student:
+          profile.accountType === "Tutor" ? request.creator : request.receiver,
+        topic: request.topic,
+        date: request.date,
+        time: request.time,
+        location: request.location,
+        isCompleted: false,
+      };
+
+      if (
+        sessions.includes((sesh) => {
+          sesh.date === newSession.date &&
+            sesh.tutor.id === newSession.tutor.id &&
+            sesh.student.id === newSession.student.id;
+        })
+      ) {
+        Alert.alert(
+          "Cannot Accept",
+          "You already have a session scheduled on this date\nPlease deny the request."
+        );
+        return;
+      } else {
+        await createSession(newSession);
+        await handleDeleteRequest(request.id);
+      }
+    } catch (error) {
+      console.error("Session acceptance error: ", error.message);
+    }
   };
 
   const renderSectionHeader = ({ section }) => {

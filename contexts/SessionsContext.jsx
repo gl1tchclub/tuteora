@@ -13,7 +13,7 @@ export const SessionProvider = (props) => {
       setSessions(null);
       return;
     }
-    const sessionsRef = doc(db, `sessions/${user.uid}`);
+    const sessionsRef = doc(db, `sessions`);
     const unsubscribe = onSnapshot(sessionsRef, (sessionsSnapshot) => {
       if (sessionsSnapshot.exists()) {
         const sessionList = sessionsSnapshot.docs.map((doc) => doc.data());
@@ -35,9 +35,9 @@ export const SessionProvider = (props) => {
     return () => unsubscribe && unsubscribe();
   }, [user]);
 
-  const createSession = async (newSession, accountType) => {
+  const createSession = async (newSession) => {
     try {
-      const sessionRef = doc(collection(db, `sessions/${user.uid}`));
+      const sessionRef = doc(collection(db, `sessions`));
       newSession.id = sessionRef.id;
       await setDoc(sessionRef, newSession);
     } catch (error) {
