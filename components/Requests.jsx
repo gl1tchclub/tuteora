@@ -215,7 +215,6 @@ const RequestsList = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
-        className="w-full"
       />
     </View>
   );
