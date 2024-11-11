@@ -22,7 +22,7 @@ const CreateSession = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
   const [receiver, setReceiver] = useState(null);
   const [topic, setTopic] = useState(null);
@@ -32,17 +32,29 @@ const CreateSession = ({ navigation }) => {
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
-    if (profile.accountType === "Student" && profile.tutor) {
-      setReceiver({ id: profile.tutor.id, name: profile.tutor.name });
+    if (profile?.tutor) {
+      setReceiver(profile.tutor);
     }
     console.log(receiver);
     console.log("requests:", requests);
   }, [requests]);
 
   const handleCreateSessionRequest = async () => {
+    let localErrorMsg = null;
+    setErrorMsg(localErrorMsg);
+
+    const studentInfo = profile.students
+      ? profile.students.find((student) => student.id === receiver.id)
+      : null;
+    const student = studentInfo
+      ? { id: studentInfo.id, name: studentInfo.name }
+      : {
+          id: profile.id,
+          name: `${profile.firstName} ${profile.lastName}`,
+        };
+
     try {
       setLoading(true);
-      console.log("Receiver:", receiver);
       const newSession = {
         creator: {
           id: profile.id,
@@ -52,6 +64,11 @@ const CreateSession = ({ navigation }) => {
           id: receiver.id,
           name: receiver.name,
         },
+        tutor: profile.tutor || {
+          id: profile.id,
+          name: `${profile.firstName} ${profile.lastName}`,
+        },
+        student,
         topic,
         date,
         time,
@@ -59,51 +76,44 @@ const CreateSession = ({ navigation }) => {
         location: location ? location : "TBD",
         isCompleted: false,
       };
-      // console.log("Session:", newSession);
+
       const requiredFields = ["creator", "receiver", "topic", "date", "time"];
       const missingFields = requiredFields.filter(
         (field) => !newSession[field]
       );
+
       if (missingFields.length > 0) {
-        missingFields.forEach((field) => {
-          console.log(field);
-        });
-        setError("Please fill in all fields");
-      } else {
-        if (
-          !requests.includes(
-            (req) =>
-              req.creator.id === newSession.creator.id &&
-              req.receiver.id === newSession.receiver.id &&
-              req.type === newSession.type
-          )
-        ) {
-          await createRequest(newSession);
-          setError(null);
-        } else {
-          setError("Session already requested!");
-        }
+        localErrorMsg = "Please fill in all fields";
+        setErrorMsg(localErrorMsg);
+        setLoading(false);
+        // console.log("Missing fields:", missingFields);
+        return;
       }
-      console.log(
-        "Request Exists:",
-        requests.includes(
-          (req) =>
-            req.creator.id === newSession.creator.id &&
-            req.receiver.id === newSession.receiver.id &&
-            req.type === newSession.type
-        )
+
+      const existingRequest = requests.find(
+        (req) =>
+          req.creator.id === newSession.creator.id &&
+          req.receiver.id === newSession.receiver.id &&
+          req.type === newSession.type
       );
-      // console.log("Requests:", requests);
+
+      if (!existingRequest) {
+        console.log("\nCreating...");
+        setErrorMsg(null);
+        await createRequest(newSession);
+      } else {
+        localErrorMsg = "Session already requested!";
+        setErrorMsg(localErrorMsg);
+      }
     } catch (err) {
       console.error("Create session error:", err.message);
       Alert.alert("Error creating session", err.message);
-      setError(err.message);
+      localErrorMsg = err.message;
+      setErrorMsg(localErrorMsg);
     } finally {
       setLoading(false);
-      if (error) {
-        Alert.alert("Error:", error);
-      }
-      if (!error) {
+      if (!localErrorMsg) {
+        console.log("\nSuccess", topic);
         Alert.alert(
           "Session Requested!",
           `\nRequest to: ${receiver.name}
@@ -112,7 +122,10 @@ const CreateSession = ({ navigation }) => {
           \nTime: ${time}
           \nLocation: ${location}`
         );
+        setErrorMsg(null);
         navigation.navigate("Requests");
+      } else {
+        Alert.alert("Error:", localErrorMsg);
       }
     }
   };
@@ -230,11 +243,11 @@ const CreateSession = ({ navigation }) => {
           onChangeText={setLocation}
           placeholder="Location (optional)"
         />
-        {error && <Text className="text-red-500 my-6">{error}</Text>}
+        {errorMsg && <Text className="text-red-500 mt-6">{errorMsg}</Text>}
         {loading ? (
           <ActivityIndicator size="large" />
         ) : (
-          <View className="mt-10 self-center">
+          <View className="mt-6 self-center">
             <Button
               title="Create Session"
               onPress={handleCreateSessionRequest}

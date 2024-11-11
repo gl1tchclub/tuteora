@@ -58,7 +58,6 @@ const RequestsList = () => {
       student.tutor = {
         id: profile.id,
         name: profile.firstName + " " + profile.lastName,
-        isAvailable: profile.isAvailable,
       };
       profile.students.push({
         id: student.id,
@@ -124,7 +123,7 @@ const RequestsList = () => {
   };
 
   const renderItem = ({ item }) => {
-    console.log("\n\nReq:",item);
+    // console.log("\n\nReq:",item);
    return ( <View
       className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
       style={{
