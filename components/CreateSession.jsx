@@ -7,6 +7,7 @@ import {
   TextInput,
   Alert,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { useState, useEffect, useContext } from "react";
 import { RequestsContext } from "../contexts/RequestsContext";
@@ -33,10 +34,16 @@ const CreateSession = ({ navigation }) => {
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
-    if (profile.accountType === "Student") {
+    if (profile.accountType === "Student" && profile.tutor) {
       setReceiver({ id: profile.tutor.id, name: profile.tutor.name });
+    } else {
+      setReceiver({
+        id: profile.students[0].id,
+        name: profile.students[0].name,
+      });
     }
     console.log(receiver);
+    console.log("requests:", requests);
   }, []);
 
   const handleCreateSessionRequest = async () => {
@@ -47,7 +54,10 @@ const CreateSession = ({ navigation }) => {
           id: profile.id,
           name: `${profile.firstName} ${profile.lastName}`,
         },
-        receiver,
+        receiver: {
+          id: receiver.id,
+          name: receiver.name,
+        },
         topic,
         date,
         time,
@@ -55,7 +65,7 @@ const CreateSession = ({ navigation }) => {
         location: location ? location : "TBD",
         isCompleted: false,
       };
-      await createRequest(newSession);
+      console.log("Session:", newSession);
       if (
         requests.find(
           (req) =>
@@ -64,10 +74,12 @@ const CreateSession = ({ navigation }) => {
             req.type === newSession.type
         )
       ) {
+        await createRequest(newSession);
         setError(null);
       } else {
-        setError("Session request creation failed.");
+        setError("Session already requested!");
       }
+      console.log("Requests:", requests);
     } catch (err) {
       console.error("Create session error:", err.message);
       Alert.alert("Error creating session", err.message);
@@ -80,8 +92,7 @@ const CreateSession = ({ navigation }) => {
       if (!error) {
         Alert.alert(
           "Session Requested!",
-          `\nTutor: ${tutor}
-          \nStudent: ${student}
+          `\nRequest to: ${receiver.name}
           \nTopic: ${topic}
           \nDate: ${date}
           \nTime: ${time}

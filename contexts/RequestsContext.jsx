@@ -21,6 +21,7 @@ export const RequestsProvider = (props) => {
 
   const loadRequests = async () => {
     try {
+      setRequests([]);
       if (user) {
         const requestQuery = query(
           collection(db, "requests"),
@@ -51,7 +52,7 @@ export const RequestsProvider = (props) => {
     try {
       if (requests.includes(newRequest)) {
         setIsRequested(true);
-        return null;
+        return;
       } else {
         setIsRequested(false);
         const newReqRef = doc(collection(db, "requests"));
