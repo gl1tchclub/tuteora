@@ -73,6 +73,7 @@ export const SessionProvider = (props) => {
       if (sessionDoc.exists()) {
         await setDoc(sessionRef, { isCompleted: true }, { merge: true });
         console.log("\nSession completed successfully!");
+        loadSessions();
       } else {
         console.error("Session not found!");
       }
@@ -85,6 +86,7 @@ export const SessionProvider = (props) => {
     try {
       const sessionRef = doc(db, "sessions", sessionId);
       await deleteDoc(sessionRef);
+      loadSessions();
       console.log("\nSession cancelled successfully!");
     } catch (error) {
       console.error("Session cancellation error: ", error.message);

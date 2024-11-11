@@ -70,6 +70,7 @@ export const RequestsProvider = (props) => {
   const deleteRequest = async (requestId) => {
     try {
       await deleteDoc(doc(db, "requests", requestId));
+      loadRequests();
     } catch (error) {
       console.error("Request deletion error: ", error.message);
     }
