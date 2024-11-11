@@ -72,12 +72,16 @@ const HomeScreen = (props) => {
           {profile.accountType === "Tutor" && (
             <View className="flex-row flex-wrap bg-neutral-100 rounded-lg p-2 my-4">
               <Text className="text-lg">Students: </Text>
-              {profile.students.map((student, index) => (
-                <Text key={index} className="text-lg">
-                  {student.name}
-                  {index < profile.students.length - 1 ? ", " : ""}
-                </Text>
-              ))}
+              {profile.students.length > 0 ? (
+                profile.students.map((student, index) => (
+                  <Text key={index} className="text-lg">
+                    {student.name}
+                    {index < profile.students.length - 1 ? ", " : ""}
+                  </Text>
+                ))
+              ) : (
+                <Text className="text-lg">None</Text>
+              )}
             </View>
           )}
           <Button onPress={handleLogout} title="Log Out" color="#2b69ba" />
