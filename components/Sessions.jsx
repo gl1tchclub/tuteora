@@ -13,38 +13,36 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession } = useContext(SessionContext);
+  const { cancelSession, sessions } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
-  const [sessions, setSessions] = useState([
-    {
-      tutor: "John Doe",
-      student: "Janadsde Doe",
-      topic: "Math",
-      date: "11/9/2024",
-      time: "12:00:00 PM",
-      location: "Online",
-      isAccepted: true,
-      isCompleted: false,
-    },
-    {
-      tutor: "John Doe",
-      student: "Joseph Dunn",
-      topic: "IT",
-      date: "11/13/2024",
-      time: "12:00:00 PM",
-      location: "Online",
-      isAccepted: true,
-      isCompleted: false,
-    },
-  ]);
+  // const [sessions, setSessions] = useState([
+  //   {
+  //     tutor: "John Doe",
+  //     student: "Janadsde Doe",
+  //     topic: "Math",
+  //     date: "11/9/2024",
+  //     time: "12:00:00 PM",
+  //     location: "Online",
+  //     isAccepted: true,
+  //     isCompleted: false,
+  //   },
+  //   {
+  //     tutor: "John Doe",
+  //     student: "Joseph Dunn",
+  //     topic: "IT",
+  //     date: "11/13/2024",
+  //     time: "12:00:00 PM",
+  //     location: "Online",
+  //     isAccepted: true,
+  //     isCompleted: false,
+  //   },
+  // ]);
 
   const { profile } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   sessions.forEach((session, i) => {
-  //     console.log("\n", session);
-  //   });
-  // }, [sessions]);
+  useEffect(() => {
+    console.log(sessions);
+  }, [sessions]);
 
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);
@@ -72,28 +70,38 @@ const SessionsComponent = ({ navigation }) => {
         setIsLoading(false);
       }, 500);
     }
-    // setSessions(sessions.filter((_, i) => i !== index));
   };
 
   return (
     <ScrollView className="flex-1 w-full bg-white">
-        <View className="bg-white p-4 m-4 rounded-xl w-11/12 self-center" style={{ elevation: 5 }}>
-          <Text className="text-lg mb-2 font-bold">Next Session:</Text>
+      <View
+        className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+        style={{ elevation: 5 }}
+      >
+        <Text className="text-lg mb-2 font-bold">Next Session:</Text>
+        {sessions.length != 0  ? (
           <SessionWidget
             {...earliestSession}
             accountType={profile.accountType}
           />
+        ) : (
+          <Text>No sessions scheduled</Text>
+        )}
+      </View>
+      <View
+        className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+        style={{ elevation: 5 }}
+      >
+        <View className="flex-row justify-between items-center mb-4">
+          <Text className="text-lg font-bold">Schedule</Text>
+          <Button
+            title="Create Session"
+            onPress={handleCreateSession}
+            color="#46ab61"
+          />
         </View>
-        <View className="bg-white p-4 m-4 rounded-xl w-11/12 self-center" style={{ elevation: 5 }}>
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-lg font-bold">Schedule</Text>
-            <Button
-              title="Create Session"
-              onPress={handleCreateSession}
-              color="#46ab61"
-            />
-          </View>
-          {sessions.map((item, index) => (
+        {sessions.length != 0 ? (
+          sessions.map((item, index) => (
             <View key={index}>
               {!item.isCompleted && (
                 <SessionWidget {...item} accountType={profile.accountType}>
@@ -124,8 +132,11 @@ const SessionsComponent = ({ navigation }) => {
                 </SessionWidget>
               )}
             </View>
-          ))}
-        </View>
+          ))
+        ) : (
+          <Text>No sessions scheduled</Text>
+        )}
+      </View>
     </ScrollView>
   );
 };

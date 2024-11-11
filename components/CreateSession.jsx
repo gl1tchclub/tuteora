@@ -20,7 +20,6 @@ const CreateSession = ({ navigation }) => {
   const { createRequest, requests } = useContext(RequestsContext);
   const { sessions } = useContext(SessionContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
