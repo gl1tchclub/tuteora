@@ -13,9 +13,11 @@ import { RequestsContext } from "../contexts/RequestsContext";
 import { UserContext } from "../contexts/UserContext";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "react-native-modal-datetime-picker";
+import { SessionContext } from "../contexts/SessionsContext";
 
 const CreateSession = ({ navigation }) => {
-  const { createRequest } = useContext(RequestsContext);
+  const { createRequest, requests } = useContext(RequestsContext);
+  const { sessions } = useContext(SessionContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -33,9 +35,6 @@ const CreateSession = ({ navigation }) => {
   useEffect(() => {
     if (profile.accountType === "Student") {
       setReceiver({ id: profile.tutor.id, name: profile.tutor.name });
-    } else {
-      // setReceiver(profile.students[0].id);
-      // setReceiver(null);
     }
     console.log(receiver);
   }, []);
@@ -52,20 +51,35 @@ const CreateSession = ({ navigation }) => {
         topic,
         date,
         time,
-        location,
-        status: "Pending",
+        type: "session",
+        location: location ? location : "TBD",
         isCompleted: false,
       };
-      setError(null);
-    } catch (error) {
-      console.error("Create session error:", error.message);
-      Alert.alert("Error creating session", error.message);
-      setError(error.message);
+      await createRequest(newSession);
+      if (
+        requests.find(
+          (req) =>
+            req.creator.id === newSession.creator.id &&
+            req.receiver.id === newSession.receiver.id &&
+            req.type === newSession.type
+        )
+      ) {
+        setError(null);
+      } else {
+        setError("Session request creation failed.");
+      }
+    } catch (err) {
+      console.error("Create session error:", err.message);
+      Alert.alert("Error creating session", err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
-      if (session) {
+      if (error) {
+        Alert.alert("Error:", error);
+      }
+      if (!error) {
         Alert.alert(
-          "Session Created!",
+          "Session Requested!",
           `\nTutor: ${tutor}
           \nStudent: ${student}
           \nTopic: ${topic}
