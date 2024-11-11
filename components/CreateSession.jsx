@@ -36,19 +36,15 @@ const CreateSession = ({ navigation }) => {
   useEffect(() => {
     if (profile.accountType === "Student" && profile.tutor) {
       setReceiver({ id: profile.tutor.id, name: profile.tutor.name });
-    } else {
-      setReceiver({
-        id: profile.students[0].id,
-        name: profile.students[0].name,
-      });
     }
     console.log(receiver);
     console.log("requests:", requests);
-  }, []);
+  }, [requests]);
 
   const handleCreateSessionRequest = async () => {
     try {
       setLoading(true);
+      console.log("Receiver:", receiver);
       const newSession = {
         creator: {
           id: profile.id,
@@ -65,21 +61,41 @@ const CreateSession = ({ navigation }) => {
         location: location ? location : "TBD",
         isCompleted: false,
       };
-      console.log("Session:", newSession);
-      if (
-        requests.find(
+      // console.log("Session:", newSession);
+      const requiredFields = ["creator", "receiver", "topic", "date", "time"];
+      const missingFields = requiredFields.filter(
+        (field) => !newSession[field]
+      );
+      if (missingFields.length > 0) {
+        missingFields.forEach((field) => {
+          console.log(field);
+        });
+        setError("Please fill in all fields");
+      } else {
+        if (
+          !requests.includes(
+            (req) =>
+              req.creator.id === newSession.creator.id &&
+              req.receiver.id === newSession.receiver.id &&
+              req.type === newSession.type
+          )
+        ) {
+          await createRequest(newSession);
+          setError(null);
+        } else {
+          setError("Session already requested!");
+        }
+      }
+      console.log(
+        "Request Exists:",
+        requests.includes(
           (req) =>
             req.creator.id === newSession.creator.id &&
             req.receiver.id === newSession.receiver.id &&
             req.type === newSession.type
         )
-      ) {
-        await createRequest(newSession);
-        setError(null);
-      } else {
-        setError("Session already requested!");
-      }
-      console.log("Requests:", requests);
+      );
+      // console.log("Requests:", requests);
     } catch (err) {
       console.error("Create session error:", err.message);
       Alert.alert("Error creating session", err.message);
@@ -144,6 +160,7 @@ const CreateSession = ({ navigation }) => {
                   onValueChange={(studentId) => setReceiver(studentId)}
                   style={{ color: "white" }}
                 >
+                  <Picker.Item label="Select Student" value={null} />
                   {profile.students.map((student) => (
                     <Picker.Item
                       label={student.name}

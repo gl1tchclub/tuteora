@@ -20,8 +20,8 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       try {
-        // Artificially delay for 3 seconds to simulate a slow loading
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        // Artificially delay 
+        await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Other things may include fetching data, loading fonts, etc
       } catch (err) {

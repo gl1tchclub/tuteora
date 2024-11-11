@@ -102,7 +102,12 @@ const RequestsList = () => {
   };
 
   const renderItem = ({ item }) => (
-    <View className="bg-white p-4 my-2 rounded-xl w-11/12 self-center">
+    <View
+      className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
+      style={{
+        elevation: 5,
+      }}
+    >
       {item.type == "student" && (
         <View className="flex-row justify-between" style={{ elevation: 5 }}>
           <Text className="font-bold text-lg">{item.student}</Text>
@@ -144,25 +149,38 @@ const RequestsList = () => {
       )}
       {item.type === "session" && (
         <View className="flex-row justify-between" style={{ elevation: 5 }}>
-          <SessionWidget {...item} accountType={profile.accountType} />
-          <View className="self-center">
-            <TouchableOpacity
-              onPress={() => handleAcceptSession(item)}
-              className="bg-green-500 rounded w-fit-content self-center mb-4"
-            >
-              <MaterialCommunityIcons name="check" size={24} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleDeleteRequest(item.id)}
-              className="bg-red-500 rounded w-fit-content self-center"
-            >
-              <MaterialCommunityIcons
-                name="delete-outline"
-                size={24}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
+          {item.creator ? (
+            <View className="flex-row justify-between w-full">
+              <Text className="text-base">{item.receiver.name}</Text>
+              <Text className="text-base">Waiting for response...</Text>
+            </View>
+          ) : (
+            <>
+              <SessionWidget {...item} accountType={profile.accountType} />
+              <View className="self-center">
+                <TouchableOpacity
+                  onPress={() => handleAcceptSession(item)}
+                  className="bg-green-500 rounded w-fit-content self-center mb-4"
+                >
+                  <MaterialCommunityIcons
+                    name="check"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => handleDeleteRequest(item.id)}
+                  className="bg-red-500 rounded w-fit-content self-center"
+                >
+                  <MaterialCommunityIcons
+                    name="delete-outline"
+                    size={24}
+                    color="white"
+                  />
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </View>
       )}
     </View>

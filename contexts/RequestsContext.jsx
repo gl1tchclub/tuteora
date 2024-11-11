@@ -21,7 +21,6 @@ export const RequestsProvider = (props) => {
 
   const loadRequests = async () => {
     try {
-      setRequests([]);
       if (user) {
         const requestQuery = query(
           collection(db, "requests"),
