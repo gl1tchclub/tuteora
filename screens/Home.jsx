@@ -2,18 +2,19 @@ import { View, Text, Button, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
+import { SessionContext } from "../contexts/SessionsContext";
 import { TutorContext } from "../contexts/TutorsContext";
 
 const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);
+  const { sessions } = useContext(SessionContext);
   const { updateTutor } = useContext(TutorContext);
   const { requests } = useContext(RequestsContext);
   const [isRequested, setIsRequested] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("");
-  const [endpoint, setEndpoint] = useState("");
 
   useEffect(() => {
-    console.log(requests);
+    console.log("reqs:",requests);
     if (profile.accountType === "Student") {
       if (profile.tutor) {
         setButtonMessage("Change Tutor");
@@ -35,12 +36,12 @@ const HomeScreen = (props) => {
     }
   }, [requests]);
 
-  const handleTutorUpdate = async () => {
-    try {
-      await updateTutor(profile.id, { students: profile.students });
-    } catch (error) {
-      console.error("Tutor update error: ", error.message);
-    }
+  useEffect(() => {
+    console.log("sessions:",sessions);
+  }, [sessions]);
+
+  const handleNavigateUpdate = async () => {
+    props.navigation.navigate("UpdateTutor");
   };
 
   const handleLogout = async () => {
@@ -99,7 +100,7 @@ const HomeScreen = (props) => {
           {profile.accountType === "Tutor" && (
             <View className="mb-2">
               <Button
-                onPress={handleTutorUpdate}
+                onPress={handleNavigateUpdate}
                 title="Edit Tutor Profile"
                 color="#46ab61"
               />

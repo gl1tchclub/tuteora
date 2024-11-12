@@ -13,6 +13,7 @@ import CreateSessionScreen from "../screens/CreateSession";
 import RequestsScreen from "../screens/RequestsScreen";
 import TutorListScreen from "../screens/TutorsScreen";
 import TutorInfoScreen from "../screens/TutorInfoScreen";
+import UpdateTutorScreen from "../screens/UpdateTutorScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,6 +52,11 @@ const HomeStack = () => {
         name="TutorInfo"
         component={TutorInfoScreen}
         options={{ title: null }}
+      />
+      <Stack.Screen
+        name="UpdateTutor"
+        component={UpdateTutorScreen}
+        options={{ title: "Update Tutor" }}
       />
     </Stack.Navigator>
   );

@@ -14,7 +14,6 @@ import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SessionContext } from "../contexts/SessionsContext";
 import { StudentContext } from "../contexts/StudentsContext";
-import { FirestoreError } from "firebase/firestore";
 
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
@@ -22,11 +21,6 @@ const RequestsList = () => {
   const { createSession, sessions } = useContext(SessionContext);
   const { tutors, updateTutor } = useContext(TutorContext);
   const { students, updateStudent } = useContext(StudentContext);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // useEffect(() => {
-  //   console.log(requests);
-  // }, [requests]);
 
   const sections = [
     {
@@ -44,13 +38,10 @@ const RequestsList = () => {
 
   const handleDeleteRequest = async (id) => {
     try {
-      setIsLoading(true);
       await deleteRequest(id);
     } catch (error) {
       console.error("Request deletion error: ", error.message);
-    } finally {
-      setIsLoading(false);
-    }
+    } 
   };
 
   const handleAcceptStudent = async (req) => {
@@ -64,8 +55,6 @@ const RequestsList = () => {
         id: student.id,
         name: student.firstName + " " + student.lastName,
       });
-      console.log("New Student: ", student);
-      console.log("New Tutor: ", profile);
       await updateStudent(student);
       await updateTutor(profile);
       handleDeleteRequest(req.id);

@@ -39,8 +39,6 @@ export const SessionProvider = (props) => {
           }
         );
         return () => unsubscribe();
-      } else {
-        setSessions([]);
       }
       console.log("Sessions: ", sessions);
     } catch (error) {
@@ -50,7 +48,7 @@ export const SessionProvider = (props) => {
 
   useEffect(() => {
     loadSessions();
-  }, [user]);
+  }, []);
 
   const createSession = async (newSession) => {
     try {
