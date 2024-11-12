@@ -62,11 +62,13 @@ const UpdateTutor = ({ navigation }) => {
         bio,
         availability,
         isAvailable,
-        topics,
         students: profile.students,
       };
 
-      if (newProfile == profile) {
+      const newTopics = topics.map((topic) => topic.toLowerCase());
+      const currentTopics = profile.topics.map((topic) => topic.toLowerCase());
+
+      if (newTopics == currentTopics) {
       }
 
       // profile.bio = bio;
@@ -99,21 +101,36 @@ const UpdateTutor = ({ navigation }) => {
 
   const handleAvailability = (option) => {
     const updatedAvailability = new Set(availability);
+    const lastAvailability = new Set(profile.availability);
     if (updatedAvailability.has(option)) {
       updatedAvailability.delete(option);
     } else {
       updatedAvailability.add(option);
     }
-    let oldAvail = new Set(availability);
-    console.log("Old:",oldAvail);
-    console.log("Update:",updatedAvailability);
-    oldAvail == updatedAvailability ? setIsDisabled(true) : setIsDisabled(false);
+
+    const areSetsEqual = (setA, setB) => {
+      if (setA.size !== setB.size) return false; // Check if sizes are different
+      for (let elem of setA) {
+        if (!setB.has(elem)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const isSame = areSetsEqual(lastAvailability, updatedAvailability);
+
+    console.log("Old: ", lastAvailability);
+    console.log("New: ", updatedAvailability);
+
+    setIsDisabled(isSame);
+
     setAvailability([...updatedAvailability]);
   };
 
   const handleTopics = () => {
     if (currentTopic) {
-      if (currentTopic != topics[currentTopic]) {
+      if (currentTopic.toLowerCase() != topics[currentTopic]?.toLowerCase()) {
         setTopics([...topics, currentTopic]);
         console.log(topics);
         setCurrentTopic("");
