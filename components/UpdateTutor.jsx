@@ -15,7 +15,7 @@ const UpdateTutor = ({ navigation }) => {
   const [availability, setAvailability] = useState(profile.availability || []);
   const [topics, setTopics] = useState(profile.topics || []);
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
-  
+  const [currentTopic, setCurrentTopic] = useState("");
 
   const handleUpdate = async (tutor) => {
     try {
@@ -35,15 +35,16 @@ const UpdateTutor = ({ navigation }) => {
     setAvailability(updatedAvailability);
   };
 
-  const handleTopics = (topic) => {
-    let updatedTopics = [...topics];
-    if (updatedTopics.includes(topic)) {
-      updatedTopics = updatedTopics.filter((t) => t !== topic);
-    } else {
-      updatedTopics.push(topic);
+  const handleTopics = () => {
+    if (currentTopic) {
+      setTopics([...topics, currentTopic]);
+      setCurrentTopic("");
     }
-    setTopics(updatedTopics);
   };
+
+  useEffect(() => {
+    console.log("Topics: ", topics);
+  }, [topics]);
 
   return (
     <ScrollView className="flex-1 w-full h-full bg-white">
@@ -81,19 +82,22 @@ const UpdateTutor = ({ navigation }) => {
             <Text className="mt-6 self-center text-lg">Topics</Text>
             <TextInput
               className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
-              value={topics}
-              onKeyPress={() => handleTopics()}
+              value={currentTopic}
+              onChangeText={setCurrentTopic}
+              onSubmitEditing={handleTopics}
               placeholder="Topic"
-              maxLength={200}
+              maxLength={20}
             />
             <Text className="text-neutral-500">
               Press enter after entering a topic
             </Text>
-            {topics?.map((topic, index) => (
-                <View key={index} className="flex-row space-x-2">
-                <Text className="ml-2 bg-neutral-200 rounded-2xl p-2">{topic}</Text>
-              </View>
-            ))}
+            <View className="mt-4 flex-row">
+              {topics.map((topic, index) => (
+                <Text key={index} className="ml-2 bg-neutral-200 rounded-2xl p-2">
+                  {topic}
+                </Text>
+              ))}
+            </View>
           </View>
           <View className="border-b-neutral-300 border-b mt-6 w-full self-center" />
         </View>

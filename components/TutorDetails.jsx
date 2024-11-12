@@ -18,16 +18,14 @@ const TutorDetails = (props) => {
   const [icon, setIcon] = useState("account-check");
   const [loading, setLoading] = useState(false);
   const tutor = props.tutor.tutor;
-  console.log("Tutor: ", tutor);
+  const [randomColor, setRandomColor] = useState("");
+
   const getRandomColor = () => {
     return Math.floor(Math.random() * 16777215).toString(16);
   };
 
-  const [randomColor, setRandomColor] = useState("");
-
   useEffect(() => {
     setRandomColor(`#${getRandomColor()}`);
-    console.log(randomColor);
   }, []);
 
   const handleRequestTutor = async (tutor) => {
