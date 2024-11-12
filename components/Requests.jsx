@@ -56,7 +56,7 @@ const RequestsList = () => {
         name: student.firstName + " " + student.lastName,
       });
       await updateStudent(student);
-      await updateTutor(profile);
+      await updateTutor(profile, false);
       handleDeleteRequest(req.id);
     } catch (error) {
       console.error("Student acceptance error: ", error.message);

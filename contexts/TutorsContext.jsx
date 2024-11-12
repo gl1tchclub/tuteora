@@ -1,6 +1,14 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { db, auth } from "../services/firebase";
-import { getDocs, collection, query, where, setDoc, doc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  setDoc,
+  doc,
+  merge,
+} from "firebase/firestore";
 import { UserContext } from "./UserContext";
 
 export const TutorContext = createContext();
@@ -26,9 +34,13 @@ export const TutorProvider = (props) => {
     if (profile && profile.accountType === "Student") loadTutors();
   }, [profile]);
 
-  const updateTutor = async (tutor) => {
+  const updateTutor = async (tutor, merge) => {
     try {
-      await setDoc(doc(db, "tutors", tutor.id), tutor);
+      if (merge) {
+        await setDoc(doc(db, "tutors", tutor.id), tutor, { merge: true });
+      } else {
+        await setDoc(doc(db, "tutors", tutor.id), tutor);
+      }
     } catch (error) {
       console.error("Tutor update error: ", error.message);
     }

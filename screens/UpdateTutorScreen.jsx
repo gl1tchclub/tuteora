@@ -1,11 +1,10 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import UpdateTutor from "../components/UpdateTutor";
 
-const UpdateTutorScreen = () => {
+const UpdateTutorScreen = (props) => {
   return (
     <View className="flex-1 justify-center items-center">
-      <UpdateTutor />
-      <Text>Update</Text>
+      <UpdateTutor navigation={props.navigation}/>
     </View>
   );
 };

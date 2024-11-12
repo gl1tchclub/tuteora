@@ -8,7 +8,6 @@ import { TutorContext } from "../contexts/TutorsContext";
 const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);
   const { sessions } = useContext(SessionContext);
-  const { updateTutor } = useContext(TutorContext);
   const { requests } = useContext(RequestsContext);
   const [isRequested, setIsRequested] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("");
