@@ -21,6 +21,7 @@
     "dom-to-image": "^2.6.0",
     "dotenv": "^16.4.5",
     "expo": "~51.0.28",
+    "expo-checkbox": "~3.0.0",
     "expo-constants": "^16.0.2",
     "expo-splash-screen": "^0.27.6",
     "expo-status-bar": "~1.12.1",
