@@ -98,6 +98,7 @@ const Auth = () => {
           {isLogin ? "Sign In" : "Sign Up"}
         </Text>
         <TextInput
+          onPressIn={() => setError(null)}
           className="h-10 border-gray-300 border rounded p-2 mb-4"
           value={email}
           onChangeText={setEmail}
@@ -105,6 +106,7 @@ const Auth = () => {
           autoCapitalize="none"
         />
         <TextInput
+          onPressIn={() => setError(null)}
           className="h-10 border-gray-300 border rounded p-2 mb-4"
           value={password}
           onChangeText={setPassword}

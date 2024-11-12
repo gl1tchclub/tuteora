@@ -15,6 +15,7 @@ const UpdateTutor = ({ navigation }) => {
   const [availability, setAvailability] = useState(profile.availability || []);
   const [topics, setTopics] = useState(profile.topics || []);
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  
 
   const handleUpdate = async (tutor) => {
     try {
@@ -32,6 +33,16 @@ const UpdateTutor = ({ navigation }) => {
       updatedAvailability.push(option);
     }
     setAvailability(updatedAvailability);
+  };
+
+  const handleTopics = (topic) => {
+    let updatedTopics = [...topics];
+    if (updatedTopics.includes(topic)) {
+      updatedTopics = updatedTopics.filter((t) => t !== topic);
+    } else {
+      updatedTopics.push(topic);
+    }
+    setTopics(updatedTopics);
   };
 
   return (
@@ -68,6 +79,21 @@ const UpdateTutor = ({ navigation }) => {
           <View className="border-b-neutral-300 border-b mt-6 w-full self-center" />
           <View>
             <Text className="mt-6 self-center text-lg">Topics</Text>
+            <TextInput
+              className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
+              value={topics}
+              onKeyPress={() => handleTopics()}
+              placeholder="Topic"
+              maxLength={200}
+            />
+            <Text className="text-neutral-500">
+              Press enter after entering a topic
+            </Text>
+            {topics?.map((topic, index) => (
+                <View key={index} className="flex-row space-x-2">
+                <Text className="ml-2 bg-neutral-200 rounded-2xl p-2">{topic}</Text>
+              </View>
+            ))}
           </View>
           <View className="border-b-neutral-300 border-b mt-6 w-full self-center" />
         </View>
