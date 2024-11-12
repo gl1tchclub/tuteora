@@ -24,8 +24,8 @@ export const SessionProvider = (props) => {
         const sessionsQuery = query(
           collection(db, "sessions"),
           or(
-            where("creator.id", "==", user.uid),
-            where("receiver.id", "==", user.uid)
+            where("tutor.id", "==", user.uid),
+            where("student.id", "==", user.uid)
           )
         );
         const unsubscribe = onSnapshot(
@@ -42,6 +42,7 @@ export const SessionProvider = (props) => {
       } else {
         setSessions([]);
       }
+      console.log("Sessions: ", sessions);
     } catch (error) {
       console.error("Session loading error: ", error.message);
     }
@@ -59,10 +60,11 @@ export const SessionProvider = (props) => {
         const newSessionRef = doc(collection(db, "sessions"));
         newSession.id = newSessionRef.id;
         await setDoc(newSessionRef, newSession);
-        loadSessions();
       }
+      loadSessions();
     } catch (error) {
       console.error("Session creation error: ", error.message);
+      throw new Error("Session creation error: ", error.message);
     }
   };
 

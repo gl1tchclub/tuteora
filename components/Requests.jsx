@@ -14,6 +14,7 @@ import SessionWidget from "./SessionWidget";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SessionContext } from "../contexts/SessionsContext";
 import { StudentContext } from "../contexts/StudentsContext";
+import { FirestoreError } from "firebase/firestore";
 
 const RequestsList = () => {
   const { profile } = useContext(UserContext);
@@ -23,9 +24,9 @@ const RequestsList = () => {
   const { students, updateStudent } = useContext(StudentContext);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(requests);
-  }, [requests]);
+  // useEffect(() => {
+  //   console.log(requests);
+  // }, [requests]);
 
   const sections = [
     {

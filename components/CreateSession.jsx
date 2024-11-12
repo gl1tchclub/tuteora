@@ -18,7 +18,6 @@ import { SessionContext } from "../contexts/SessionsContext";
 
 const CreateSession = ({ navigation }) => {
   const { createRequest, requests } = useContext(RequestsContext);
-  const { sessions } = useContext(SessionContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -42,15 +41,15 @@ const CreateSession = ({ navigation }) => {
     let localErrorMsg = null;
     setErrorMsg(localErrorMsg);
 
-    const studentInfo = profile.students
-      ? profile.students.find((student) => student.id === receiver.id)
-      : null;
-    const student = studentInfo
-      ? { id: studentInfo.id, name: studentInfo.name }
-      : {
-          id: profile.id,
-          name: `${profile.firstName} ${profile.lastName}`,
-        };
+    // const studentInfo = profile.students
+    //   ? profile.students.find((student) => student.id === receiver.id)
+    //   : null;
+    // const student = studentInfo
+    //   ? { id: studentInfo.id, name: studentInfo.name }
+    //   : {
+    //       id: profile.id,
+    //       name: `${profile.firstName} ${profile.lastName}`,
+    //     };
 
     try {
       setLoading(true);
@@ -63,17 +62,16 @@ const CreateSession = ({ navigation }) => {
           id: receiver.id,
           name: receiver.name,
         },
-        tutor: profile.tutor || {
-          id: profile.id,
-          name: `${profile.firstName} ${profile.lastName}`,
-        },
-        student,
+        // tutor: profile.tutor || {
+        //   id: profile.id,
+        //   name: `${profile.firstName} ${profile.lastName}`,
+        // },
+        // student,
         topic,
         date,
         time,
         type: "session",
         location: location ? location : "TBD",
-        isCompleted: false,
       };
 
       const requiredFields = ["creator", "receiver", "topic", "date", "time"];

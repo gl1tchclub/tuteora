@@ -13,36 +13,13 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions, completeSession } =
-    useContext(SessionContext);
+  const { cancelSession, sessions, completeSession } = useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
-  // const [sessions, setSessions] = useState([
-  //   {
-  //     tutor: "John Doe",
-  //     student: "Janadsde Doe",
-  //     topic: "Math",
-  //     date: "11/9/2024",
-  //     time: "12:00:00 PM",
-  //     location: "Online",
-  //     isAccepted: true,
-  //     isCompleted: false,
-  //   },
-  //   {
-  //     tutor: "John Doe",
-  //     student: "Joseph Dunn",
-  //     topic: "IT",
-  //     date: "11/13/2024",
-  //     time: "12:00:00 PM",
-  //     location: "Online",
-  //     isAccepted: true,
-  //     isCompleted: false,
-  //   },
-  // ]);
 
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
-    console.log(sessions);
+    console.log("Sessions:",sessions);
   }, [sessions]);
 
   const parseDateTime = (date, time) => {
@@ -135,7 +112,7 @@ const SessionsComponent = ({ navigation }) => {
                           <Text className="text-white">Cancel</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => handleDeleteSession(item.id)}
+                          onPress={() => handleCompleteSession(item.id)}
                           className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
                         >
                           <MaterialCommunityIcons
@@ -157,10 +134,12 @@ const SessionsComponent = ({ navigation }) => {
         </>
       ) : (
         <View
-            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
-            style={{ elevation: 5 }}
-          >
-          <Text className="font-semibold text-base self-center">Please request a tutor</Text>
+          className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+          style={{ elevation: 5 }}
+        >
+          <Text className="font-semibold text-base self-center">
+            Please request a tutor
+          </Text>
         </View>
       )}
     </ScrollView>

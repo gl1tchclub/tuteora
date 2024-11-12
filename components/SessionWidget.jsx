@@ -11,7 +11,7 @@ const SessionWidget = (props) => {
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {props.student.name}
+              {props.student?.name || props.creator.name}
             </Text>
           </>
         ) : (
@@ -21,7 +21,7 @@ const SessionWidget = (props) => {
               numberOfLines={1}
               ellipsizeMode="tail"
             >
-              {props.tutor.name}
+              {props.tutor?.name || props.creator.name}
             </Text>
           </>
         )}
