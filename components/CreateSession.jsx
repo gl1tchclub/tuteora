@@ -17,6 +17,7 @@ import DateTimePicker from "react-native-modal-datetime-picker";
 import { SessionContext } from "../contexts/SessionsContext";
 
 const CreateSession = ({ navigation }) => {
+  const { sessions } = useContext(SessionContext);
   const { createRequest, requests } = useContext(RequestsContext);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,7 +69,6 @@ const CreateSession = ({ navigation }) => {
         localErrorMsg = "Please fill in all fields";
         setErrorMsg(localErrorMsg);
         setLoading(false);
-        // console.log("Missing fields:", missingFields);
         return;
       }
 
@@ -79,12 +79,19 @@ const CreateSession = ({ navigation }) => {
           req.type === newSession.type
       );
 
-      if (!existingRequest) {
+      const existingSession = sessions.find((sesh) => 
+        sesh.creator.id === newSession.creator.id &&
+        sesh.receiver.id === newSession.receiver.id &&
+        sesh.date === newSession.date &&
+        sesh.isCompleted === false
+      );
+
+      if (!existingRequest && !existingSession) {
         console.log("\nCreating...");
         setErrorMsg(null);
         await createRequest(newSession);
       } else {
-        localErrorMsg = "Session already requested!";
+        localErrorMsg = "Session is already requested or exists!";
         setErrorMsg(localErrorMsg);
       }
     } catch (err) {
