@@ -1,11 +1,9 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useMemo } from "react";
 import { TutorContext } from "../contexts/TutorsContext";
 import { UserContext } from "../contexts/UserContext";
 import { View, Text, TextInput, Button, ScrollView } from "react-native";
-// import CheckBox from '@react-native-community/checkbox';
-// import CheckBox from "@react-native-community/checkbox";
 import Checkbox from "expo-checkbox";
-// import { CheckBoxComponent } from "@react-native-community/checkbox";
+import { RadioGroup } from "react-native-radio-buttons-group";
 
 const UpdateTutor = ({ navigation }) => {
   const { tutors, updateTutor } = useContext(TutorContext);
@@ -16,10 +14,30 @@ const UpdateTutor = ({ navigation }) => {
   const [topics, setTopics] = useState(profile.topics || []);
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
   const [currentTopic, setCurrentTopic] = useState("");
+  const [selectedButtonId, setSelectedButtonId] = useState(null);
 
-  const handleUpdate = async (tutor) => {
+  const [radioButtons, setRadioButtons] = useState([
+    {
+      id: "0",
+      label: "Yes",
+      value: false,
+      //   selected: isAvailable === true,
+    },
+    {
+      id: "1",
+      label: "No",
+      value: true,
+      //   selected: isAvailable === false,
+    },
+  ]);
+
+  const handleUpdate = async () => {
     try {
-      await updateTutor(profile.id, { students: profile.students });
+      profile.bio = bio;
+      profile.availability.push(...availability);
+      profile.isAvailable = isAvailable;
+      profile.topics.push(...topics);
+      await updateTutor(profile);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
     }
@@ -40,6 +58,12 @@ const UpdateTutor = ({ navigation }) => {
       setTopics([...topics, currentTopic]);
       setCurrentTopic("");
     }
+  };
+
+  const handleRadioButtons = (selectedButton) => {
+    setSelectedButtonId(selectedButton);
+    setIsAvailable(radioButtons[selectedButton].value);
+    console.log(isAvailable, radioButtons[selectedButton].label);
   };
 
   useEffect(() => {
@@ -93,13 +117,29 @@ const UpdateTutor = ({ navigation }) => {
             </Text>
             <View className="mt-4 flex-row">
               {topics.map((topic, index) => (
-                <Text key={index} className="ml-2 bg-neutral-200 rounded-2xl p-2">
+                <Text
+                  key={index}
+                  className="ml-2 bg-neutral-200 rounded-2xl p-2"
+                >
                   {topic}
                 </Text>
               ))}
             </View>
           </View>
           <View className="border-b-neutral-300 border-b mt-6 w-full self-center" />
+          <View>
+            <Text className="mt-6 self-center text-lg mb-2">
+              Are you able to take on more students?
+            </Text>
+            <RadioGroup
+              radioButtons={radioButtons}
+              onPress={(button) => handleRadioButtons(button)}
+              selectedId={selectedButtonId}
+              layout="row"
+            />
+          </View>
+          <View className="border-b-neutral-300 border-b my-6 w-full self-center" />
+          <Button title="Update" onPress={handleUpdate} color="#46ab61" />
         </View>
       </View>
     </ScrollView>
