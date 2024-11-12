@@ -2,9 +2,11 @@ import { View, Text, Button, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
+import { TutorContext } from "../contexts/TutorsContext";
 
 const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);
+  const { updateTutor } = useContext(TutorContext);
   const { requests } = useContext(RequestsContext);
   const [isRequested, setIsRequested] = useState(false);
   const [buttonMessage, setButtonMessage] = useState("");
@@ -33,6 +35,14 @@ const HomeScreen = (props) => {
     }
   }, [requests]);
 
+  const handleTutorUpdate = async () => {
+    try {
+      await updateTutor(profile.id, { students: profile.students });
+    } catch (error) {
+      console.error("Tutor update error: ", error.message);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -45,11 +55,13 @@ const HomeScreen = (props) => {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="h-full">
       <View className="flex-1 h-full bg-white items-center">
-        <Text className="text-3xl py-6">Welcome, {profile.firstName}</Text>
-        <View className="bg-white p-4 w-2/3 mt-10 h-max rounded-xl shadow-md shadow-black">
-          <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
-            Name: {profile.firstName} {profile.lastName}
-          </Text>
+        <Text className="text-3xl pt-8" numberOfLines={2} ellipsizeMode="tail">
+          Welcome,
+        </Text>
+        <Text className="text-3xl" numberOfLines={2} ellipsizeMode="tail">
+          {profile.firstName}
+        </Text>
+        <View className="bg-white p-4 w-2/3 mt-4 h-max rounded-xl shadow-md shadow-black">
           <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
             Email: {profile.email}
           </Text>
@@ -82,6 +94,15 @@ const HomeScreen = (props) => {
               ) : (
                 <Text className="text-lg">None</Text>
               )}
+            </View>
+          )}
+          {profile.accountType === "Tutor" && (
+            <View className="mb-2">
+              <Button
+                onPress={handleTutorUpdate}
+                title="Edit Tutor Profile"
+                color="#46ab61"
+              />
             </View>
           )}
           <Button onPress={handleLogout} title="Log Out" color="#2b69ba" />
