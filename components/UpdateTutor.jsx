@@ -121,11 +121,11 @@ const UpdateTutor = ({ navigation }) => {
             <Text className="text-neutral-500">
               Press enter after entering a topic
             </Text>
-            <View className="mt-4 flex-row">
+            <View className="flex-row flex-wrap">
               {topics.map((topic, index) => (
                 <Text
                   key={index}
-                  className="ml-2 bg-neutral-200 rounded-2xl p-2"
+                  className="ml-2 mt-2 bg-neutral-200 rounded-2xl p-2"
                 >
                   {topic}
                 </Text>
