@@ -123,7 +123,6 @@ const RequestsList = () => {
   };
 
   const renderItem = ({ item }) => {
-    // console.log("\n\nReq:",item);
    return ( <View
       className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
       style={{

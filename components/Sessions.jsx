@@ -13,7 +13,8 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions, completeSession } = useContext(SessionContext);
+  const { cancelSession, sessions, completeSession } =
+    useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
   // const [sessions, setSessions] = useState([
   //   {
@@ -84,73 +85,84 @@ const SessionsComponent = ({ navigation }) => {
         setIsLoading(false);
       }, 500);
     }
-  }
+  };
 
   return (
     <ScrollView className="flex-1 w-full bg-white">
-      <View
-        className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
-        style={{ elevation: 5 }}
-      >
-        <Text className="text-lg mb-2 font-bold">Next Session:</Text>
-        {sessions.length != 0  ? (
-          <SessionWidget
-            {...earliestSession}
-            accountType={profile.accountType}
-          />
-        ) : (
-          <Text>No sessions scheduled</Text>
-        )}
-      </View>
-      <View
-        className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
-        style={{ elevation: 5 }}
-      >
-        <View className="flex-row justify-between items-center mb-4">
-          <Text className="text-lg font-bold">Schedule</Text>
-          <Button
-            title="Create Session"
-            onPress={handleCreateSession}
-            color="#46ab61"
-          />
-        </View>
-        {sessions.length != 0 ? (
-          sessions.map((item, index) => (
-            <View key={index}>
-              {!item.isCompleted && (
-                <SessionWidget {...item} accountType={profile.accountType}>
-                  <View className="flex-row justify-center space-x-2 mt-2">
-                    <TouchableOpacity
-                      onPress={() => handleDeleteSession(item.id)}
-                      className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                    >
-                      <MaterialCommunityIcons
-                        name="delete-outline"
-                        size={20}
-                        color="white"
-                      />
-                      <Text className="text-white">Cancel</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => handleDeleteSession(item.id)}
-                      className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                    >
-                      <MaterialCommunityIcons
-                        name="check"
-                        size={20}
-                        color="white"
-                      />
-                      <Text className="text-white">Complete</Text>
-                    </TouchableOpacity>
-                  </View>
-                </SessionWidget>
-              )}
+      {profile.tutor || profile.students ? (
+        <>
+          <View
+            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+            style={{ elevation: 5 }}
+          >
+            <Text className="text-lg mb-2 font-bold">Next Session:</Text>
+            {sessions.length != 0 ? (
+              <SessionWidget
+                {...earliestSession}
+                accountType={profile.accountType}
+              />
+            ) : (
+              <Text>No sessions scheduled</Text>
+            )}
+          </View>
+          <View
+            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+            style={{ elevation: 5 }}
+          >
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-lg font-bold">Schedule</Text>
+              <Button
+                title="Create Session"
+                onPress={handleCreateSession}
+                color="#46ab61"
+              />
             </View>
-          ))
-        ) : (
-          <Text>No sessions scheduled</Text>
-        )}
-      </View>
+            {sessions.length != 0 ? (
+              sessions.map((item, index) => (
+                <View key={index}>
+                  {!item.isCompleted && (
+                    <SessionWidget {...item} accountType={profile.accountType}>
+                      <View className="flex-row justify-center space-x-2 mt-2">
+                        <TouchableOpacity
+                          onPress={() => handleDeleteSession(item.id)}
+                          className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                        >
+                          <MaterialCommunityIcons
+                            name="delete-outline"
+                            size={20}
+                            color="white"
+                          />
+                          <Text className="text-white">Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => handleDeleteSession(item.id)}
+                          className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                        >
+                          <MaterialCommunityIcons
+                            name="check"
+                            size={20}
+                            color="white"
+                          />
+                          <Text className="text-white">Complete</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </SessionWidget>
+                  )}
+                </View>
+              ))
+            ) : (
+              <Text>No sessions scheduled</Text>
+            )}
+          </View>
+        </>
+      ) : (
+        <View
+            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+            style={{ elevation: 5 }}
+          >
+          <Text className="font-semibold text-base self-center">Please request a tutor</Text>
+        </View>
+      )}
     </ScrollView>
   );
 };

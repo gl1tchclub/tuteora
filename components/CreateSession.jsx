@@ -188,11 +188,16 @@ const CreateSession = ({ navigation }) => {
             )}
           </View>
         )}
-        {profile.tutor && (
-          <Text className="font-semibold text-lg self-center pb-2">
-            Session with <Text className="italic">{profile.tutor.name}</Text>
-          </Text>
-        )}
+        {profile.accountType === "Student" &&
+          (profile.tutor ? (
+            <Text className="font-semibold text-lg self-center pb-2">
+              Session with <Text className="italic">{profile.tutor.name}</Text>
+            </Text>
+          ) : (
+            <Text className="font-semibold text-lg self-center pb-2">
+              No Tutor Available
+            </Text>
+          ))}
         <TextInput
           className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
           value={topic}

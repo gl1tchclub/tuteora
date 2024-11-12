@@ -6,7 +6,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
@@ -19,8 +19,16 @@ const TutorDetails = (props) => {
   const [loading, setLoading] = useState(false);
   const tutor = props.tutor.tutor;
   console.log("Tutor: ", tutor);
+  const getRandomColor = () => {
+    return Math.floor(Math.random() * 16777215).toString(16);
+  };
 
-  const randomColor =  Math.floor(Math.random()*16777215).toString(16);
+  const [randomColor, setRandomColor] = useState("");
+
+  useEffect(() => {
+    setRandomColor(`#${getRandomColor()}`);
+    console.log(randomColor);
+  }, []);
 
   const handleRequestTutor = async (tutor) => {
     try {
@@ -53,7 +61,7 @@ const TutorDetails = (props) => {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white w-full">
+    <ScrollView className="flex-1 bg-white w-full h-full">
       <View className="relative w-full h-48 mb-3">
         <View
           className="absolute inset-0 bg-cover bg-center bg-no-repeat w-full h-full"
@@ -114,7 +122,7 @@ const TutorDetails = (props) => {
             <Text className="text-lg font-semibold self-center mb-2">
               Topics:
             </Text>
-            {tutor.topics ? (
+            {tutor.topics.length !== 0 ? (
               tutor.topics.map((topic, idx) => (
                 <Text
                   key={idx}
@@ -130,13 +138,13 @@ const TutorDetails = (props) => {
             )}
           </View>
         </View>
-        <View className="border-b-neutral-400 border-b mx-4 py-3">
+        <View className="border-b-neutral-400 border-b mx-4 py-3 mb-4">
           <View className="flex-row">
             <Text className="text-xl font-semibold self-center">
               Availability:
             </Text>
             <View className="flex-row my-2 text-wrap">
-              {tutor.availability ? (
+              {tutor.availability.length !== 0 ? (
                 tutor.availability.map((day, idx) => (
                   <Text
                     key={idx}

@@ -12,6 +12,7 @@ import { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
+import { FirestoreError } from "firebase/firestore";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -45,6 +46,7 @@ const Auth = () => {
   const { register, login, user, profile } = useContext(UserContext);
 
   const handleAuthentication = async () => {
+    setError(null);
     try {
       setLoading(true);
       if (isLogin) {
@@ -59,15 +61,15 @@ const Auth = () => {
           study,
         });
       }
-      setError(null);
     } catch (error) {
       console.error("Authentication error:", error.message);
       setError(error.message);
     } finally {
       setLoading(false);
       if (user && profile) {
+        setError(null);
         Alert.alert("\nSigned in successfully!");
-      } else {
+      } else if (FirestoreError) {
         setError("Invalid credentials. Please try again.");
       }
     }
