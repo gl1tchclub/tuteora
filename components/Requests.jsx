@@ -123,26 +123,61 @@ const RequestsList = () => {
   };
 
   const renderItem = ({ item }) => {
-   return ( <View
-      className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
-      style={{
-        elevation: 5,
-      }}
-    >
-      {item.type == "student" && (
-        <View className="flex-row justify-between" style={{ elevation: 5 }}>
-          <Text className="font-bold text-lg">{item.student}</Text>
-          <Text className="font-bold text-lg">{item.subject}</Text>
-          <View className="flex-row">
+    return (
+      <View
+        className="bg-white p-4 my-2 rounded-xl w-11/12 self-center"
+        style={{
+          elevation: 5,
+        }}
+      >
+        {item.type == "student" && (
+          <View className="flex-row justify-between" style={{ elevation: 5 }}>
+            <Text className="font-bold text-lg">{item.student}</Text>
+            <Text className="font-bold text-lg">{item.subject}</Text>
+            <View className="flex-row">
+              {item.receiver.id === profile.id ? (
+                <View className="w-full flex-row justify-between">
+                  <Text className="font-semibold text-lg ">
+                    {item.creator.name}
+                  </Text>
+                  <View className="flex-row">
+                    <TouchableOpacity
+                      onPress={() => handleAcceptStudent(item)}
+                      className="bg-green-500 rounded w-fit-content self-center mr-2"
+                    >
+                      <MaterialCommunityIcons
+                        name="check"
+                        size={24}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteRequest(item.id)}
+                      className="bg-red-500 rounded w-fit-content self-center"
+                    >
+                      <MaterialCommunityIcons
+                        name="delete-outline"
+                        size={24}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ) : (
+                <Text className="font-bold text-lg">Pending...</Text>
+              )}
+            </View>
+          </View>
+        )}
+        {item.type === "session" && (
+          <View className="flex-row justify-between" style={{ elevation: 5 }}>
             {item.receiver.id === profile.id ? (
-              <View className="w-full flex-row justify-between">
-                <Text className="font-semibold text-lg ">
-                  {item.creator.name}
-                </Text>
-                <View className="flex-row">
+              <>
+                <SessionWidget {...item} accountType={profile.accountType} />
+                <View className="self-center">
                   <TouchableOpacity
-                    onPress={() => handleAcceptStudent(item)}
-                    className="bg-green-500 rounded w-fit-content self-center mr-2"
+                    onPress={() => handleAcceptSession(item)}
+                    className="bg-green-500 rounded w-fit-content self-center mb-4"
                   >
                     <MaterialCommunityIcons
                       name="check"
@@ -161,50 +196,17 @@ const RequestsList = () => {
                     />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </>
             ) : (
-              <Text className="font-bold text-lg">Pending...</Text>
+              <View className="flex-row justify-between w-full">
+                <Text className="text-base">{item.receiver.name}</Text>
+                <Text className="text-base">Waiting for response...</Text>
+              </View>
             )}
           </View>
-        </View>
-      )}
-      {item.type === "session" && (
-        <View className="flex-row justify-between" style={{ elevation: 5 }}>
-          {!item.receiver.id === profile.id ? (
-            <View className="flex-row justify-between w-full">
-              <Text className="text-base">{item.receiver.name}</Text>
-              <Text className="text-base">Waiting for response...</Text>
-            </View>
-          ) : (
-            <>
-              <SessionWidget {...item} accountType={profile.accountType} />
-              <View className="self-center">
-                <TouchableOpacity
-                  onPress={() => handleAcceptSession(item)}
-                  className="bg-green-500 rounded w-fit-content self-center mb-4"
-                >
-                  <MaterialCommunityIcons
-                    name="check"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteRequest(item.id)}
-                  className="bg-red-500 rounded w-fit-content self-center"
-                >
-                  <MaterialCommunityIcons
-                    name="delete-outline"
-                    size={24}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              </View>
-            </>
-          )}
-        </View>
-      )}
-    </View>)
+        )}
+      </View>
+    );
   };
 
   return (
