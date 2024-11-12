@@ -1,12 +1,12 @@
 import { useEffect, useState, useContext, useMemo } from "react";
 import { TutorContext } from "../contexts/TutorsContext";
 import { UserContext } from "../contexts/UserContext";
-import { View, Text, TextInput, Button, ScrollView } from "react-native";
+import { View, Text, TextInput, Button, ScrollView, Alert } from "react-native";
 import Checkbox from "expo-checkbox";
 import { RadioGroup } from "react-native-radio-buttons-group";
 
 const UpdateTutor = ({ navigation }) => {
-  const { tutors, updateTutor } = useContext(TutorContext);
+  const { updateTutor } = useContext(TutorContext);
   const { profile } = useContext(UserContext);
   const [bio, setBio] = useState(profile.bio || "");
   const [isAvailable, setIsAvailable] = useState(profile.isAvailable);
@@ -15,19 +15,18 @@ const UpdateTutor = ({ navigation }) => {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
   const [currentTopic, setCurrentTopic] = useState("");
   const [selectedButtonId, setSelectedButtonId] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const [radioButtons, setRadioButtons] = useState([
     {
       id: "0",
       label: "Yes",
       value: false,
-      //   selected: isAvailable === true,
     },
     {
       id: "1",
       label: "No",
       value: true,
-      //   selected: isAvailable === false,
     },
   ]);
 
@@ -40,6 +39,13 @@ const UpdateTutor = ({ navigation }) => {
       await updateTutor(profile);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
+    } finally {
+      if (errorMsg) {
+        Alert.alert("Error", errorMsg);
+      } else {
+        Alert.alert("Success", "Profile updated successfully");
+        navigation.navigate("Dashboard");
+      }
     }
   };
 
@@ -139,6 +145,7 @@ const UpdateTutor = ({ navigation }) => {
             />
           </View>
           <View className="border-b-neutral-300 border-b my-6 w-full self-center" />
+          {errorMsg && <Text>{errorMsg}</Text>}
           <Button title="Update" onPress={handleUpdate} color="#46ab61" />
         </View>
       </View>
