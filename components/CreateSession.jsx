@@ -191,7 +191,10 @@ const CreateSession = ({ navigation }) => {
         {profile.accountType === "Student" &&
           (profile.tutor ? (
             <Text className="font-semibold text-lg self-center pb-2">
-              Session with <Text className="italic">{profile.tutor.name}</Text>
+              Session with{" "}
+              <Text className="italic" numberOfLines={1} ellipsizeMode="tail">
+                {profile.tutor.name}
+              </Text>
             </Text>
           ) : (
             <Text className="font-semibold text-lg self-center pb-2">

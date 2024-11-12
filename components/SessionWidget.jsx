@@ -3,14 +3,26 @@ import { View, Text } from "react-native";
 const SessionWidget = (props) => {
   return (
     <View className="flex-1">
-      <View className="flex-row">
+      <View className="flex-row ml-4">
         {props.accountType === "Tutor" ? (
           <>
-            <Text className="font-bold text-lg ml-4">{props.student.name}</Text>
+            <Text
+              className="font-bold text-lg"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {props.student.name}
+            </Text>
           </>
         ) : (
           <>
-            <Text className="font-bold text-lg">{props.tutor.name}</Text>
+            <Text
+              className="font-bold text-lg"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {props.tutor.name}
+            </Text>
           </>
         )}
       </View>

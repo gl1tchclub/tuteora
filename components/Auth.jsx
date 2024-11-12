@@ -46,11 +46,14 @@ const Auth = () => {
   const { register, login, user, profile } = useContext(UserContext);
 
   const handleAuthentication = async () => {
-    setError(null);
+    let localError = null;
+    setError(localError);
+
     try {
       setLoading(true);
       if (isLogin) {
         await login(email, password);
+        console.log("Local error:", localError);
       } else {
         await register({
           email,
@@ -63,14 +66,21 @@ const Auth = () => {
       }
     } catch (error) {
       console.error("Authentication error:", error.message);
-      setError(error.message);
+      if (error instanceof FirestoreError) {
+        localError = "Invalid credentials. Please try again.";
+        setError(localError);
+      } else {
+        localError = error.message;
+        setError(localError);
+      }
     } finally {
       setLoading(false);
-      if (user && profile) {
+      if (localError == null) {
         setError(null);
+        localError = null;
         Alert.alert("\nSigned in successfully!");
-      } else if (FirestoreError) {
-        setError("Invalid credentials. Please try again.");
+      } else {
+        Alert.alert("\nAuthentication error:", localError);
       }
     }
   };
