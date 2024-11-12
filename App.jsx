@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Main application entry point for the React Native app.
+ * Initializes providers for user, session, request, student, and tutor contexts.
+ * Handles splash screen visibility and prepares the app resources asynchronously.
+ * Displays the main AppNavigator if the app is ready, or a loading indicator otherwise.
+ */
+
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
 import { hideAsync, preventAutoHideAsync } from "expo-splash-screen";
@@ -8,8 +15,6 @@ import { TutorProvider } from "./contexts/TutorsContext";
 import { RequestsProvider } from "./contexts/RequestsContext";
 import { StudentProvider } from "./contexts/StudentsContext";
 import AppNavigator from "./components/Navigation";
-import AuthScreen from "./screens/AuthScreen";
-import { KeyboardAvoidingView } from "react-native";
 
 // Keep the splash screen visible while we fetch resources
 preventAutoHideAsync();
