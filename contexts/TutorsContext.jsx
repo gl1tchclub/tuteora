@@ -1,3 +1,11 @@
+/**
+ * TutorContext module to manage tutor data and provide functionality to load and update tutor profiles.
+ * Exposes tutor list and an update function to update tutor information in Firestore.
+ * Only loads tutors if the current user profile is of type "Student".
+ *
+ * @module TutorContext
+ */
+
 import { createContext, useState, useEffect, useContext } from "react";
 import { db, auth } from "../services/firebase";
 import {

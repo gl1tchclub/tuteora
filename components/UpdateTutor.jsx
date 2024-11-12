@@ -1,3 +1,12 @@
+/**
+ * UpdateTutor component allows a tutor to update their profile details, including bio, availability, topics, and availability for new students.
+ * 
+ * @param {object} props - Component properties.
+ * @param {object} props.navigation - React Navigation object used for navigating to different screens.
+ * 
+ * @returns {JSX.Element} - Rendered component displaying form elements for updating tutor details.
+ */
+
 import { useEffect, useState, useContext, useMemo } from "react";
 import { TutorContext } from "../contexts/TutorsContext";
 import { UserContext } from "../contexts/UserContext";

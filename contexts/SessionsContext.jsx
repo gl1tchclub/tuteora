@@ -1,3 +1,12 @@
+/**
+ * SessionContext module to manage sessions between tutors and students.
+ * Provides functionality to load, create, complete, and cancel sessions.
+ * It listens for real-time updates on sessions where the current user is either a tutor or a student.
+ * Sessions are fetched from Firestore and updated based on changes to the session data.
+ *
+ * @module SessionContext
+ */
+
 import { db, auth } from "../services/firebase";
 import {
   doc,

@@ -1,3 +1,11 @@
+/**
+ * StudentContext module to manage student data and provide functionality to load and update student profiles.
+ * Provides a context for accessing the list of students and a function to update student information in Firestore.
+ * Only loads students if the current user profile is of type "Tutor".
+ *
+ * @module StudentContext
+ */
+
 import { createContext, useState, useEffect, useContext } from "react";
 import { db, auth } from "../services/firebase";
 import { getDocs, collection, query, where, setDoc, doc } from "firebase/firestore";

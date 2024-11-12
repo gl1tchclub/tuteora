@@ -1,3 +1,11 @@
+/**
+ * UserContext module to manage user authentication and profile data.
+ * Provides context and functions for registering, logging in, updating, and signing out users.
+ * Handles both tutor and student accounts and loads their profile data from Firestore.
+ *
+ * @module UserContext
+ */
+
 import { createContext, useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,

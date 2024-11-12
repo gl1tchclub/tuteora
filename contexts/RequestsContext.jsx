@@ -1,10 +1,18 @@
+/**
+ * RequestsContext module to manage requests between users.
+ * Provides functionality to load, create, and delete requests based on the current user's role.
+ * It listens for real-time updates on requests where the current user is either the creator or the receiver.
+ * Requests are fetched from Firestore and updated based on changes to the request data.
+ *
+ * @module RequestsContext
+ */
+
 import { db, auth } from "../services/firebase";
 import {
   doc,
   setDoc,
   where,
   deleteDoc,
-  getDocs,
   collection,
   query,
   or,

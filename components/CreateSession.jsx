@@ -1,3 +1,13 @@
+/**
+ * CreateSession component allows the user to create a new session request.
+ * It includes inputs for selecting a student, specifying session details (topic, date, time, and location), 
+ * and sending the request for session creation.
+ * The component also manages loading states, error handling, and navigation after a successful request.
+ * 
+ * @param {Object} navigation - The navigation prop for navigating to other screens.
+ * @returns {JSX.Element} The CreateSession screen for requesting a new session.
+ */
+
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   View,

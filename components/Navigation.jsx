@@ -1,3 +1,11 @@
+/**
+ * AppNavigator component handles the main navigation structure of the app.
+ * It includes a bottom tab navigator for authenticated users, with stacks for Home, Requests, and Sessions.
+ * If the user is not authenticated, it displays the authentication screen.
+ * 
+ * @returns {JSX.Element} The main navigation container of the app.
+ */
+
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";

@@ -1,3 +1,13 @@
+/**
+ * Auth component that handles user authentication, allowing users to sign in or sign up.
+ * It supports both login and registration with input fields for email, password, and additional 
+ * fields for registration such as first name, last name, field of study, and account type.
+ * It manages user authentication state using Firebase, with loading and error handling.
+ * 
+ * @returns {JSX.Element} The Auth screen for logging in or registering.
+ */
+
+
 import {
   Button,
   Text,
