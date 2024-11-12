@@ -34,7 +34,7 @@ I had trouble with getting the next session in Sessions.jsx, so I asked chatgpt 
 
 "In my sessions.jsx component, I'm trying to store the session with the earliest date. I'm also trying to compare times when dates match, but when I print the variable, it isn't displaying the earliest session and is having trouble with comparison. I think it's because it's not being parsed correctly. What is the best way to parse the dates in my sessions and what is the best array method to use for this comparison? Please don't send me the complete working function and just suggest possible ideas/methods"
 
-Chatgpt suggested making a parse datetime function to convert it to a Date object and use either reduce or for loop. I chose reduce as I wanted to learn something new, although a for loop would've provided better readability. I also asked chatgpt to provide the basic syntax for using reduce.
+Chatgpt suggested making a parse datetime function to convert it to a Date object and use either reduce or for loop. I chose reduce as I wanted to learn something new, although a for loop would've provided better readability. I also asked chatgpt to provide a generic syntax for using reduce as I didn't understand the accumulator and inital index part.
 
 ---
 
