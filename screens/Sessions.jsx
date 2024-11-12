@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Screen component for displaying sessions.
+ * This screen renders the SessionsComponent component, passing down navigation properties.
+ * Uses React Native's View component for layout structure.
+ */
+
 import { View } from "react-native";
 import SessionsComponent from "../components/Sessions";
 

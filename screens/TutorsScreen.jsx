@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Screen component for displaying tutors.
+ * This screen renders the TutorList component, passing down navigation properties.
+ * Uses React Native's View component for layout structure.
+ */
+
 import { View } from "react-native";
 import TutorList from "../components/TutorList";
 

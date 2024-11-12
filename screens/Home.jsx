@@ -1,9 +1,15 @@
+/**
+ * @fileoverview Home screen component for displaying user information and navigation options.
+ * This screen shows the user's profile details, session and request context data, 
+ * and provides navigation options based on the user's account type (Student or Tutor).
+ * It also includes logout functionality.
+ */
+
 import { View, Text, Button, ScrollView } from "react-native";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
 import { SessionContext } from "../contexts/SessionsContext";
-import { TutorContext } from "../contexts/TutorsContext";
 
 const HomeScreen = (props) => {
   const { profile, logout, user } = useContext(UserContext);

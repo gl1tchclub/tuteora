@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Screen component for updating tutor information.
+ * This screen renders the UpdateTutor component, passing down navigation properties.
+ * Uses React Native's View component for layout structure.
+ */
+
 import { View } from "react-native";
 import UpdateTutor from "../components/UpdateTutor";
 
