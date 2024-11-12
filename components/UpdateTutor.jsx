@@ -1,9 +1,9 @@
 /**
  * UpdateTutor component allows a tutor to update their profile details, including bio, availability, topics, and availability for new students.
- * 
+ *
  * @param {object} props - Component properties.
  * @param {object} props.navigation - React Navigation object used for navigating to different screens.
- * 
+ *
  * @returns {JSX.Element} - Rendered component displaying form elements for updating tutor details.
  */
 
@@ -53,12 +53,12 @@ const UpdateTutor = ({ navigation }) => {
       setErrorMsg(null);
       profile.bio = bio;
       availability.length == 0
-      ? (profile.availability = availability)
-      : profile.availability.push(...availability);
+        ? (profile.availability = availability)
+        : profile.availability.push(...availability);
       profile.isAvailable = isAvailable;
       topics.length == 0
-      ? (profile.topics = topics)
-      : profile.topics.push(...topics);
+        ? (profile.topics = topics)
+        : profile.topics.push(...topics);
       await updateTutor(profile, true);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
