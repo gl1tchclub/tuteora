@@ -34,6 +34,7 @@ const UpdateTutor = ({ navigation }) => {
   const [currentTopic, setCurrentTopic] = useState("");
   const [selectedButtonId, setSelectedButtonId] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [radioButtons, setRadioButtons] = useState([
     {
@@ -51,15 +52,32 @@ const UpdateTutor = ({ navigation }) => {
   const handleUpdate = async () => {
     try {
       setErrorMsg(null);
-      profile.bio = bio;
-      availability.length == 0
-        ? (profile.availability = availability)
-        : profile.availability.push(...availability);
-      profile.isAvailable = isAvailable;
-      topics.length == 0
-        ? (profile.topics = topics)
-        : profile.topics.push(...topics);
-      await updateTutor(profile, true);
+      const newProfile = {
+        id: profile.id,
+        accountType: profile.accountType,
+        email: profile.email,
+        study: profile.study,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        bio,
+        availability,
+        isAvailable,
+        topics,
+        students: profile.students,
+      };
+
+      if (newProfile == profile) {
+      }
+
+      // profile.bio = bio;
+      // availability.length == 0
+      //   ? (profile.availability = availability)
+      //   : profile.availability.splice(0, 0, ...availability);
+      // profile.isAvailable = isAvailable;
+      // topics.length == 0
+      //   ? (profile.topics = topics)
+      //   : profile.topics.splice(0, 0, ...topics);
+      // await updateTutor(profile, true);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
       setErrorMsg(error.message);
@@ -69,32 +87,35 @@ const UpdateTutor = ({ navigation }) => {
         setErrorMsg(null);
       } else {
         setErrorMsg(null);
-        Alert.alert(
-          "Success",
-          `Availability: ${availability}\nTopics: ${topics}\nIs Available: ${isAvailable}`
-        );
-        navigation.navigate("Dashboard");
+        console.log(availability);
+        // Alert.alert(
+        //   "Success",
+        //   `Availability: ${availability}\nTopics: ${topics}\nIs Available: ${isAvailable}`
+        // );
+        // navigation.navigate("Dashboard");
       }
     }
   };
 
   const handleAvailability = (option) => {
     const updatedAvailability = new Set(availability);
-    console.log(updatedAvailability);
     if (updatedAvailability.has(option)) {
       updatedAvailability.delete(option);
     } else {
       updatedAvailability.add(option);
     }
+    let oldAvail = new Set(availability);
+    console.log("Old:",oldAvail);
+    console.log("Update:",updatedAvailability);
+    oldAvail == updatedAvailability ? setIsDisabled(true) : setIsDisabled(false);
     setAvailability([...updatedAvailability]);
   };
 
   const handleTopics = () => {
-    console.log("Pressed");
     if (currentTopic) {
-      console.log("Enter pressed");
       if (currentTopic != topics[currentTopic]) {
         setTopics([...topics, currentTopic]);
+        console.log(topics);
         setCurrentTopic("");
       }
     }
@@ -112,8 +133,9 @@ const UpdateTutor = ({ navigation }) => {
 
   useEffect(() => {
     // console.log("Topics: ", topics);
-    setSelectedButtonId(isAvailable ? "0" : "1");
-  }, []);
+    // console.log("Availability: ", availability);
+    // setSelectedButtonId(isAvailable ? "0" : "1");
+  }, [topics]);
 
   return (
     <ScrollView className="flex-1 w-full h-full bg-white">
@@ -129,7 +151,11 @@ const UpdateTutor = ({ navigation }) => {
           <TextInput
             className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
             value={bio}
-            onChangeText={setBio}
+            onChangeText={(bio) => {
+              setBio(bio);
+              profile.bio != bio ? setIsDisabled(false) : setIsDisabled(true);
+              console.log(isDisabled);
+            }}
             placeholder={profile.bio || "Bio (200 characters)"}
             maxLength={200}
           />
@@ -198,7 +224,12 @@ const UpdateTutor = ({ navigation }) => {
           </View>
           <View className="border-b-neutral-300 border-b my-6 w-full self-center" />
           {errorMsg && <Text>{errorMsg}</Text>}
-          <Button title="Update" onPress={handleUpdate} color="#46ab61" />
+          <Button
+            title="Update"
+            onPress={handleUpdate}
+            color="#46ab61"
+            disabled={isDisabled}
+          />
         </View>
       </View>
     </ScrollView>
