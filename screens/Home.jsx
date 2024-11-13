@@ -1,6 +1,6 @@
 /**
  * @fileoverview Home screen component for displaying user information and navigation options.
- * This screen shows the user's profile details, session and request context data, 
+ * This screen shows the user's profile details, session and request context data,
  * and provides navigation options based on the user's account type (Student or Tutor).
  * It also includes logout functionality.
  */
@@ -19,7 +19,7 @@ const HomeScreen = (props) => {
   const [buttonMessage, setButtonMessage] = useState("");
 
   useEffect(() => {
-    console.log("reqs:",requests);
+    console.log("reqs:", requests);
     if (profile.accountType === "Student") {
       if (profile.tutor) {
         setButtonMessage("Change Tutor");
@@ -42,7 +42,7 @@ const HomeScreen = (props) => {
   }, [requests]);
 
   useEffect(() => {
-    console.log("sessions:",sessions);
+    console.log("sessions:", sessions);
   }, [sessions]);
 
   const handleNavigateUpdate = async () => {
@@ -76,6 +76,11 @@ const HomeScreen = (props) => {
           </Text>
           {profile.accountType === "Student" && (
             <View className="mb-2">
+              {profile.tutor && (
+                <Text className="text-lg bg-neutral-100 rounded-lg p-2 my-4">
+                  Tutor: {profile.tutor.name}
+                </Text>
+              )}
               {!isRequested ? (
                 <Button
                   color="#46ab61"
