@@ -1,32 +1,27 @@
 /**
  * SessionsComponent is a React Native component that displays a list of sessions for a user.
  * It allows the user to view, create, cancel, or complete sessions.
- * 
+ *
  * @param {Object} props - The component props
  * @param {Object} props.navigation - The navigation object for navigating between screens
  */
 
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  View,
-  ScrollView,
-  Text,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import { View, ScrollView, Text, Button, TouchableOpacity } from "react-native";
 import SessionWidget from "./SessionWidget";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions, completeSession } = useContext(SessionContext);
+  const { cancelSession, sessions, completeSession } =
+    useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
-    console.log("Sessions:",sessions);
+    console.log("Sessions:", sessions);
   }, [sessions]);
 
   const parseDateTime = (date, time) => {

@@ -8,7 +8,14 @@
 
 import { createContext, useState, useEffect, useContext } from "react";
 import { db, auth } from "../services/firebase";
-import { getDocs, collection, query, where, setDoc, doc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { UserContext } from "./UserContext";
 
 export const StudentContext = createContext();

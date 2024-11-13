@@ -1,18 +1,12 @@
 /**
  * SessionsComponent is a React Native component that displays a list of sessions for a user.
  * It allows the user to view, create, cancel, or complete sessions.
- * 
+ *
  * @param {Object} props - The component props
  * @param {Object} props.navigation - The navigation object for navigating between screens
  */
 
-import {
-  View,
-  Text,
-  SectionList,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text, SectionList, TouchableOpacity, Alert } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
@@ -48,7 +42,7 @@ const RequestsList = () => {
       await deleteRequest(id);
     } catch (error) {
       console.error("Request deletion error: ", error.message);
-    } 
+    }
   };
 
   const handleAcceptStudent = async (req) => {

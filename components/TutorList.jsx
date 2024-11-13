@@ -1,10 +1,10 @@
 /**
  * TutorList component displays a list of available tutors that a student can select.
  * It filters the list of tutors based on availability and checks for existing requests or students already assigned to the tutor.
- * 
+ *
  * @param {object} props - Component properties.
  * @param {object} props.navigation - React Navigation object used for navigating to different screens.
- * 
+ *
  * @returns {JSX.Element} - Rendered component displaying a list of available tutors.
  */
 

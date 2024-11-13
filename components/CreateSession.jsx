@@ -1,9 +1,9 @@
 /**
  * CreateSession component allows the user to create a new session request.
- * It includes inputs for selecting a student, specifying session details (topic, date, time, and location), 
+ * It includes inputs for selecting a student, specifying session details (topic, date, time, and location),
  * and sending the request for session creation.
  * The component also manages loading states, error handling, and navigation after a successful request.
- * 
+ *
  * @param {Object} navigation - The navigation prop for navigating to other screens.
  * @returns {JSX.Element} The CreateSession screen for requesting a new session.
  */
@@ -89,11 +89,12 @@ const CreateSession = ({ navigation }) => {
           req.type === newSession.type
       );
 
-      const existingSession = sessions.find((sesh) => 
-        sesh.creator.id === newSession.creator.id &&
-        sesh.receiver.id === newSession.receiver.id &&
-        sesh.date === newSession.date &&
-        sesh.isCompleted === false
+      const existingSession = sessions.find(
+        (sesh) =>
+          sesh.creator.id === newSession.creator.id &&
+          sesh.receiver.id === newSession.receiver.id &&
+          sesh.date === newSession.date &&
+          sesh.isCompleted === false
       );
 
       if (!existingRequest && !existingSession) {

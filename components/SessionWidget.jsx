@@ -1,7 +1,7 @@
 /**
  * SessionWidget component displays session details, such as the participant's name, topic, date, location, and time.
  * It is used to present a session's key information, and can render additional content passed via children props.
- * 
+ *
  * @param {Object} props - The component props.
  * @param {string} props.accountType - The account type, either "Tutor" or "Student".
  * @param {Object} [props.student] - The student object with session details.
@@ -12,7 +12,7 @@
  * @param {string} props.location - The location of the session.
  * @param {string} props.time - The time of the session.
  * @param {React.ReactNode} props.children - Optional children elements to render within the widget.
- * 
+ *
  * @returns {JSX.Element} The rendered component.
  */
 

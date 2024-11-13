@@ -1,10 +1,10 @@
 /**
  * TutorDetails component displays detailed information about a tutor.
  * It allows a user to send a request to the tutor and view the tutor's profile, including their bio, study, topics, and availability.
- * 
+ *
  * @param {Object} props - The component props.
  * @param {Object} props.tutor - The tutor object containing tutor details.
- * 
+ *
  * @returns {JSX.Element} The rendered component.
  */
 
