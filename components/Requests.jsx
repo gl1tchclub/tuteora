@@ -78,22 +78,8 @@ const RequestsList = () => {
         isCompleted: false,
       };
 
-      if (
-        sessions.includes((sesh) => {
-          sesh.date === newSession.date &&
-            sesh.tutor.id === newSession.tutor.id &&
-            sesh.student.id === newSession.student.id;
-        })
-      ) {
-        Alert.alert(
-          "Cannot Accept",
-          "You already have a session scheduled on this date\nPlease deny the request."
-        );
-        return;
-      } else {
-        await createSession(newSession);
-        await handleDeleteRequest(request.id);
-      }
+      await createSession(newSession);
+      await handleDeleteRequest(request.id);
     } catch (error) {
       console.error("Session acceptance error: ", error.message);
     }

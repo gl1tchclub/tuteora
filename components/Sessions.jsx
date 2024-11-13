@@ -14,9 +14,8 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions, completeSession } =
+  const { cancelSession, sessions, completeSession, getSessions } =
     useContext(SessionContext);
-  const [isLoading, setIsLoading] = useState(false);
   const [showList, setShowList] = useState(false);
   const [completeSessions, setCompleteSessions] = useState([]);
   const [incompleteSessions, setIncompleteSessions] = useState([]);
@@ -30,15 +29,16 @@ const SessionsComponent = ({ navigation }) => {
     console.log("Complete Sessions:", completeSessions);
   }, [sessions]);
 
+
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);
   };
 
-  const earliestSession = incompleteSessions.reduce((earliest, current) => {
+  const earliestSession = incompleteSessions ? incompleteSessions.reduce((earliest, current) => {
     const earliestDateTime = parseDateTime(earliest.date, earliest.time);
     const currentDateTime = parseDateTime(current.date, current.time);
     return currentDateTime < earliestDateTime ? current : earliest;
-  }, sessions[0]);
+  }, sessions[0]) : null;
 
   const handleCreateSession = () => {
     navigation.navigate("CreateSession");
@@ -48,36 +48,32 @@ const SessionsComponent = ({ navigation }) => {
     setShowList(!showList);
   };
 
-  const handleDeleteSession = async (sessionId) => {
+  const handleDeleteSession = async (session) => {
     try {
-      setIsLoading(true);
-      await cancelSession(sessionId);
+      await cancelSession(session.id);
+      setIncompleteSessions(...incompleteSessions, session);
+      setCompleteSessions(...completeSessions, session);
     } catch (error) {
       console.error("Session deletion error: ", error.message);
     } finally {
       console.log("\nSession deleted successfully!");
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
     }
   };
 
-  const handleCompleteSession = async (sessionId) => {
+  const handleCompleteSession = async (session) => {
     try {
-      setIsLoading(true);
-      await completeSession(sessionId);
+      await completeSession(session.id);
+      setIncompleteSessions(...incompleteSessions, session);
+      setCompleteSessions(...completeSessions, session);
     } catch (error) {
       console.error("Session completion error: ", error.message);
     } finally {
       console.log("\nSession completed successfully!");
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 500);
     }
   };
 
   return (
-    <ScrollView className="flex-grow w-full h-full bg-white">
+    <ScrollView className="flex-1 w-full h-full bg-white">
       {profile.tutor || profile.students ? (
         <>
           <View
@@ -113,7 +109,7 @@ const SessionsComponent = ({ navigation }) => {
                     <SessionWidget {...item} accountType={profile.accountType}>
                       <View className="flex-row justify-center space-x-2 mt-2">
                         <TouchableOpacity
-                          onPress={() => handleDeleteSession(item.id)}
+                          onPress={() => handleDeleteSession(item)}
                           className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
                         >
                           <MaterialCommunityIcons
@@ -124,7 +120,7 @@ const SessionsComponent = ({ navigation }) => {
                           <Text className="text-white">Cancel</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                          onPress={() => handleCompleteSession(item.id)}
+                          onPress={() => handleCompleteSession(item)}
                           className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
                         >
                           <MaterialCommunityIcons
@@ -165,7 +161,7 @@ const SessionsComponent = ({ navigation }) => {
                 <View
                   key={index}
                   style={{ elevation: 5 }}
-                  className="bg-white rounded-xl p-2"
+                  className="bg-white rounded-xl p-2 mb-2"
                 >
                   <SessionWidget {...item} accountType={profile.accountType} />
                 </View>

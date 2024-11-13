@@ -62,6 +62,15 @@ export const SessionProvider = (props) => {
     if (profile) loadSessions();
   }, [profile]);
 
+  const getSessions = async () => {
+    try {
+      loadSessions();
+    } catch (error) {
+      console.error("Session context error: ", error.message);
+      throw new Error("Session context error: ", error.message);
+    }
+  };
+
   const createSession = async (newSession) => {
     try {
       if (sessions.includes(newSession)) {
@@ -113,6 +122,7 @@ export const SessionProvider = (props) => {
         cancelSession,
         completeSession,
         setSessions,
+        getSessions
       }}
     >
       {props.children}
