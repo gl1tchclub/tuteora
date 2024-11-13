@@ -130,10 +130,14 @@ const UpdateTutor = ({ navigation }) => {
 
   const handleTopics = () => {
     if (currentTopic) {
-      if (currentTopic.toLowerCase() != topics[currentTopic]?.toLowerCase()) {
+      setErrorMsg(null);
+      const newTopics = topics.map((topic) => topic.toLowerCase());
+      if (!newTopics.includes(currentTopic.toLowerCase())) {
         setTopics([...topics, currentTopic]);
         console.log(topics);
         setCurrentTopic("");
+      } else {
+        setErrorMsg("Topic already exists");
       }
     }
   };
@@ -149,9 +153,9 @@ const UpdateTutor = ({ navigation }) => {
   };
 
   useEffect(() => {
-    // console.log("Topics: ", topics);
+    console.log("Topics: ", topics);
     // console.log("Availability: ", availability);
-    // setSelectedButtonId(isAvailable ? "0" : "1");
+    setSelectedButtonId(isAvailable ? "0" : "1");
   }, [topics]);
 
   return (
@@ -173,6 +177,7 @@ const UpdateTutor = ({ navigation }) => {
               profile.bio != bio ? setIsDisabled(false) : setIsDisabled(true);
               console.log(isDisabled);
             }}
+            autoCapitalize="sentences"
             placeholder={profile.bio || "Bio (200 characters)"}
             maxLength={200}
           />
@@ -199,6 +204,7 @@ const UpdateTutor = ({ navigation }) => {
               onSubmitEditing={handleTopics}
               placeholder="Topic"
               maxLength={20}
+              autoCapitalize="words"
             />
             <Text className="text-neutral-500">
               Press enter after entering a topic
@@ -240,7 +246,7 @@ const UpdateTutor = ({ navigation }) => {
             />
           </View>
           <View className="border-b-neutral-300 border-b my-6 w-full self-center" />
-          {errorMsg && <Text>{errorMsg}</Text>}
+          {errorMsg && <Text className="text-red-500 mb-2">{errorMsg}</Text>}
           <Button
             title="Update"
             onPress={handleUpdate}
