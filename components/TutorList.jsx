@@ -26,7 +26,7 @@ const TutorList = ({ navigation }) => {
       tutors.filter(
         (tutor) =>
           tutor.isAvailable &&
-          !tutor.students.includes((student) => student.id === profile.id) &&
+          !profile.tutor &&
           !requests.includes(
             (req) =>
               req.receiver.id === tutor.id &&
@@ -75,11 +75,17 @@ const TutorList = ({ navigation }) => {
         </Text>
       </View>
       <View className="flex-1 p-6 bg-white shadow-lg rounded-lg shadow-black m-6">
-        {availableTutors.map((tutor, idx) => (
-          <View key={idx}>
-            <RenderTutor {...tutor} />
-          </View>
-        ))}
+        {availableTutors.length !== 0 ? (
+          availableTutors.map((tutor, idx) => (
+            <View key={idx}>
+              <RenderTutor {...tutor} />
+            </View>
+          ))
+        ) : (
+          <Text className="text-lg text-center text-neutral-600">
+            No available tutors at the moment. Please check back later.
+          </Text>
+        )}
       </View>
     </ScrollView>
   );
