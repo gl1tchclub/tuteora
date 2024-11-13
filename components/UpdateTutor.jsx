@@ -89,7 +89,6 @@ const UpdateTutor = ({ navigation }) => {
         setErrorMsg(null);
       } else {
         setErrorMsg(null);
-        console.log(availability);
         // Alert.alert(
         //   "Success",
         //   `Availability: ${availability}\nTopics: ${topics}\nIs Available: ${isAvailable}`
@@ -120,8 +119,8 @@ const UpdateTutor = ({ navigation }) => {
 
     const isSame = areSetsEqual(lastAvailability, updatedAvailability);
 
-    console.log("Old: ", lastAvailability);
-    console.log("New: ", updatedAvailability);
+    // console.log("Old: ", lastAvailability);
+    // console.log("New: ", updatedAvailability);
 
     setIsDisabled(isSame);
 
@@ -134,7 +133,6 @@ const UpdateTutor = ({ navigation }) => {
       const newTopics = topics.map((topic) => topic.toLowerCase());
       if (!newTopics.includes(currentTopic.toLowerCase())) {
         setTopics([...topics, currentTopic]);
-        console.log(topics);
         setCurrentTopic("");
       } else {
         setErrorMsg("Topic already exists");
@@ -149,14 +147,12 @@ const UpdateTutor = ({ navigation }) => {
   const handleRadioButtons = (selectedButton) => {
     setSelectedButtonId(selectedButton);
     setIsAvailable(radioButtons[selectedButton].value);
-    console.log(isAvailable, radioButtons[selectedButton].label);
+    // console.log(isAvailable, radioButtons[selectedButton].label);
   };
 
   useEffect(() => {
-    console.log("Topics: ", topics);
-    // console.log("Availability: ", availability);
-    setSelectedButtonId(isAvailable ? "0" : "1");
-  }, [topics]);
+    setSelectedButtonId(isAvailable && availability.length > 0 ? "0" : "1");
+  }, [availability]);
 
   return (
     <ScrollView className="flex-1 w-full h-full bg-white">
@@ -175,7 +171,6 @@ const UpdateTutor = ({ navigation }) => {
             onChangeText={(bio) => {
               setBio(bio);
               profile.bio != bio ? setIsDisabled(false) : setIsDisabled(true);
-              console.log(isDisabled);
             }}
             autoCapitalize="sentences"
             placeholder={profile.bio || "Bio (200 characters)"}
