@@ -14,9 +14,8 @@ import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
 
 const SessionsComponent = ({ navigation }) => {
-  const { cancelSession, sessions, completeSession, getSessions } =
+  const { cancelSession, sessions, completeSession } =
     useContext(SessionContext);
-  const [showList, setShowList] = useState(false);
   const [completeSessions, setCompleteSessions] = useState([]);
   const [incompleteSessions, setIncompleteSessions] = useState([]);
   const { profile } = useContext(UserContext);
@@ -24,9 +23,7 @@ const SessionsComponent = ({ navigation }) => {
   useEffect(() => {
     console.log("Sessions:", sessions);
     setIncompleteSessions(sessions.filter((session) => !session.isCompleted));
-    setCompleteSessions(sessions.filter((session) => session.isCompleted));
     console.log("Incomplete Sessions:", incompleteSessions);
-    console.log("Complete Sessions:", completeSessions);
   }, [sessions]);
 
   const parseDateTime = (date, time) => {
@@ -45,15 +42,10 @@ const SessionsComponent = ({ navigation }) => {
     navigation.navigate("CreateSession");
   };
 
-  const handleShowList = () => {
-    setShowList(!showList);
-  };
-
   const handleDeleteSession = async (session) => {
     try {
       await cancelSession(session.id);
       setIncompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
-      setCompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
     } catch (error) {
       console.error("Session deletion error: ", error.message);
     } finally {
@@ -65,7 +57,6 @@ const SessionsComponent = ({ navigation }) => {
     try {
       await completeSession(session.id);
       setIncompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
-      setCompleteSessions(...completeSessions, session);
     } catch (error) {
       console.error("Session completion error: ", error.message);
     } finally {
@@ -74,7 +65,7 @@ const SessionsComponent = ({ navigation }) => {
   };
 
   return (
-    <ScrollView className="flex-1 w-full h-full bg-white">
+    <ScrollView className="flex-grow w-full bg-white">
       {profile.tutor || profile.students ? (
         <>
           <View
@@ -139,34 +130,6 @@ const SessionsComponent = ({ navigation }) => {
                 <Text>No sessions scheduled</Text>
               )}
             </View>
-          </View>
-          <View
-            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
-            style={{ elevation: 5 }}
-          >
-            <View className="flex-row justify-between items-center">
-              <Text className="text-lg font-bold">Completed Sessions</Text>
-              <TouchableOpacity
-                onPress={handleShowList}
-                className="rounded-3xl p-3"
-              >
-                <MaterialCommunityIcons
-                  name={showList ? "arrow-up-bold" : "arrow-down-bold"}
-                  size={24}
-                  color="black"
-                />
-              </TouchableOpacity>
-            </View>
-            {showList &&
-              completeSessions.map((item, index) => (
-                <View
-                  key={index}
-                  style={{ elevation: 5 }}
-                  className="bg-white rounded-xl p-2 mb-2"
-                >
-                  <SessionWidget {...item} accountType={profile.accountType} />
-                </View>
-              ))}
           </View>
         </>
       ) : (
