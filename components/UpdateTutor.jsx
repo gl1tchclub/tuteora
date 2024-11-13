@@ -62,7 +62,7 @@ const UpdateTutor = ({ navigation }) => {
         isAvailable,
         students: profile.students,
       };
-      
+
       await updateProfile(newProfile);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
@@ -151,17 +151,20 @@ const UpdateTutor = ({ navigation }) => {
           This is what potential students will see
         </Text>
         <View className="w-full flex-grow pb-2">
-          <TextInput
-            className="rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
-            value={bio}
-            onChangeText={(bio) => {
-              setBio(bio);
-              profile.bio != bio ? setIsDisabled(false) : setIsDisabled(true);
-            }}
-            autoCapitalize="sentences"
-            placeholder={profile.bio || "Bio (200 characters)"}
-            maxLength={200}
-          />
+          <View className="flex-grow">
+            <TextInput
+              className="rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
+              value={bio}
+              multiline
+              onChangeText={(bio) => {
+                setBio(bio);
+                profile.bio != bio ? setIsDisabled(false) : setIsDisabled(true);
+              }}
+              autoCapitalize="sentences"
+              placeholder={"Bio (200 characters)"}
+              maxLength={200}
+            />
+          </View>
           <View className="border-b-neutral-300 border-b mt-6 w-full self-center" />
           <Text className="mt-6 self-center text-lg">Availability</Text>
           <View className="flex-row space-x-4 flex-wrap mt-4 w-full">
