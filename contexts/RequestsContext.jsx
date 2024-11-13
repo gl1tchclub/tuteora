@@ -18,12 +18,14 @@ import {
   or,
   onSnapshot,
 } from "firebase/firestore";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
+import { UserContext } from "./UserContext";
 
 export const RequestsContext = createContext();
 
 export const RequestsProvider = (props) => {
   const [requests, setRequests] = useState([]);
+  const { profile } = useContext(UserContext);
   const user = auth.currentUser;
 
   const loadRequests = async () => {
@@ -57,8 +59,8 @@ export const RequestsProvider = (props) => {
   };
 
   useEffect(() => {
-    loadRequests();
-  }, [user]);
+    if (profile) loadRequests();
+  }, [profile]);
 
   const createRequest = async (newRequest) => {
     try {
