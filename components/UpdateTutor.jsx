@@ -8,7 +8,6 @@
  */
 
 import { useEffect, useState, useContext, useMemo } from "react";
-import { TutorContext } from "../contexts/TutorsContext";
 import { UserContext } from "../contexts/UserContext";
 import {
   View,
@@ -24,8 +23,7 @@ import { RadioGroup } from "react-native-radio-buttons-group";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const UpdateTutor = ({ navigation }) => {
-  const { updateTutor } = useContext(TutorContext);
-  const { profile } = useContext(UserContext);
+  const { profile, updateProfile } = useContext(UserContext);
   const [bio, setBio] = useState(profile.bio || "");
   const [isAvailable, setIsAvailable] = useState(profile.isAvailable);
   const [availability, setAvailability] = useState(profile.availability || []);
@@ -65,12 +63,6 @@ const UpdateTutor = ({ navigation }) => {
         students: profile.students,
       };
 
-      const newTopics = topics.map((topic) => topic.toLowerCase());
-      const currentTopics = profile.topics.map((topic) => topic.toLowerCase());
-
-      if (newTopics == currentTopics) {
-      }
-
       // profile.bio = bio;
       // availability.length == 0
       //   ? (profile.availability = availability)
@@ -79,7 +71,8 @@ const UpdateTutor = ({ navigation }) => {
       // topics.length == 0
       //   ? (profile.topics = topics)
       //   : profile.topics.splice(0, 0, ...topics);
-      // await updateTutor(profile, true);
+      await updateProfile(newProfile);
+      profile = newProfile;
     } catch (error) {
       console.error("Tutor update error: ", error.message);
       setErrorMsg(error.message);
@@ -89,11 +82,11 @@ const UpdateTutor = ({ navigation }) => {
         setErrorMsg(null);
       } else {
         setErrorMsg(null);
-        // Alert.alert(
-        //   "Success",
-        //   `Availability: ${availability}\nTopics: ${topics}\nIs Available: ${isAvailable}`
-        // );
-        // navigation.navigate("Dashboard");
+        Alert.alert(
+          "Success",
+          `Availability: ${availability}\nTopics: ${topics}\nIs Available: ${isAvailable}`
+        );
+        navigation.navigate("Dashboard");
       }
     }
   };

@@ -26,7 +26,7 @@ const RequestsList = () => {
   const { profile } = useContext(UserContext);
   const { requests, deleteRequest } = useContext(RequestsContext);
   const { createSession, sessions } = useContext(SessionContext);
-  const { tutors, updateTutor } = useContext(TutorContext);
+  const { updateTutor } = useContext(TutorContext);
   const { students, updateStudent } = useContext(StudentContext);
 
   const sections = [
@@ -63,7 +63,7 @@ const RequestsList = () => {
         name: student.firstName + " " + student.lastName,
       });
       await updateStudent(student);
-      await updateTutor(profile, false);
+      await updateTutor(profile);
       handleDeleteRequest(req.id);
     } catch (error) {
       console.error("Student acceptance error: ", error.message);

@@ -22,8 +22,8 @@ import { UserContext } from "../contexts/UserContext";
 import { RequestsContext } from "../contexts/RequestsContext";
 
 const TutorDetails = (props) => {
-  const { profile, updateProfile } = useContext(UserContext);
-  const { requests, createRequest } = useContext(RequestsContext);
+  const { profile } = useContext(UserContext);
+  const { createRequest } = useContext(RequestsContext);
   const [msg, setMsg] = useState("Request Tutor");
   const [icon, setIcon] = useState("account-check");
   const [loading, setLoading] = useState(false);

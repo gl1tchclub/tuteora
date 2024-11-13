@@ -42,13 +42,9 @@ export const TutorProvider = (props) => {
     if (profile && profile.accountType === "Student") loadTutors();
   }, [profile]);
 
-  const updateTutor = async (tutor, merge) => {
+  const updateTutor = async (tutor) => {
     try {
-      if (merge) {
-        await setDoc(doc(db, "tutors", tutor.id), tutor, { merge: true });
-      } else {
-        await setDoc(doc(db, "tutors", tutor.id), tutor);
-      }
+      await setDoc(doc(db, "tutors", tutor.id), tutor);
     } catch (error) {
       console.error("Tutor update error: ", error.message);
     }

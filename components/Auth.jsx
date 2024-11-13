@@ -84,7 +84,7 @@ const Auth = () => {
         setError(localError);
       }
     } finally {
-      setLoading(false);
+      if (user && profile) setLoading(false);
       if (localError == null) {
         setError(null);
         localError = null;
