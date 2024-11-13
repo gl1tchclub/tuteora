@@ -56,12 +56,12 @@ export const UserProvider = (props) => {
 
   const updateProfile = async (updatedProfile) => {
     try {
-      await setDoc(doc(
+      await updateDoc(doc(
         db,
         `${profile.accountType.toLowerCase()}s`,
         profile.id
       ), updatedProfile);
-      setProfile(updatedProfile);
+      loadUser();
     } catch (error) {
       console.error("Profile update error: ", error.message);
     }

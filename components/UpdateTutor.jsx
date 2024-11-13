@@ -62,17 +62,8 @@ const UpdateTutor = ({ navigation }) => {
         isAvailable,
         students: profile.students,
       };
-
-      // profile.bio = bio;
-      // availability.length == 0
-      //   ? (profile.availability = availability)
-      //   : profile.availability.splice(0, 0, ...availability);
-      // profile.isAvailable = isAvailable;
-      // topics.length == 0
-      //   ? (profile.topics = topics)
-      //   : profile.topics.splice(0, 0, ...topics);
+      
       await updateProfile(newProfile);
-      profile = newProfile;
     } catch (error) {
       console.error("Tutor update error: ", error.message);
       setErrorMsg(error.message);
@@ -159,9 +150,9 @@ const UpdateTutor = ({ navigation }) => {
         <Text className="text-neutral-500 self-center mb-2">
           This is what potential students will see
         </Text>
-        <View className="w-full flex-1 pb-2">
+        <View className="w-full flex-grow pb-2">
           <TextInput
-            className="h-10 rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
+            className="rounded-lg border-2 border-[#46ab61] px-4 text-lg mt-4"
             value={bio}
             onChangeText={(bio) => {
               setBio(bio);
