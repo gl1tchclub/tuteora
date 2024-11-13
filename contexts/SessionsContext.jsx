@@ -51,10 +51,7 @@ export const SessionProvider = (props) => {
             console.error("Session loading error: ", error.message);
           }
         );
-        // console.log("Sessions: ", sessions);
         return () => unsubscribe();
-      } else {
-        setSessions([]);
       }
     } catch (error) {
       console.error("Session loading error: ", error.message);
@@ -74,10 +71,10 @@ export const SessionProvider = (props) => {
         newSession.id = newSessionRef.id;
         await setDoc(newSessionRef, newSession);
       }
-      // loadSessions();
+      loadSessions();
     } catch (error) {
-      console.error("Session creation error: ", error.message);
-      throw new Error("Session creation error: ", error.message);
+      console.error("Session context error: ", error.message);
+      throw new Error("Session context error: ", error.message);
     }
   };
 
@@ -88,7 +85,7 @@ export const SessionProvider = (props) => {
       if (sessionDoc.exists()) {
         await setDoc(sessionRef, { isCompleted: true }, { merge: true });
         console.log("\nSession completed successfully!");
-        // loadSessions();
+        loadSessions();
       } else {
         console.error("Session not found!");
       }
@@ -101,7 +98,7 @@ export const SessionProvider = (props) => {
     try {
       const sessionRef = doc(db, "sessions", sessionId);
       await deleteDoc(sessionRef);
-      // loadSessions();
+      loadSessions();
       console.log("\nSession cancelled successfully!");
     } catch (error) {
       console.error("Session cancellation error: ", error.message);

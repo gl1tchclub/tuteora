@@ -159,7 +159,11 @@ const SessionsComponent = ({ navigation }) => {
             </View>
             {showList &&
               completeSessions.map((item, index) => (
-                <View key={index} style={{ elevation: 5 }} className="bg-white rounded-xl p-2">
+                <View
+                  key={index}
+                  style={{ elevation: 5 }}
+                  className="bg-white rounded-xl p-2"
+                >
                   <SessionWidget {...item} accountType={profile.accountType} />
                 </View>
               ))}

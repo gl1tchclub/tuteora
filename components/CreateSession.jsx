@@ -33,20 +33,17 @@ const CreateSession = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
   const [location, setLocation] = useState(null);
-  const [receiver, setReceiver] = useState(null);
   const [topic, setTopic] = useState(null);
   const [date, setDate] = useState(null);
   const [time, setTime] = useState(null);
   const [dateTime, setDateTime] = useState(null);
   const { profile } = useContext(UserContext);
+  const [receiver, setReceiver] = useState(profile.tutor || null);
 
   useEffect(() => {
-    if (profile?.tutor) {
-      setReceiver(profile.tutor);
-    }
     console.log(receiver);
-    console.log("requests:", requests);
-  }, [requests]);
+    console.log(sessions);
+  }, [receiver]);
 
   const handleCreateSessionRequest = async () => {
     let localErrorMsg = null;
@@ -54,7 +51,10 @@ const CreateSession = ({ navigation }) => {
 
     try {
       setLoading(true);
-      const newSession = {
+      if (profile.tutor) {
+        setReceiver(profile.tutor);
+      }
+      const newSessionReq = {
         creator: {
           id: profile.id,
           name: `${profile.firstName} ${profile.lastName}`,
@@ -69,10 +69,11 @@ const CreateSession = ({ navigation }) => {
         type: "session",
         location: location != null ? location : "TBD",
       };
+      console.log(newSessionReq);
 
       const requiredFields = ["creator", "receiver", "topic", "date", "time"];
       const missingFields = requiredFields.filter(
-        (field) => !newSession[field]
+        (field) => !newSessionReq[field]
       );
 
       if (missingFields.length > 0) {
@@ -82,32 +83,40 @@ const CreateSession = ({ navigation }) => {
         return;
       }
 
-      const existingRequest = requests.find(
-        (req) =>
-          req.creator.id === newSession.creator.id &&
-          req.receiver.id === newSession.receiver.id &&
-          req.type === newSession.type
-      );
+      const existingRequest =
+        requests.length != 0
+          ? requests.find(
+              (req) =>
+                req.creator.id === newSessionReq.creator.id &&
+                req.receiver.id === newSessionReq.receiver.id &&
+                req.type === newSessionReq.type &&
+                req.date === newSessionReq.date
+            )
+          : null;
 
-      const existingSession = sessions.find(
-        (sesh) =>
-          sesh.creator.id === newSession.creator.id &&
-          sesh.receiver.id === newSession.receiver.id &&
-          sesh.date === newSession.date &&
-          sesh.isCompleted === false
-      );
+      const existingSession =
+        sessions.length > 0
+          ? sessions.find(
+              (sesh) =>
+                (sesh.tutor.id === newSessionReq.creator.id ||
+                  sesh.tutor.id === newSessionReq.receiver.id) &&
+                (sesh.student.id === newSessionReq.receiver.id ||
+                  sesh.student.id === newSessionReq.creator.id) &&
+                sesh.date === newSessionReq.date &&
+                sesh.isCompleted === false
+            )
+          : null;
 
       if (!existingRequest && !existingSession) {
         console.log("\nCreating...");
         setErrorMsg(null);
-        await createRequest(newSession);
+        await createRequest(newSessionReq);
       } else {
         localErrorMsg = "Session is already requested or exists!";
         setErrorMsg(localErrorMsg);
       }
     } catch (err) {
       console.error("Create session error:", err.message);
-      Alert.alert("Error creating session", err.message);
       localErrorMsg = err.message;
       setErrorMsg(localErrorMsg);
     } finally {
@@ -124,8 +133,6 @@ const CreateSession = ({ navigation }) => {
         );
         setErrorMsg(null);
         navigation.navigate("Requests");
-      } else {
-        Alert.alert("Error:", localErrorMsg);
       }
     }
   };
