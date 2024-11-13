@@ -12,7 +12,6 @@ import SessionWidget from "./SessionWidget";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
-import { auth } from "../services/firebase";
 
 const SessionsComponent = ({ navigation }) => {
   const { cancelSession, sessions, completeSession } =
@@ -27,6 +26,8 @@ const SessionsComponent = ({ navigation }) => {
     console.log("Sessions:", sessions);
     setIncompleteSessions(sessions.filter((session) => !session.isCompleted));
     setCompleteSessions(sessions.filter((session) => session.isCompleted));
+    console.log("Incomplete Sessions:", incompleteSessions);
+    console.log("Complete Sessions:", completeSessions);
   }, [sessions]);
 
   const parseDateTime = (date, time) => {
@@ -76,7 +77,7 @@ const SessionsComponent = ({ navigation }) => {
   };
 
   return (
-    <ScrollView className="flex-1 w-full bg-white">
+    <ScrollView className="flex-grow w-full h-full bg-white">
       {profile.tutor || profile.students ? (
         <>
           <View
@@ -105,40 +106,42 @@ const SessionsComponent = ({ navigation }) => {
                 color="#46ab61"
               />
             </View>
-            {incompleteSessions.length != 0 ? (
-              incompleteSessions.map((item, index) => (
-                <View key={index}>
-                  <SessionWidget {...item} accountType={profile.accountType}>
-                    <View className="flex-row justify-center space-x-2 mt-2">
-                      <TouchableOpacity
-                        onPress={() => handleDeleteSession(item.id)}
-                        className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                      >
-                        <MaterialCommunityIcons
-                          name="delete-outline"
-                          size={20}
-                          color="white"
-                        />
-                        <Text className="text-white">Cancel</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => handleCompleteSession(item.id)}
-                        className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                      >
-                        <MaterialCommunityIcons
-                          name="check"
-                          size={20}
-                          color="white"
-                        />
-                        <Text className="text-white">Complete</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </SessionWidget>
-                </View>
-              ))
-            ) : (
-              <Text>No sessions scheduled</Text>
-            )}
+            <View>
+              {incompleteSessions.length != 0 ? (
+                incompleteSessions.map((item, index) => (
+                  <View key={index}>
+                    <SessionWidget {...item} accountType={profile.accountType}>
+                      <View className="flex-row justify-center space-x-2 mt-2">
+                        <TouchableOpacity
+                          onPress={() => handleDeleteSession(item.id)}
+                          className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                        >
+                          <MaterialCommunityIcons
+                            name="delete-outline"
+                            size={20}
+                            color="white"
+                          />
+                          <Text className="text-white">Cancel</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => handleCompleteSession(item.id)}
+                          className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                        >
+                          <MaterialCommunityIcons
+                            name="check"
+                            size={20}
+                            color="white"
+                          />
+                          <Text className="text-white">Complete</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </SessionWidget>
+                  </View>
+                ))
+              ) : (
+                <Text>No sessions scheduled</Text>
+              )}
+            </View>
           </View>
           <View
             className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
