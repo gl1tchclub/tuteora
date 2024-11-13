@@ -45,7 +45,7 @@ const SessionStack = () => {
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Requests">
+    <Stack.Navigator initialRouteName="Dashboard">
       <Stack.Screen
         name="Dashboard"
         component={HomeScreen}

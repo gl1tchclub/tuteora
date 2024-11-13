@@ -41,10 +41,6 @@ const HomeScreen = (props) => {
     }
   }, [requests]);
 
-  useEffect(() => {
-    console.log("sessions:", sessions);
-  }, [sessions]);
-
   const handleNavigateUpdate = async () => {
     props.navigation.navigate("UpdateTutor");
   };

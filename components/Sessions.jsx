@@ -12,6 +12,7 @@ import SessionWidget from "./SessionWidget";
 import { useState, useEffect, useContext } from "react";
 import { SessionContext } from "../contexts/SessionsContext";
 import { UserContext } from "../contexts/UserContext";
+import { auth } from "../services/firebase";
 
 const SessionsComponent = ({ navigation }) => {
   const { cancelSession, sessions, completeSession } =
@@ -20,7 +21,6 @@ const SessionsComponent = ({ navigation }) => {
   const [showList, setShowList] = useState(false);
   const [completeSessions, setCompleteSessions] = useState([]);
   const [incompleteSessions, setIncompleteSessions] = useState([]);
-
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
@@ -144,9 +144,12 @@ const SessionsComponent = ({ navigation }) => {
             className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
             style={{ elevation: 5 }}
           >
-            <View className="flex-row justify-between items-center mb-4">
+            <View className="flex-row justify-between items-center">
               <Text className="text-lg font-bold">Completed Sessions</Text>
-              <TouchableOpacity onPress={handleShowList} className="rounded-3xl p-3">
+              <TouchableOpacity
+                onPress={handleShowList}
+                className="rounded-3xl p-3"
+              >
                 <MaterialCommunityIcons
                   name={showList ? "arrow-up-bold" : "arrow-down-bold"}
                   size={24}
@@ -156,7 +159,7 @@ const SessionsComponent = ({ navigation }) => {
             </View>
             {showList &&
               completeSessions.map((item, index) => (
-                <View key={index}>
+                <View key={index} style={{ elevation: 5 }} className="bg-white rounded-xl p-2">
                   <SessionWidget {...item} accountType={profile.accountType} />
                 </View>
               ))}

@@ -25,7 +25,7 @@ export default function App() {
   useEffect(() => {
     const prepare = async () => {
       try {
-        // Artificially delay 
+        // Artificially delay
         await new Promise((resolve) => setTimeout(resolve, 500));
 
         // Other things may include fetching data, loading fonts, etc
@@ -52,9 +52,9 @@ export default function App() {
 
   return (
     <UserProvider>
-      <SessionProvider>
-        <RequestsProvider>
-          <StudentProvider>
+      <RequestsProvider>
+        <StudentProvider>
+          <SessionProvider>
             <TutorProvider>
               <View
                 className="flex-1 justify-center"
@@ -64,9 +64,9 @@ export default function App() {
                 <StatusBar style="auto" />
               </View>
             </TutorProvider>
-          </StudentProvider>
-        </RequestsProvider>
-      </SessionProvider>
+          </SessionProvider>
+        </StudentProvider>
+      </RequestsProvider>
     </UserProvider>
   );
 }

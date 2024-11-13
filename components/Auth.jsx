@@ -57,7 +57,6 @@ const Auth = () => {
   const handleAuthentication = async () => {
     let localError = null;
     setError(localError);
-
     try {
       setLoading(true);
       if (isLogin) {
@@ -82,9 +81,10 @@ const Auth = () => {
         localError = error.message;
         setError(localError);
       }
+      setLoading(false);
     } finally {
       if (user && profile) setLoading(false);
-      if (localError == null) {
+      if (localError == null && !loading) {
         setError(null);
         localError = null;
         Alert.alert("\nSigned in successfully!");

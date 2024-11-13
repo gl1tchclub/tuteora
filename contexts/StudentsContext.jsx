@@ -7,12 +7,10 @@
  */
 
 import { createContext, useState, useEffect, useContext } from "react";
-import { db, auth } from "../services/firebase";
+import { db } from "../services/firebase";
 import {
   getDocs,
   collection,
-  query,
-  where,
   setDoc,
   doc,
 } from "firebase/firestore";
