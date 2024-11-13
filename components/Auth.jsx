@@ -148,6 +148,7 @@ const Auth = () => {
                   onValueChange={(itemValue) => setStudy(itemValue)}
                   style={{ color: "white" }}
                 >
+                  <Picker.Item label="Select Study" value={null} />
                   {studies.map((study) => (
                     <Picker.Item
                       label={study.label}
@@ -168,6 +169,7 @@ const Auth = () => {
                   onValueChange={(itemValue) => setAccountType(itemValue)}
                   style={{ color: "white" }}
                 >
+                  <Picker.Item label="Select Type" value={null}  />
                   <Picker.Item label="Student" value="Student" />
                   <Picker.Item label="Tutor" value="Tutor" />
                 </Picker>

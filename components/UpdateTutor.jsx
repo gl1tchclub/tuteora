@@ -58,6 +58,7 @@ const UpdateTutor = ({ navigation }) => {
         firstName: profile.firstName,
         lastName: profile.lastName,
         bio,
+        topics,
         availability,
         isAvailable,
         students: profile.students,

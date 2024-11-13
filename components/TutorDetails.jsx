@@ -130,7 +130,7 @@ const TutorDetails = (props) => {
             <Text className="text-lg font-semibold self-center mb-2">
               Topics:
             </Text>
-            {tutor.topics.length !== 0 ? (
+            {tutor.topics.length != 0 ? (
               tutor.topics.map((topic, idx) => (
                 <Text
                   key={idx}

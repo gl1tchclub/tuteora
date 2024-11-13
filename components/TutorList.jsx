@@ -26,7 +26,7 @@ const TutorList = ({ navigation }) => {
       tutors.filter(
         (tutor) =>
           tutor.isAvailable &&
-          `${tutor.firstName} ${tutor.lastName}` != profile.tutor.name &&
+          (!profile.tutor || `${tutor.firstName} ${tutor.lastName}` != profile.tutor.name) &&
           !requests.includes(
             (req) =>
               req.receiver.id === tutor.id &&
