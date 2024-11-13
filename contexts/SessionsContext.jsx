@@ -104,7 +104,7 @@ export const SessionProvider = (props) => {
 
   return (
     <SessionContext.Provider
-      value={{ sessions, createSession, cancelSession, completeSession }}
+      value={{ sessions, createSession, cancelSession, completeSession, loadSessions }}
     >
       {props.children}
     </SessionContext.Provider>

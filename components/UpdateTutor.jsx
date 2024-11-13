@@ -92,7 +92,7 @@ const UpdateTutor = ({ navigation }) => {
     }
 
     const areSetsEqual = (setA, setB) => {
-      if (setA.size !== setB.size) return false; // Check if sizes are different
+      if (setA.size !== setB.size) return false;
       for (let elem of setA) {
         if (!setB.has(elem)) {
           return false;
@@ -102,9 +102,6 @@ const UpdateTutor = ({ navigation }) => {
     };
 
     const isSame = areSetsEqual(lastAvailability, updatedAvailability);
-
-    // console.log("Old: ", lastAvailability);
-    // console.log("New: ", updatedAvailability);
 
     setIsDisabled(isSame);
 
@@ -133,7 +130,7 @@ const UpdateTutor = ({ navigation }) => {
   const handleRadioButtons = (selectedButton) => {
     setSelectedButtonId(selectedButton);
     setIsAvailable(radioButtons[selectedButton].value);
-    // console.log(isAvailable, radioButtons[selectedButton].label);
+    setIsDisabled(isAvailable === profile.isAvailable);
   };
 
   useEffect(() => {

@@ -17,18 +17,23 @@ const SessionsComponent = ({ navigation }) => {
   const { cancelSession, sessions, completeSession } =
     useContext(SessionContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [showList, setShowList] = useState(false);
+  const [completeSessions, setCompleteSessions] = useState([]);
+  const [incompleteSessions, setIncompleteSessions] = useState([]);
 
   const { profile } = useContext(UserContext);
 
   useEffect(() => {
     console.log("Sessions:", sessions);
+    setIncompleteSessions(sessions.filter((session) => !session.isCompleted));
+    setCompleteSessions(sessions.filter((session) => session.isCompleted));
   }, [sessions]);
 
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);
   };
 
-  const earliestSession = sessions.reduce((earliest, current) => {
+  const earliestSession = incompleteSessions.reduce((earliest, current) => {
     const earliestDateTime = parseDateTime(earliest.date, earliest.time);
     const currentDateTime = parseDateTime(current.date, current.time);
     return currentDateTime < earliestDateTime ? current : earliest;
@@ -36,6 +41,10 @@ const SessionsComponent = ({ navigation }) => {
 
   const handleCreateSession = () => {
     navigation.navigate("CreateSession");
+  };
+
+  const handleShowList = () => {
+    setShowList(!showList);
   };
 
   const handleDeleteSession = async (sessionId) => {
@@ -75,7 +84,7 @@ const SessionsComponent = ({ navigation }) => {
             style={{ elevation: 5 }}
           >
             <Text className="text-lg mb-2 font-bold">Next Session:</Text>
-            {sessions.length != 0 ? (
+            {incompleteSessions.length != 0 && earliestSession ? (
               <SessionWidget
                 {...earliestSession}
                 accountType={profile.accountType}
@@ -96,42 +105,61 @@ const SessionsComponent = ({ navigation }) => {
                 color="#46ab61"
               />
             </View>
-            {sessions.length != 0 ? (
-              sessions.map((item, index) => (
+            {incompleteSessions.length != 0 ? (
+              incompleteSessions.map((item, index) => (
                 <View key={index}>
-                  {!item.isCompleted && (
-                    <SessionWidget {...item} accountType={profile.accountType}>
-                      <View className="flex-row justify-center space-x-2 mt-2">
-                        <TouchableOpacity
-                          onPress={() => handleDeleteSession(item.id)}
-                          className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                        >
-                          <MaterialCommunityIcons
-                            name="delete-outline"
-                            size={20}
-                            color="white"
-                          />
-                          <Text className="text-white">Cancel</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          onPress={() => handleCompleteSession(item.id)}
-                          className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
-                        >
-                          <MaterialCommunityIcons
-                            name="check"
-                            size={20}
-                            color="white"
-                          />
-                          <Text className="text-white">Complete</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </SessionWidget>
-                  )}
+                  <SessionWidget {...item} accountType={profile.accountType}>
+                    <View className="flex-row justify-center space-x-2 mt-2">
+                      <TouchableOpacity
+                        onPress={() => handleDeleteSession(item.id)}
+                        className="bg-red-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                      >
+                        <MaterialCommunityIcons
+                          name="delete-outline"
+                          size={20}
+                          color="white"
+                        />
+                        <Text className="text-white">Cancel</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => handleCompleteSession(item.id)}
+                        className="bg-green-500 p-2 rounded w-fit-content self-center flex-row space-x-2"
+                      >
+                        <MaterialCommunityIcons
+                          name="check"
+                          size={20}
+                          color="white"
+                        />
+                        <Text className="text-white">Complete</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </SessionWidget>
                 </View>
               ))
             ) : (
               <Text>No sessions scheduled</Text>
             )}
+          </View>
+          <View
+            className="bg-white p-4 m-4 rounded-xl w-11/12 self-center"
+            style={{ elevation: 5 }}
+          >
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-lg font-bold">Completed Sessions</Text>
+              <TouchableOpacity onPress={handleShowList} className="rounded-3xl p-3">
+                <MaterialCommunityIcons
+                  name={showList ? "arrow-up-bold" : "arrow-down-bold"}
+                  size={24}
+                  color="black"
+                />
+              </TouchableOpacity>
+            </View>
+            {showList &&
+              completeSessions.map((item, index) => (
+                <View key={index}>
+                  <SessionWidget {...item} accountType={profile.accountType} />
+                </View>
+              ))}
           </View>
         </>
       ) : (
