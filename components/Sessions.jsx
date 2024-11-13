@@ -29,16 +29,17 @@ const SessionsComponent = ({ navigation }) => {
     console.log("Complete Sessions:", completeSessions);
   }, [sessions]);
 
-
   const parseDateTime = (date, time) => {
     return new Date(`${date} ${time}`);
   };
 
-  const earliestSession = incompleteSessions ? incompleteSessions.reduce((earliest, current) => {
-    const earliestDateTime = parseDateTime(earliest.date, earliest.time);
-    const currentDateTime = parseDateTime(current.date, current.time);
-    return currentDateTime < earliestDateTime ? current : earliest;
-  }, sessions[0]) : null;
+  const earliestSession = incompleteSessions.length
+    ? incompleteSessions.reduce((earliest, current) => {
+        const earliestDateTime = parseDateTime(earliest.date, earliest.time);
+        const currentDateTime = parseDateTime(current.date, current.time);
+        return currentDateTime < earliestDateTime ? current : earliest;
+      }, sessions[0])
+    : null;
 
   const handleCreateSession = () => {
     navigation.navigate("CreateSession");
@@ -51,8 +52,8 @@ const SessionsComponent = ({ navigation }) => {
   const handleDeleteSession = async (session) => {
     try {
       await cancelSession(session.id);
-      setIncompleteSessions(...incompleteSessions, session);
-      setCompleteSessions(...completeSessions, session);
+      setIncompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
+      setCompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
     } catch (error) {
       console.error("Session deletion error: ", error.message);
     } finally {
@@ -63,7 +64,7 @@ const SessionsComponent = ({ navigation }) => {
   const handleCompleteSession = async (session) => {
     try {
       await completeSession(session.id);
-      setIncompleteSessions(...incompleteSessions, session);
+      setIncompleteSessions((prev) => prev.filter((s) => s.id !== session.id));
       setCompleteSessions(...completeSessions, session);
     } catch (error) {
       console.error("Session completion error: ", error.message);
