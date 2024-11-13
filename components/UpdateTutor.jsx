@@ -132,6 +132,7 @@ const UpdateTutor = ({ navigation }) => {
       setErrorMsg(null);
       const newTopics = topics.map((topic) => topic.toLowerCase());
       if (!newTopics.includes(currentTopic.toLowerCase())) {
+        setIsDisabled(false);
         setTopics([...topics, currentTopic]);
         setCurrentTopic("");
       } else {
@@ -142,6 +143,7 @@ const UpdateTutor = ({ navigation }) => {
 
   const deleteTopic = (topic) => {
     setTopics(topics.filter((t) => t !== topic));
+    setIsDisabled(false);
   };
 
   const handleRadioButtons = (selectedButton) => {
