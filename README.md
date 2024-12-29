@@ -5,41 +5,28 @@ Tuteora - inspired by "Tutoring" and "ora" (well-being), reflecting the positive
 
 Mobile app for students to connect with a tutor and book sessions in a more organized, streamlined fashion. 
 
-## Online Resources Used
-When making this app, I used the React Native documentation as well as documentation for Firebase, Expo, and community packages.
+# Key Features
 
-For generating random color, I used a line of code from [this source](https://css-tricks.com/snippets/javascript/random-hex-color/)
+**User Authentication**: Built on Firebase to manage user registration, login, and authentication.
 
-For starting my auth component and logic, I referred to this [github repo](https://github.com/nisha8c/ReactNative-FirebaseAuthentication), though I didn't end up using most of the code in the end.
+**Data Storage**: Firebase handles storage of user data and app-related information.
 
-I also referred to W3Schools, MDN Web Docs, and medium.com for assistance with basic JS concepts like Sets, array methods, and react hooks. I implemented Sets when changing arrays and array methods like filter, map, reduce, and forEach.
+**Responsive Design**: The UI is styled with Tailwind CSS, ensuring a mobile-friendly and adaptive layout.
 
----
+**State Management**: React Context API is used to manage and propagate updates and statuses across components.
 
-I used chatgpt to generate JSDoc header comments with the following prompt: 
+# User Features
 
-"Please add jsdoc header comments to the top of each code file I will be sending you from now on. Do not add additional comments anywhere else. Just send the jsdoc comment. Dont worry about sending the whole code file back to me"
+**Session Management**: Easily manage your learning sessions with a user-friendly interface. Track active sessions, view session history, cancel sessions, and stay updated on your progress.
 
----
+**Request Management**: Request a tutor or learning session at any time. Seamlessly submit requests and receive timely responses from available tutors.
 
-I asked chatgpt to help me figure out why my handleCreateSessionRequest function in CreateSession.jsx was executing the success content when it should've displayed an error message:
+**Change & Request a Tutor at Any Time**: If you're not satisfied with your current tutor or wish to switch, you can request a new tutor at any point during your learning journey.
 
-"When I press the create session button with fields missing, it executes the success code (lines 109 - 120) in the finally statement. The text component that renders the error message displays the error message correctly though and the handleCreate function doesn't call the createRequest function." 
+**Scheduling For Seamless Communication**: Schedule sessions with your tutor or student based on mutual availability. The built-in calendar, schedule display, and request system ensure that both parties stay informed and on schedule for every session.
 
-The response was to create a local error message value within the function, to which I implemented.
+**Adjust Your Tutoring Availability**: Tutors can easily manage their schedule by setting their availability. Specify days, times, and overall availability to ensure both you and your students stay informed and can book sessions without any conflicts. This feature helps tutors efficiently balance their workload while providing students with clear access to open time slots.
 
----
+# Known Bugs
 
-I had trouble with getting the next session in Sessions.jsx, so I asked chatgpt to help find what error I made caused the issue:
-
-"In my sessions.jsx component, I'm trying to store the session with the earliest date. I'm also trying to compare times when dates match, but when I print the variable, it isn't displaying the earliest session and is having trouble with comparison. I think it's because it's not being parsed correctly. What is the best way to parse the dates in my sessions and what is the best array method to use for this comparison? Please don't send me the complete working function and just suggest possible ideas/methods"
-
-Chatgpt suggested making a parse datetime function to convert it to a Date object and use either reduce or for loop. I chose reduce as I wanted to learn something new, although a for loop would've provided better readability. I also asked chatgpt to provide a generic syntax for using reduce as I didn't understand the accumulator and inital index part.
-
----
-
-I wanted to display a specific error message in Auth.jsx when a Firebase error occurred i.e. providing invalid login details. I asked chatgpt how to use FirestoreError as I couldn't find helpful info on the Firebase docs: 
-
-"I want to be able to display a different error message when there is a Firebase error. How do I do this in an if statement?"
-
-Chatgpt sent ```js if (error instanceof FirestoreError) //... ``` along with an example switch case of all the possible errors that FirestoreError can throw. I didn't need a whole switch case as I only wanted to display "Invalid credentials" when a FirestoreError occurs. I just changed the condition in my finally if/else statement to ```js error instanceof FirestoreError```.
+The react context for sessions does not update correctly when requests are made/received.
