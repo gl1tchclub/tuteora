@@ -30,3 +30,17 @@ Mobile app for students to connect with a tutor and book sessions in a more orga
 # Known Bugs
 
 The react context for sessions does not update correctly when requests are made/received.
+
+# Install & Usage
+
+After cloning down, ensure your device is capable of running Android Studio. Additionally, ensure you have the system environment variable "ANDROID/HOME". If you do not, create it and select androidsdk as the directory.
+
+Open Android Studio and run an emulator of your choice.
+
+Run the following once the above is done:
+```
+npm run android
+```
+
+Once the app is running, you will be prompted to sign in or register.
+
